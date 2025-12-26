@@ -1,5 +1,5 @@
 import streamlit as st
-from views import Home, Dashboard, Database
+from views import Home, Dashboard, Database, Ticket
 
 st.set_page_config(
     page_title="Financeiro",
@@ -12,6 +12,7 @@ PAGES = {
     "Home": Home,
     "Dashboard": Dashboard,
     "Database": Database,
+    "Boletos": Ticket,
 }
 
 if "current_page" not in st.session_state:

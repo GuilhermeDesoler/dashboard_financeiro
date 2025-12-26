@@ -1,3 +1,3 @@
-from . import Home, Dashboard, Database
+from . import Home, Dashboard, Database, Ticket
 
-__all__ = ["Home", "Dashboard", "Database"]
+__all__ = ["Home", "Dashboard", "Database", "Ticket"]
