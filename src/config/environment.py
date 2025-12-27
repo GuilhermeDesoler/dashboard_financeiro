@@ -31,10 +31,13 @@ class Environment:
         env_path = Path(__file__).parent.parent.parent / '.env'
 
         if not env_path.exists():
-            raise EnvironmentError(
-                f"Arquivo .env não encontrado em: {env_path}\n"
-                f"Por favor, crie o arquivo .env baseado no .env.example"
-            )
+            if os.getenv('RENDER') or os.getenv('PORT'):
+                return
+            else:
+                raise EnvironmentError(
+                    f"Arquivo .env não encontrado em: {env_path}\n"
+                    f"Por favor, crie o arquivo .env baseado no .env.example"
+                )
 
         try:
             with open(env_path, 'r', encoding='utf-8') as f:
@@ -71,7 +74,15 @@ class Environment:
             error_msg = "Erro na validação das variáveis de ambiente:\n"
             error_msg += "\n".join(f"  - {error}" for error in errors)
             error_msg += f"\n\nVariáveis obrigatórias: {', '.join(self.REQUIRED_VARIABLES)}"
-            error_msg += "\n\nVerifique seu arquivo .env e garanta que todas as variáveis estão definidas."
+
+            if os.getenv('RENDER') or os.getenv('PORT'):
+                error_msg += "\n\n⚠️ PRODUÇÃO: Configure as variáveis de ambiente no Render Dashboard:"
+                error_msg += "\n1. Acesse: Settings → Environment"
+                error_msg += "\n2. Adicione: BASE_URL = https://sua-api.onrender.com"
+                error_msg += "\n3. Clique em 'Save Changes'"
+            else:
+                error_msg += "\n\nVerifique seu arquivo .env e garanta que todas as variáveis estão definidas."
+
             raise EnvironmentError(error_msg)
 
     def _load_variables(self) -> None:
