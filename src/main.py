@@ -1,5 +1,13 @@
 import streamlit as st
 from views import Home, Dashboard, Database, Ticket
+from config import Environment, EnvironmentError
+
+# Valida variáveis de ambiente na inicialização
+try:
+    env = Environment()
+except EnvironmentError as e:
+    st.error(f"🚨 Erro de Configuração\n\n{str(e)}")
+    st.stop()
 
 st.set_page_config(
     page_title="Financeiro",
