@@ -61,6 +61,20 @@ src/
 streamlit run src/main.py
 ```
 
+## Deploy em Produção
+
+### Render.com (Recomendado - Gratuito)
+
+Siga o guia completo em **[DEPLOY.md](DEPLOY.md)** para fazer deploy no Render.com.
+
+**Resumo rápido:**
+1. Push do código para GitHub
+2. Crie Web Service no Render
+3. Configure variável `BASE_URL`
+4. Deploy automático!
+
+Sua aplicação estará online em minutos: `https://seu-app.onrender.com`
+
 ## Personalização de Tema
 
 O projeto vem com um tema dark green configurado. Para personalizar:

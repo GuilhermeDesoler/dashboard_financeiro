@@ -1,0 +1,30 @@
+# Arquivos que o Render deve ignorar no build
+
+# Development
+.venv/
+venv/
+*.pyc
+__pycache__/
+
+# Documentation
+*.md
+docs/
+.streamlit/themes.md
+.streamlit/theme-preview.png.md
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Local config
+.env.local
+.env.development
