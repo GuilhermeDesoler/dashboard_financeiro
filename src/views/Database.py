@@ -1,159 +1,139 @@
 import streamlit as st
-from data import (
-    TransactionType,
-    add,
-    get_all,
-    AddRequest,
-    get_transaction_options,
-    get_transaction_label,
-)
-import locale
-
-try:
-    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
-except:
-    try:
-        locale.setlocale(locale.LC_TIME, "Portuguese_Brazil.1252")
-    except:
-        pass
+import pandas as pd
+from datetime import datetime
+from dependencies import get_container
 
 
 def render():
-    st.title("🗄️ Database")
+    st.title("🗄️ Lançamentos Financeiros")
 
-    with st.form("database_form"):
-        date = st.date_input("Data", format="DD/MM/YYYY")
+    container = get_container()
+    modality_use_cases = container.payment_modality_use_cases
+    entry_use_cases = container.financial_entry_use_cases
 
-        col1, col2 = st.columns(2)
-        with col1:
-            value = st.number_input("Valor (R$)", min_value=0.0, step=0.01)
+    try:
+        modalities = modality_use_cases.list_active_modalities()
 
-        with col2:
-            tipo_options = get_transaction_options()
-            tipo_selecionado = st.selectbox("Tipo", options=list(tipo_options.keys()))
-            transaction_type = tipo_options[tipo_selecionado]
-
-        _, col_button = st.columns([3, 1])
-        with col_button:
-            submitted = st.form_submit_button("Salvar", use_container_width=True)
-
-        if submitted:
-            request = AddRequest(
-                day=date.strftime("%d/%m/%Y"), value=value, type=transaction_type
+        if not modalities:
+            st.warning(
+                "⚠️ Nenhuma modalidade de pagamento cadastrada. "
+                "Por favor, cadastre modalidades na página 'Modalidades'."
             )
-            add(request)
-            st.success("✅ Salvo!")
+            return
 
-    st.divider()
-    st.subheader("📊 Transações Registradas")
+        with st.form("database_form"):
+            date = st.date_input("Data", format="DD/MM/YYYY", value=datetime.now())
 
-    data = get_all()
-    if not data:
-        st.info("Nenhuma transação registrada ainda.")
-    else:
-        import pandas as pd
-        from datetime import datetime
+            col1, col2 = st.columns(2)
+            with col1:
+                value = st.number_input("Valor (R$)", min_value=0.0, step=0.01)
+
+            with col2:
+                modality_options = {m.name: m for m in modalities}
+                selected_name = st.selectbox("Modalidade", options=list(modality_options.keys()))
+                selected_modality = modality_options[selected_name]
+
+            _, col_button = st.columns([3, 1])
+            with col_button:
+                submitted = st.form_submit_button("💾 Salvar", use_container_width=True)
+
+            if submitted:
+                try:
+                    entry_datetime = datetime.combine(date, datetime.min.time())
+                    entry_use_cases.create_entry(
+                        value=value,
+                        date=entry_datetime,
+                        modality_id=selected_modality.id,
+                        modality_name=selected_modality.name,
+                    )
+                    st.success("✅ Lançamento salvo com sucesso!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ Erro ao salvar: {str(e)}")
+
+        st.divider()
+        st.subheader("📊 Lançamentos Registrados")
 
         st.markdown("### 🔍 Filtros")
         col1, col2, col3 = st.columns([2, 2, 1])
 
         with col1:
-            data_inicio = st.date_input(
+            start_date = st.date_input(
                 "Data Início", value=None, format="DD/MM/YYYY", key="filtro_inicio"
             )
 
         with col2:
-            data_fim = st.date_input(
+            end_date = st.date_input(
                 "Data Fim", value=None, format="DD/MM/YYYY", key="filtro_fim"
             )
 
         with col3:
             st.write("")
             st.write("")
-            if st.button("Limpar Filtros", use_container_width=True):
+            if st.button("🔄 Limpar", use_container_width=True):
                 st.session_state.filtro_inicio = None
                 st.session_state.filtro_fim = None
                 st.rerun()
 
-        filtered_data = {}
-        for date_key, transactions in data.items():
-            try:
-                date_obj = datetime.strptime(date_key, "%d/%m/%Y").date()
-
-                incluir = True
-                if data_inicio and date_obj < data_inicio:
-                    incluir = False
-                if data_fim and date_obj > data_fim:
-                    incluir = False
-
-                if incluir:
-                    filtered_data[date_key] = transactions
-            except:
-                filtered_data[date_key] = transactions
-
-        if not filtered_data:
-            st.warning("Nenhuma transação encontrada no período selecionado.")
-        else:
-            sorted_dates = sorted(filtered_data.keys(), reverse=True)
-
-            max_transactions = max(
-                len(transactions) for transactions in filtered_data.values()
+        try:
+            start_datetime = (
+                datetime.combine(start_date, datetime.min.time()) if start_date else None
+            )
+            end_datetime = (
+                datetime.combine(end_date, datetime.max.time()) if end_date else None
             )
 
-            table_data = {}
-            totals = {}
+            entries = entry_use_cases.list_entries(start_datetime, end_datetime)
 
-            for date_key in sorted_dates:
-                transactions = filtered_data[date_key]
-                total = 0
-                col_data = []
+            if not entries:
+                st.info("ℹ️ Nenhum lançamento encontrado no período selecionado.")
+            else:
+                total = entry_use_cases.get_total_by_period(start_datetime, end_datetime)
+                st.markdown(f"### 💰 Total: R$ {total:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."))
+                st.divider()
 
-                for t in transactions:
-                    valor = t["valor"]
-                    tipo = t["type"]
-
-                    if tipo == TransactionType.RECEBIMENTO_CREDITARIO:
-                        total += valor
-                    else:
-                        total += valor
-
-                    tipo_display = get_transaction_label(tipo)
-
-                    col_data.append(
-                        {"valor": valor, "tipo": tipo_display, "tipo_enum": tipo}
+                df_data = []
+                for entry in sorted(entries, key=lambda x: x.date, reverse=True):
+                    df_data.append(
+                        {
+                            "Data": entry.date.strftime("%d/%m/%Y"),
+                            "Valor": f"R$ {entry.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
+                            "Modalidade": entry.modality_name,
+                            "ID": entry.id,
+                        }
                     )
 
-                table_data[date_key] = col_data
-                totals[date_key] = total
+                df = pd.DataFrame(df_data)
 
-            total_geral = sum(totals.values())
-
-            st.markdown(f"### 💰 Total: R$ {total_geral:,.2f}")
-            st.divider()
-
-            rows = []
-            columns = []
-
-            for date_key in sorted_dates:
-                columns.append(
-                    (f"{date_key} - Total: R$ {totals[date_key]:,.2f}", "Valor")
-                )
-                columns.append(
-                    (f"{date_key} - Total: R$ {totals[date_key]:,.2f}", "Modalidade")
+                st.dataframe(
+                    df[["Data", "Valor", "Modalidade"]],
+                    use_container_width=True,
+                    hide_index=True,
+                    height=400,
                 )
 
-            for i in range(max_transactions):
-                row = []
-                for date_key in sorted_dates:
-                    if i < len(table_data[date_key]):
-                        t = table_data[date_key][i]
-                        row.append(f"R$ {t['valor']:,.2f}")
-                        row.append(t["tipo"])
-                    else:
-                        row.append("")
-                        row.append("")
-                rows.append(row)
+                st.subheader("🗑️ Excluir Lançamento")
+                entry_to_delete = st.selectbox(
+                    "Selecione o lançamento para excluir",
+                    options=[f"{e['Data']} - {e['Modalidade']} - {e['Valor']}" for e in df_data],
+                    key="delete_entry",
+                )
 
-            df = pd.DataFrame(rows, columns=pd.MultiIndex.from_tuples(columns))
+                if st.button("🗑️ Excluir", type="primary"):
+                    idx = [f"{e['Data']} - {e['Modalidade']} - {e['Valor']}" for e in df_data].index(
+                        entry_to_delete
+                    )
+                    entry_id = df_data[idx]["ID"]
+                    try:
+                        entry_use_cases.delete_entry(entry_id)
+                        st.success("✅ Lançamento excluído com sucesso!")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ Erro ao excluir: {str(e)}")
 
-            st.dataframe(df, use_container_width=True, hide_index=True, height=400)
+        except Exception as e:
+            st.error(f"❌ Erro ao carregar lançamentos: {str(e)}")
+
+    except Exception as e:
+        st.error(f"❌ Erro ao conectar com a API: {str(e)}")
+        st.info("ℹ️ Verifique se a URL da API está configurada corretamente no arquivo .env")

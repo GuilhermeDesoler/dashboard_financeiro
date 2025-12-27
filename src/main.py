@@ -1,5 +1,5 @@
 import streamlit as st
-from views import Home, Dashboard, Database, Ticket
+from views import Home, Dashboard, Database, Ticket, Modalities
 from config import Environment, EnvironmentError
 
 # Valida variáveis de ambiente na inicialização
@@ -19,7 +19,8 @@ st.set_page_config(
 PAGES = {
     "Home": Home,
     "Dashboard": Dashboard,
-    "Database": Database,
+    "Lançamentos": Database,
+    "Modalidades": Modalities,
     "Boletos": Ticket,
 }
 
