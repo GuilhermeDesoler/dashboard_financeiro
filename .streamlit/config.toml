@@ -2,6 +2,10 @@
 headless = true
 enableCORS = false
 enableXsrfProtection = false
+runOnSave = true
+
+[runner]
+fastReruns = true
 
 [browser]
 gatherUsageStats = false
@@ -10,11 +14,12 @@ gatherUsageStats = false
 level = "error"
 
 [theme]
-# Tema Principal - Tons de Verde e Azul (Dashboard Financeiro)
-primaryColor = "#00C853"        # Verde vibrante (botões primários, destaque)
-backgroundColor = "#0E1117"     # Fundo escuro (preto suave)
-secondaryBackgroundColor = "#1E2329"  # Cards e containers (cinza escuro)
-textColor = "#FAFAFA"           # Texto principal (branco suave)
-font = "sans serif"             # Fonte padrão
+# Tema Light
+primaryColor = "#9333EA"        # Roxo vibrante
+backgroundColor = "#FAFAFA"     # Fundo claro
+secondaryBackgroundColor = "#FFFFFF"  # Cards branco
+textColor = "#1F2937"           # Texto escuro
+font = "sans serif"
+base = "light"
 
 # Dica: Reinicie o Streamlit após alterar este arquivo

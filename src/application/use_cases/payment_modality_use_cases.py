@@ -7,8 +7,8 @@ class PaymentModalityUseCases:
     def __init__(self, repository: PaymentModalityRepository):
         self.repository = repository
 
-    def create_modality(self, name: str, is_active: bool = True) -> PaymentModality:
-        modality = PaymentModality(name=name, is_active=is_active)
+    def create_modality(self, name: str, color: str = "#9333EA", is_active: bool = True) -> PaymentModality:
+        modality = PaymentModality(name=name, color=color, is_active=is_active)
         return self.repository.create(modality)
 
     def list_modalities(self) -> List[PaymentModality]:
@@ -19,9 +19,9 @@ class PaymentModalityUseCases:
         return [m for m in all_modalities if m.is_active]
 
     def update_modality(
-        self, modality_id: str, name: str, is_active: bool
+        self, modality_id: str, name: str, color: str, is_active: bool
     ) -> PaymentModality:
-        modality = PaymentModality(name=name, is_active=is_active)
+        modality = PaymentModality(name=name, color=color, is_active=is_active)
         return self.repository.update(modality_id, modality)
 
     def delete_modality(self, modality_id: str) -> bool:

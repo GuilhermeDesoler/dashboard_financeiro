@@ -3,16 +3,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 from dependencies import get_container
 from presentation.components import render_api_health_check
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 def render():
-    st.title("📊 Dashboard Financeiro")
-
-    # Componente de debug da API
-    render_api_health_check()
+    st.title("Dashboard Financeiro", anchor=False)
 
     container = get_container()
     entry_use_cases = container.financial_entry_use_cases
+    modality_use_cases = container.payment_modality_use_cases
 
     try:
         col1, col2, col3 = st.columns(3)
@@ -60,76 +60,102 @@ def render():
 
         st.divider()
 
-        metric_col1, metric_col2, metric_col3 = st.columns(3)
+        # Cards de métricas estilo dashboard
+        modalities = modality_use_cases.list_active_modalities()
 
-        with metric_col1:
-            st.metric(
-                label="💰 Total do Período",
-                value=f"R$ {total:,.2f}".replace(",", "X")
-                .replace(".", ",")
-                .replace("X", "."),
-            )
+        # Criar métricas por modalidade
+        metric_cols = st.columns(5)
 
-        with metric_col2:
-            st.metric(label="📝 Total de Lançamentos", value=len(entries))
+        # Agrupar lançamentos por modalidade
+        modality_stats = {}
+        for entry in entries:
+            if entry.modality_name not in modality_stats:
+                modality_stats[entry.modality_name] = {
+                    'count': 0,
+                    'total': 0,
+                    'color': entry.modality_color
+                }
+            modality_stats[entry.modality_name]['count'] += 1
+            modality_stats[entry.modality_name]['total'] += entry.value
 
-        with metric_col3:
-            avg = total / len(entries) if entries else 0
-            st.metric(
-                label="📊 Ticket Médio",
-                value=f"R$ {avg:,.2f}".replace(",", "X")
-                .replace(".", ",")
-                .replace("X", "."),
-            )
+        # Exibir cards de métricas
+        for idx, (modality_name, stats) in enumerate(sorted(modality_stats.items(), key=lambda x: x[1]['total'], reverse=True)[:5]):
+            with metric_cols[idx]:
+                st.markdown(
+                    f"<div style='padding: 20px; background: #f5f5f5; "
+                    f"border: 2px solid {stats['color']}; border-radius: 8px; margin-bottom: 10px;'>"
+                    f"<p style='margin: 0; font-size: 12px; color: #666;'>{modality_name}</p>"
+                    f"<h2 style='margin: 5px 0; font-size: 28px;'>R$ {stats['total']:,.2f}</h2>".replace(",", "X").replace(".", ",").replace("X", ".") +
+                    f"<p style='margin: 0; font-size: 14px; color: #28a745; font-weight: bold;'>{stats['count']}</p>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
 
         st.divider()
 
         if not entries:
-            st.info("ℹ️ Nenhum lançamento encontrado no período selecionado.")
+            st.info("Nenhum lançamento encontrado no período selecionado.")
             return
 
-        col_chart1, col_chart2 = st.columns(2)
+        # Gráfico de barras por data com cores das modalidades
+        st.subheader("Lançamentos por Data", anchor=False)
 
-        with col_chart1:
-            st.subheader("📈 Evolução Diária")
+        # Agrupar por data e modalidade
+        date_modality_data = {}
+        for entry in entries:
+            date_str = entry.date.strftime("%d/%m/%Y")
+            if date_str not in date_modality_data:
+                date_modality_data[date_str] = {}
+            if entry.modality_name not in date_modality_data[date_str]:
+                date_modality_data[date_str][entry.modality_name] = {
+                    'count': 0,
+                    'color': entry.modality_color
+                }
+            date_modality_data[date_str][entry.modality_name]['count'] += 1
 
-            daily_totals = {}
-            for entry in entries:
-                date_key = entry.date.strftime("%Y-%m-%d")
-                if date_key not in daily_totals:
-                    daily_totals[date_key] = 0
-                daily_totals[date_key] += entry.value
+        # Criar dados para o gráfico
+        chart_data = []
+        for date_str, modalities in sorted(date_modality_data.items()):
+            for modality_name, data in modalities.items():
+                chart_data.append({
+                    'Data': date_str,
+                    'Modalidade': modality_name,
+                    'Quantidade': data['count'],
+                    'Cor': data['color']
+                })
 
-            df_daily = pd.DataFrame(
-                [
-                    {"Data": date, "Valor": value}
-                    for date, value in sorted(daily_totals.items())
-                ]
+        if chart_data:
+            df_chart = pd.DataFrame(chart_data)
+
+            # Criar gráfico de barras com plotly
+            color_map = {row['Modalidade']: row['Cor'] for _, row in df_chart.iterrows()}
+
+            fig = px.bar(
+                df_chart,
+                x='Data',
+                y='Quantidade',
+                color='Modalidade',
+                color_discrete_map=color_map,
+                barmode='group',
+                height=400
             )
-            df_daily["Data"] = pd.to_datetime(df_daily["Data"])
 
-            st.line_chart(df_daily.set_index("Data"), use_container_width=True)
-
-        with col_chart2:
-            st.subheader("🥧 Por Modalidade")
-
-            modality_totals = {}
-            for modality_name, modality_entries in grouped.items():
-                modality_totals[modality_name] = sum(e.value for e in modality_entries)
-
-            df_modality = pd.DataFrame(
-                [
-                    {"Modalidade": name, "Valor": value}
-                    for name, value in sorted(
-                        modality_totals.items(), key=lambda x: x[1], reverse=True
-                    )
-                ]
+            fig.update_layout(
+                xaxis_title="",
+                yaxis_title="Quantidade",
+                showlegend=True,
+                legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="right",
+                    x=1
+                ),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
             )
 
-            if not df_modality.empty:
-                st.bar_chart(
-                    df_modality.set_index("Modalidade"), use_container_width=True
-                )
+            st.plotly_chart(fig, use_container_width=True)
 
         st.divider()
         st.subheader("📋 Detalhamento por Modalidade")

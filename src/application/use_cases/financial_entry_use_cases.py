@@ -9,13 +9,14 @@ class FinancialEntryUseCases:
         self.repository = repository
 
     def create_entry(
-        self, value: float, date: datetime, modality_id: str, modality_name: str
+        self, value: float, date: datetime, modality_id: str, modality_name: str, modality_color: str = "#9333EA"
     ) -> FinancialEntry:
         entry = FinancialEntry(
             value=value,
             date=date,
             modality_id=modality_id,
             modality_name=modality_name,
+            modality_color=modality_color,
         )
         return self.repository.create(entry)
 

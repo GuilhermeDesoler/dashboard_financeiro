@@ -13,7 +13,7 @@ class FinancialEntryAPIRepository(FinancialEntryRepository):
     def create(self, entry: FinancialEntry) -> FinancialEntry:
         data = {
             "value": entry.value,
-            "date": entry.date.isoformat(),
+            "date": entry.date.strftime("%Y-%m-%d"),
             "modality_id": entry.modality_id,
         }
         response = self.http_client.post(self.base_endpoint, data)
@@ -45,7 +45,7 @@ class FinancialEntryAPIRepository(FinancialEntryRepository):
     def update(self, entry_id: str, entry: FinancialEntry) -> FinancialEntry:
         data = {
             "value": entry.value,
-            "date": entry.date.isoformat(),
+            "date": entry.date.strftime("%Y-%m-%d"),
             "modality_id": entry.modality_id,
         }
         response = self.http_client.put(f"{self.base_endpoint}/{entry_id}", data)

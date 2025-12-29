@@ -10,7 +10,7 @@ class PaymentModalityAPIRepository(PaymentModalityRepository):
         self.base_endpoint = "/api/payment-modalities"
 
     def create(self, modality: PaymentModality) -> PaymentModality:
-        data = {"name": modality.name, "is_active": modality.is_active}
+        data = {"name": modality.name, "color": modality.color, "is_active": modality.is_active}
         response = self.http_client.post(self.base_endpoint, data)
         return PaymentModality.from_dict(response)
 
@@ -26,7 +26,7 @@ class PaymentModalityAPIRepository(PaymentModalityRepository):
             return None
 
     def update(self, modality_id: str, modality: PaymentModality) -> PaymentModality:
-        data = {"name": modality.name, "is_active": modality.is_active}
+        data = {"name": modality.name, "color": modality.color, "is_active": modality.is_active}
         response = self.http_client.put(f"{self.base_endpoint}/{modality_id}", data)
         return PaymentModality.from_dict(response)
 
