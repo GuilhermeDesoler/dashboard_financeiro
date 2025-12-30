@@ -8,12 +8,20 @@ class HTTPClient:
         self.env = Environment()
         self.base_url = self.env.base_url.rstrip("/")
         self.timeout = 30
+        self._auth_token: Optional[str] = None
+
+    def set_auth_token(self, token: Optional[str]):
+        """Set the authentication token for all requests"""
+        self._auth_token = token
 
     def _get_headers(self) -> Dict[str, str]:
-        return {
+        headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
+        if self._auth_token:
+            headers["Authorization"] = f"Bearer {self._auth_token}"
+        return headers
 
     def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict:
         url = f"{self.base_url}{endpoint}"

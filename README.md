@@ -1,35 +1,67 @@
-# Dashboard Financeiro
+# 💰 Dashboard Financeiro
 
-Dashboard financeiro desenvolvido com Streamlit seguindo os princípios de Clean Architecture.
+Dashboard financeiro multi-tenant desenvolvido com Streamlit seguindo os princípios de Clean Architecture.
 
-## Arquitetura
+Sistema completo com autenticação, controle de acesso, administração de empresas e usuários, e modo impersonate.
+
+## ✨ Funcionalidades
+
+### 🔐 Sistema de Autenticação
+- Login seguro com JWT tokens
+- Persistência de sessão durante uso
+- Controle de acesso baseado em roles (RBAC)
+- Logout com limpeza completa de sessão
+
+### ⚙️ Painel Administrativo (Super Admin)
+- **Gestão de Empresas:**
+  - Visualização em cards com informações completas
+  - Criação de novas empresas
+  - Filtro e busca por nome/CNPJ
+  - Suporte a múltiplos planos (Basic, Premium, Enterprise)
+
+- **Gestão de Usuários:**
+  - Criação de usuários vinculados a empresas
+  - Atribuição de permissões de super admin
+  - Validação de emails únicos
+
+- **Modo Impersonate (1 hora):**
+  - Acesse dados de qualquer empresa
+  - Veja exatamente o que o cliente vê
+  - Ideal para suporte técnico
+  - Registrado em logs de auditoria
+
+### 📊 Dashboards Operacionais
+- **Dashboard**: Visualização de métricas e gráficos financeiros
+- **Lançamentos**: Gerenciamento de lançamentos financeiros
+- **Modalidades**: CRUD completo de modalidades de pagamento
+- **Boletos**: Gestão de boletos
+
+### 🏢 Multi-Tenancy
+- Isolamento total de dados por empresa
+- Cada empresa tem seu próprio banco de dados
+- Impossível vazar dados entre empresas
+
+## 🏗 Arquitetura
 
 O projeto segue a Clean Architecture com as seguintes camadas:
 
 ```
 src/
 ├── domain/              # Camada de Domínio (Regras de Negócio)
-│   ├── entities/        # Entidades de domínio
+│   ├── entities/        # User, Company, Auth, PaymentModality, FinancialEntry
 │   └── repositories/    # Interfaces dos repositórios
 ├── application/         # Camada de Aplicação (Casos de Uso)
-│   └── use_cases/       # Casos de uso da aplicação
+│   └── use_cases/       # Auth, Admin, PaymentModality, FinancialEntry
 ├── infrastructure/      # Camada de Infraestrutura (Detalhes Externos)
-│   ├── api/             # Implementação dos repositórios (API)
-│   └── http/            # Cliente HTTP
+│   ├── api/             # Implementação dos repositórios (API REST)
+│   └── http/            # Cliente HTTP com autenticação
 ├── presentation/        # Camada de Apresentação (UI)
 │   └── components/      # Componentes reutilizáveis
-├── views/               # Views do Streamlit
+├── views/               # Views do Streamlit (Login, Admin, Dashboard, etc)
 ├── config/              # Configurações e variáveis de ambiente
-├── dependencies.py      # Injeção de dependências
-└── main.py             # Ponto de entrada da aplicação
+├── dependencies.py      # Injeção de dependências (Container)
+└── main.py             # Middleware de autenticação e roteamento
 ```
-
-## Funcionalidades
-
-- **Dashboard**: Visualização de métricas e gráficos financeiros
-- **Lançamentos**: Gerenciamento de lançamentos financeiros
-- **Modalidades**: CRUD completo de modalidades de pagamento
-- **Boletos**: Gestão de boletos
 
 ## Instalação
 
@@ -52,14 +84,34 @@ src/
    ```
    Edite o arquivo `.env` e configure a URL da API:
    ```
-   BASE_URL=http://localhost:8000
+   BASE_URL=http://localhost:5000
    ```
 
-## Executar
+5. **Certifique-se que o backend está rodando:**
+
+   Veja a documentação completa do backend em `back_dashboard_financeiro/README.md`
+
+   Quick start do backend:
+   ```bash
+   cd back_dashboard_financeiro
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   python scripts/seed_all.py  # Cria super admin
+   python src/app.py
+   ```
+
+## 🚀 Executar
 
 ```bash
 streamlit run src/main.py
 ```
+
+Acesse: `http://localhost:8501`
+
+**Login padrão (super admin):**
+- Email: `teste@teste.com`
+- Senha: `123456`
 
 ## Deploy em Produção
 
@@ -89,45 +141,155 @@ O projeto vem com um tema dark green configurado. Para personalizar:
 - Fundo escuro (#0E1117)
 - Perfeito para dashboards financeiros
 
-## Tecnologias
+## 🛠 Tecnologias
 
-- **Streamlit**: Framework web para Python
-- **Pandas**: Manipulação e análise de dados
-- **Requests**: Cliente HTTP para consumir APIs
-- **Clean Architecture**: Organização do código em camadas
+### Frontend
+- **Streamlit 1.30.0+** - Framework web para Python
+- **Pandas** - Manipulação e análise de dados
+- **Plotly** - Gráficos interativos
+- **Requests** - Cliente HTTP para consumir APIs
 
-## Estrutura de Dados
+### Backend (Integrado)
+- **Flask** - Framework web
+- **MongoDB** - Banco de dados NoSQL multi-tenant
+- **PyJWT** - Autenticação JWT
+- **bcrypt** - Hash de senhas
+
+### Arquitetura
+- **Clean Architecture** - Organização do código em camadas
+- **SOLID** - Princípios de design
+- **Dependency Injection** - Inversão de controle
+- **Repository Pattern** - Abstração de persistência
+
+## 📖 Documentação Completa
+
+- **[IMPLEMENTACAO_COMPLETA.md](IMPLEMENTACAO_COMPLETA.md)** - Documentação técnica completa da implementação
+- **[GUIA_TESTE_AUTENTICACAO.md](GUIA_TESTE_AUTENTICACAO.md)** - Guia passo a passo para testar todas as funcionalidades
+- **[DEPLOY.md](DEPLOY.md)** - Instruções de deploy em produção
+
+## 🧪 Testes
+
+Para testar o sistema completo, siga o guia em: **[GUIA_TESTE_AUTENTICACAO.md](GUIA_TESTE_AUTENTICACAO.md)**
+
+**Quick tests:**
+
+1. **Login como super admin:**
+   - Email: `teste@teste.com` / Senha: `123456`
+   - Deve redirecionar para página Admin
+
+2. **Criar empresa:**
+   - Admin → Criar Empresa → Preencher formulário
+   - Deve criar e mostrar ID
+
+3. **Criar usuário:**
+   - Admin → Criar Usuário → Selecionar empresa
+   - Deve criar com sucesso
+
+4. **Impersonate:**
+   - Admin → Empresas → Clicar "Impersonate"
+   - Deve acessar Dashboard da empresa (1 hora)
+
+5. **Logout:**
+   - Sidebar → Sair
+   - Deve limpar sessão e voltar ao login
+
+## 🔐 Segurança
+
+- ✅ Autenticação JWT (24h) + Refresh Token (7 dias)
+- ✅ Senhas hasheadas com bcrypt no backend
+- ✅ RBAC (Role-Based Access Control)
+- ✅ Multi-tenancy com isolamento de dados
+- ✅ Tokens assinados (impossível falsificar)
+- ✅ Impersonate limitado a 1 hora
+- ✅ Logs de auditoria de todas ações críticas
+- ✅ Middleware de autenticação em todas as rotas
+
+## 🎯 Níveis de Acesso
+
+### 1. Não Autenticado
+- Acessa apenas: Tela de Login
+
+### 2. Usuário Regular
+- Páginas: Dashboard, Lançamentos, Modalidades, Boletos
+- Vê apenas dados da própria empresa
+- Token JWT válido por 24 horas
+
+### 3. Super Admin
+- Páginas: TODAS (Admin + páginas regulares)
+- Pode criar empresas e usuários
+- Pode fazer impersonate de qualquer empresa
+- Ações críticas registradas em log
+
+### 4. Super Admin (Modo Impersonate)
+- Vê dados APENAS da empresa impersonada
+- NÃO vê página Admin (previne ações acidentais)
+- Token válido por 1 hora
+- Aviso visual permanente no sidebar
+
+## 📊 Estrutura de Dados
+
+### User (Usuário)
+- `id`: UUID
+- `email`: Email único
+- `name`: Nome completo
+- `company_id`: UUID da empresa
+- `is_super_admin`: Boolean
+- `is_active`: Boolean
+- `role_ids`: Lista de roles
+- `features`: Lista de permissões
+
+### Company (Empresa)
+- `id`: UUID
+- `name`: Nome da empresa
+- `cnpj`: CNPJ (opcional)
+- `phone`: Telefone (opcional)
+- `plan`: basic | premium | enterprise
+- `is_active`: Boolean
+- `users_count`: Número de usuários
 
 ### PaymentModality (Modalidade de Pagamento)
-- `id`: Identificador único
+- `id`: UUID
 - `name`: Nome da modalidade
-- `is_active`: Status ativo/inativo
-- `created_at`: Data de criação
-- `updated_at`: Data de atualização
+- `color`: Cor em hexadecimal
+- `is_active`: Boolean
 
 ### FinancialEntry (Lançamento Financeiro)
-- `id`: Identificador único
-- `value`: Valor do lançamento
+- `id`: UUID
+- `value`: Valor decimal
 - `date`: Data do lançamento
-- `modality_id`: ID da modalidade de pagamento
+- `modality_id`: UUID da modalidade
 - `modality_name`: Nome da modalidade
-- `created_at`: Data de criação
-- `updated_at`: Data de atualização
+- `modality_color`: Cor da modalidade
 
-## API Endpoints
+## 🔌 API Endpoints Utilizados
+
+### Autenticação
+- `POST /api/auth/login` - Login
+- `POST /api/auth/refresh` - Refresh token
+- `GET /api/auth/me` - Dados do usuário atual
+
+### Admin - Empresas
+- `GET /api/admin/companies` - Listar empresas
+- `GET /api/admin/companies/{id}` - Detalhes da empresa
+- `POST /api/admin/companies` - Criar empresa
+- `POST /api/admin/impersonate/{company_id}` - Impersonate (1h)
+
+### Admin - Usuários
+- `GET /api/admin/users` - Listar usuários
+- `POST /api/admin/users` - Criar usuário
 
 ### Modalidades de Pagamento
 - `GET /api/payment-modalities` - Listar todas
 - `POST /api/payment-modalities` - Criar nova
-- `PUT /api/payment-modalities/<id>` - Atualizar
-- `DELETE /api/payment-modalities/<id>` - Excluir
-- `PATCH /api/payment-modalities/<id>/toggle` - Ativar/Desativar
+- `PUT /api/payment-modalities/{id}` - Atualizar
+- `DELETE /api/payment-modalities/{id}` - Excluir
+- `PATCH /api/payment-modalities/{id}/toggle` - Ativar/Desativar
 
 ### Lançamentos Financeiros
-- `GET /api/financial-entries` - Listar todos (com filtros opcionais)
+- `GET /api/financial-entries` - Listar todos (com filtros)
 - `POST /api/financial-entries` - Criar novo
-- `PUT /api/financial-entries/<id>` - Atualizar
-- `DELETE /api/financial-entries/<id>` - Excluir
+- `PUT /api/financial-entries/{id}` - Atualizar
+- `DELETE /api/financial-entries/{id}` - Excluir
 
 ## Desenvolvimento
 
