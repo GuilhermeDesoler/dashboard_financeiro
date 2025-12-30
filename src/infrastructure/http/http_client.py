@@ -1,4 +1,5 @@
 import requests
+import streamlit as st
 from typing import Optional, Dict, Any
 from config import Environment
 
@@ -10,10 +11,16 @@ class HTTPClient:
         self.timeout = 30
 
     def _get_headers(self) -> Dict[str, str]:
-        return {
+        headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
+
+        # Add JWT token from session state if available
+        if "auth_token" in st.session_state and st.session_state.auth_token:
+            headers["Authorization"] = f"Bearer {st.session_state.auth_token}"
+
+        return headers
 
     def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict:
         url = f"{self.base_url}{endpoint}"
