@@ -68,39 +68,50 @@ def render():
         modality_color_map = {m.id: m.color for m in modalities}
         modality_name_map = {m.id: m.name for m in modalities}
 
-        # Criar métricas por modalidade
-        metric_cols = st.columns(5)
-
         # Agrupar lançamentos por modalidade
         modality_stats = {}
         for entry in entries:
             # Usar a cor da modalidade atual, não a cor salva no entry
-            modality_color = modality_color_map.get(entry.modality_id, entry.modality_color)
-            modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
+            modality_color = modality_color_map.get(
+                entry.modality_id, entry.modality_color
+            )
+            modality_name = modality_name_map.get(
+                entry.modality_id, entry.modality_name
+            )
 
             if modality_name not in modality_stats:
                 modality_stats[modality_name] = {
-                    'count': 0,
-                    'total': 0,
-                    'color': modality_color
+                    "count": 0,
+                    "total": 0,
+                    "color": modality_color,
                 }
-            modality_stats[modality_name]['count'] += 1
-            modality_stats[modality_name]['total'] += entry.value
+            modality_stats[modality_name]["count"] += 1
+            modality_stats[modality_name]["total"] += entry.value
 
-        # Exibir cards de métricas
-        for idx, (modality_name, stats) in enumerate(sorted(modality_stats.items(), key=lambda x: x[1]['total'], reverse=True)[:5]):
-            with metric_cols[idx]:
-                st.markdown(
-                    f"<div style='padding: 20px; background: #f5f5f5; "
-                    f"border: 2px solid {stats['color']}; border-radius: 8px; margin-bottom: 10px;'>"
-                    f"<p style='margin: 0; font-size: 12px; color: #666;'>{modality_name}</p>"
-                    f"<h2 style='margin: 5px 0; font-size: 28px;'>R$ {stats['total']:,.2f}</h2>".replace(",", "X").replace(".", ",").replace("X", ".") +
-                    f"<p style='margin: 0; font-size: 14px; color: #28a745; font-weight: bold;'>{stats['count']}</p>"
-                    f"</div>",
-                    unsafe_allow_html=True
+        # Exibir TODOS os cards de métricas com scroll horizontal
+        top_modalities = sorted(
+            modality_stats.items(), key=lambda x: x[1]["total"], reverse=True
+        )
+
+        if top_modalities:
+            # Container flex com scroll horizontal
+            cards_html = '<div style="display: flex; gap: 12px; overflow-x: auto; overflow-y: visible; padding-bottom: 15px;">'
+
+            for modality_name, stats in top_modalities:
+                formatted_value = (
+                    f"R$ {stats['total']:,.2f}".replace(",", "X")
+                    .replace(".", ",")
+                    .replace("X", ".")
                 )
+                cards_html += f'<div style="border: 2px solid {stats["color"]}; border-radius: 8px; padding: 15px; background: #f5f5f5; min-width: 200px; flex-shrink: 0;"><p style="margin: 0; font-size: 12px; color: #666;">{modality_name}</p><h2 style="margin: 5px 0; font-size: 24px;">{formatted_value}</h2><p style="margin: 0; font-size: 14px; color: #28a745; font-weight: bold;">{stats["count"]} lançamentos</p></div>'
 
-        st.divider()
+            cards_html += '</div>'
+            st.markdown(cards_html, unsafe_allow_html=True)
+
+            st.divider()
+        else:
+            st.info("Nenhum lançamento encontrado no período selecionado.")
+            return
 
         if not entries:
             st.info("Nenhum lançamento encontrado no período selecionado.")
@@ -114,43 +125,51 @@ def render():
         for entry in entries:
             date_str = entry.date.strftime("%d/%m/%Y")
             # Usar a cor da modalidade atual, não a cor salva no entry
-            modality_color = modality_color_map.get(entry.modality_id, entry.modality_color)
-            modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
+            modality_color = modality_color_map.get(
+                entry.modality_id, entry.modality_color
+            )
+            modality_name = modality_name_map.get(
+                entry.modality_id, entry.modality_name
+            )
 
             if date_str not in date_modality_data:
                 date_modality_data[date_str] = {}
             if modality_name not in date_modality_data[date_str]:
                 date_modality_data[date_str][modality_name] = {
-                    'count': 0,
-                    'color': modality_color
+                    "count": 0,
+                    "color": modality_color,
                 }
-            date_modality_data[date_str][modality_name]['count'] += 1
+            date_modality_data[date_str][modality_name]["count"] += 1
 
         # Criar dados para o gráfico
         chart_data = []
         for date_str, modalities_data in sorted(date_modality_data.items()):
             for modality_name, data in modalities_data.items():
-                chart_data.append({
-                    'Data': date_str,
-                    'Modalidade': modality_name,
-                    'Quantidade': data['count'],
-                    'Cor': data['color']
-                })
+                chart_data.append(
+                    {
+                        "Data": date_str,
+                        "Modalidade": modality_name,
+                        "Quantidade": data["count"],
+                        "Cor": data["color"],
+                    }
+                )
 
         if chart_data:
             df_chart = pd.DataFrame(chart_data)
 
             # Criar gráfico de barras com plotly
-            color_map = {row['Modalidade']: row['Cor'] for _, row in df_chart.iterrows()}
+            color_map = {
+                row["Modalidade"]: row["Cor"] for _, row in df_chart.iterrows()
+            }
 
             fig = px.bar(
                 df_chart,
-                x='Data',
-                y='Quantidade',
-                color='Modalidade',
+                x="Data",
+                y="Quantidade",
+                color="Modalidade",
                 color_discrete_map=color_map,
-                barmode='group',
-                height=400
+                barmode="group",
+                height=400,
             )
 
             fig.update_layout(
@@ -158,14 +177,10 @@ def render():
                 yaxis_title="Quantidade",
                 showlegend=True,
                 legend=dict(
-                    orientation="h",
-                    yanchor="bottom",
-                    y=1.02,
-                    xanchor="right",
-                    x=1
+                    orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
                 ),
-                plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
             )
 
             st.plotly_chart(fig, use_container_width=True)
@@ -210,4 +225,6 @@ def render():
 
     except Exception as e:
         st.error(f"❌ Erro ao carregar dados: {str(e)}")
-        st.info("ℹ️ Verifique se a URL da API está configurada corretamente no arquivo .env")
+        st.info(
+            "ℹ️ Verifique se a URL da API está configurada corretamente no arquivo .env"
+        )

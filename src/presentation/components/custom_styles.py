@@ -36,24 +36,64 @@ def apply_custom_styles():
             min-width: 180px !important;
         }
 
-        /* Customização de botões primários */
+        /* Customização de botões primários - incluindo formulários */
         .stButton > button[kind="primary"],
-        button[kind="primary"] {
+        button[kind="primary"],
+        .stButton > button[data-testid="baseButton-primary"],
+        button[data-testid="baseButton-primary"],
+        .stForm button[kind="primary"],
+        form button[kind="primary"],
+        button[data-baseweb="button"][kind="primary"],
+        .stFormSubmitButton > button,
+        [data-testid="stFormSubmitButton"] > button {
             background-color: var(--primary-color) !important;
             border-color: var(--primary-color) !important;
             color: white !important;
         }
 
+        /* Garantir texto branco em todos os elementos dentro do botão primary */
+        .stButton > button[kind="primary"] *,
+        button[kind="primary"] *,
+        .stButton > button[data-testid="baseButton-primary"] *,
+        button[data-testid="baseButton-primary"] *,
+        .stForm button[kind="primary"] *,
+        form button[kind="primary"] *,
+        button[data-baseweb="button"][kind="primary"] *,
+        .stFormSubmitButton > button *,
+        [data-testid="stFormSubmitButton"] > button *,
+        .stFormSubmitButton > button p,
+        [data-testid="stFormSubmitButton"] > button p,
+        .stFormSubmitButton > button div,
+        [data-testid="stFormSubmitButton"] > button div {
+            color: white !important;
+        }
+
         .stButton > button[kind="primary"]:hover,
-        button[kind="primary"]:hover {
+        button[kind="primary"]:hover,
+        .stButton > button[data-testid="baseButton-primary"]:hover,
+        button[data-testid="baseButton-primary"]:hover,
+        .stForm button[kind="primary"]:hover,
+        form button[kind="primary"]:hover,
+        button[data-baseweb="button"][kind="primary"]:hover,
+        .stFormSubmitButton > button:hover,
+        [data-testid="stFormSubmitButton"] > button:hover {
             background-color: var(--primary-hover) !important;
             border-color: var(--primary-hover) !important;
+            color: white !important;
         }
 
         .stButton > button[kind="primary"]:active,
-        button[kind="primary"]:active {
+        button[kind="primary"]:active,
+        .stButton > button[data-testid="baseButton-primary"]:active,
+        button[data-testid="baseButton-primary"]:active,
+        .stForm button[kind="primary"]:active,
+        form button[kind="primary"]:active,
+        button[data-baseweb="button"][kind="primary"]:active,
+        .stFormSubmitButton > button:active,
+        [data-testid="stFormSubmitButton"] > button:active {
             background-color: var(--primary-active) !important;
             border-color: var(--primary-active) !important;
+            color: white !important;
         }
 
         /* Ocultar ícones de âncora nos headers */

@@ -6,9 +6,11 @@ from infrastructure.api import (
 from infrastructure.api.auth_api_repository import AuthAPIRepository
 from infrastructure.api.company_api_repository import CompanyAPIRepository
 from infrastructure.api.user_api_repository import UserAPIRepository
+from infrastructure.api.credit_purchase_api_repository import CreditPurchaseAPIRepository
 from application.use_cases import PaymentModalityUseCases, FinancialEntryUseCases
 from application.use_cases.auth_use_cases import AuthUseCases
 from application.use_cases.admin_use_cases import AdminUseCases
+from application.use_cases.credit_purchase_use_cases import CreditPurchaseUseCases
 
 
 class Container:
@@ -34,6 +36,7 @@ class Container:
             self._auth_repository = AuthAPIRepository(self._http_client)
             self._company_repository = CompanyAPIRepository(self._http_client)
             self._user_repository = UserAPIRepository(self._http_client)
+            self._credit_purchase_repository = CreditPurchaseAPIRepository(self._http_client)
 
             self._payment_modality_use_cases = PaymentModalityUseCases(
                 self._payment_modality_repository
@@ -46,6 +49,9 @@ class Container:
             self._admin_use_cases = AdminUseCases(
                 self._company_repository,
                 self._user_repository
+            )
+            self._credit_purchase_use_cases = CreditPurchaseUseCases(
+                self._credit_purchase_repository
             )
 
             Container._initialized = True
@@ -69,6 +75,10 @@ class Container:
     @property
     def admin_use_cases(self) -> AdminUseCases:
         return self._admin_use_cases
+
+    @property
+    def credit_purchase_use_cases(self) -> CreditPurchaseUseCases:
+        return self._credit_purchase_use_cases
 
 
 def get_container() -> Container:

@@ -43,27 +43,48 @@ class HTTPClient:
 
     def post(self, endpoint: str, data: Dict[str, Any]) -> Dict:
         url = f"{self.base_url}{endpoint}"
-        response = requests.post(
-            url, json=data, headers=self._get_headers(), timeout=self.timeout
-        )
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = requests.post(
+                url, json=data, headers=self._get_headers(), timeout=self.timeout
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as e:
+            try:
+                error_detail = response.json()
+                raise Exception(f"{e} - Detalhes: {error_detail}") from e
+            except Exception:
+                raise Exception(f"{e} - Response: {response.text[:500]}") from e
 
     def put(self, endpoint: str, data: Dict[str, Any]) -> Dict:
         url = f"{self.base_url}{endpoint}"
-        response = requests.put(
-            url, json=data, headers=self._get_headers(), timeout=self.timeout
-        )
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = requests.put(
+                url, json=data, headers=self._get_headers(), timeout=self.timeout
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as e:
+            try:
+                error_detail = response.json()
+                raise Exception(f"{e} - Detalhes: {error_detail}") from e
+            except Exception:
+                raise Exception(f"{e} - Response: {response.text[:500]}") from e
 
     def patch(self, endpoint: str, data: Optional[Dict[str, Any]] = None) -> Dict:
         url = f"{self.base_url}{endpoint}"
-        response = requests.patch(
-            url, json=data, headers=self._get_headers(), timeout=self.timeout
-        )
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = requests.patch(
+                url, json=data, headers=self._get_headers(), timeout=self.timeout
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as e:
+            try:
+                error_detail = response.json()
+                raise Exception(f"{e} - Detalhes: {error_detail}") from e
+            except Exception:
+                raise Exception(f"{e} - Response: {response.text[:500]}") from e
 
     def delete(self, endpoint: str) -> bool:
         url = f"{self.base_url}{endpoint}"
