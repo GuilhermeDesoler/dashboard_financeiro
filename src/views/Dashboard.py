@@ -3,12 +3,13 @@ import pandas as pd
 from datetime import datetime, timedelta
 from dependencies import get_container
 from presentation.components import render_api_health_check
+from presentation.components.page_header import render_page_header
 import plotly.express as px
 import plotly.graph_objects as go
 
 
 def render():
-    st.title("Dashboard Financeiro", anchor=False)
+    render_page_header("Dashboard Financeiro")
 
     container = get_container()
     entry_use_cases = container.financial_entry_use_cases
@@ -63,20 +64,28 @@ def render():
         # Cards de métricas estilo dashboard
         modalities = modality_use_cases.list_active_modalities()
 
+        # Criar mapeamento de modality_id para cor
+        modality_color_map = {m.id: m.color for m in modalities}
+        modality_name_map = {m.id: m.name for m in modalities}
+
         # Criar métricas por modalidade
         metric_cols = st.columns(5)
 
         # Agrupar lançamentos por modalidade
         modality_stats = {}
         for entry in entries:
-            if entry.modality_name not in modality_stats:
-                modality_stats[entry.modality_name] = {
+            # Usar a cor da modalidade atual, não a cor salva no entry
+            modality_color = modality_color_map.get(entry.modality_id, entry.modality_color)
+            modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
+
+            if modality_name not in modality_stats:
+                modality_stats[modality_name] = {
                     'count': 0,
                     'total': 0,
-                    'color': entry.modality_color
+                    'color': modality_color
                 }
-            modality_stats[entry.modality_name]['count'] += 1
-            modality_stats[entry.modality_name]['total'] += entry.value
+            modality_stats[modality_name]['count'] += 1
+            modality_stats[modality_name]['total'] += entry.value
 
         # Exibir cards de métricas
         for idx, (modality_name, stats) in enumerate(sorted(modality_stats.items(), key=lambda x: x[1]['total'], reverse=True)[:5]):
@@ -104,19 +113,23 @@ def render():
         date_modality_data = {}
         for entry in entries:
             date_str = entry.date.strftime("%d/%m/%Y")
+            # Usar a cor da modalidade atual, não a cor salva no entry
+            modality_color = modality_color_map.get(entry.modality_id, entry.modality_color)
+            modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
+
             if date_str not in date_modality_data:
                 date_modality_data[date_str] = {}
-            if entry.modality_name not in date_modality_data[date_str]:
-                date_modality_data[date_str][entry.modality_name] = {
+            if modality_name not in date_modality_data[date_str]:
+                date_modality_data[date_str][modality_name] = {
                     'count': 0,
-                    'color': entry.modality_color
+                    'color': modality_color
                 }
-            date_modality_data[date_str][entry.modality_name]['count'] += 1
+            date_modality_data[date_str][modality_name]['count'] += 1
 
         # Criar dados para o gráfico
         chart_data = []
-        for date_str, modalities in sorted(date_modality_data.items()):
-            for modality_name, data in modalities.items():
+        for date_str, modalities_data in sorted(date_modality_data.items()):
+            for modality_name, data in modalities_data.items():
                 chart_data.append({
                     'Data': date_str,
                     'Modalidade': modality_name,
@@ -158,7 +171,7 @@ def render():
             st.plotly_chart(fig, use_container_width=True)
 
         st.divider()
-        st.subheader("📋 Detalhamento por Modalidade")
+        st.subheader("📋 Detalhamento por Modalidade", anchor=False)
 
         for modality_name, modality_entries in sorted(
             grouped.items(), key=lambda x: sum(e.value for e in x[1]), reverse=True

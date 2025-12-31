@@ -1,10 +1,11 @@
 import streamlit as st
 from datetime import datetime
 from dependencies import get_container
+from presentation.components.page_header import render_page_header
 
 
 def render():
-    st.title("Resgitrar Lançamento", anchor=False)
+    render_page_header("Registrar Lançamento")
 
     container = get_container()
     modality_use_cases = container.payment_modality_use_cases
@@ -84,6 +85,10 @@ def render():
 
             entries = entry_use_cases.list_entries(start_datetime, end_datetime)
 
+            # Criar mapeamento de modality_id para cor e nome
+            modality_color_map = {m.id: m.color for m in modalities}
+            modality_name_map = {m.id: m.name for m in modalities}
+
             if not entries:
                 st.info("Nenhum lançamento encontrado no período selecionado.")
             else:
@@ -147,12 +152,16 @@ def render():
                             entry = date_entries[i]
                             value_formatted = f"R$ {entry.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
+                            # Usar a cor da modalidade atual, não a cor salva no entry
+                            modality_color = modality_color_map.get(entry.modality_id, entry.modality_color)
+                            modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
+
                             html_content += f"<td style='padding: 10px; text-align: right; border: 1px solid #ddd; min-width: 180px; white-space: nowrap;'>{value_formatted}</td>"
 
                             html_content += (
                                 f"<td style='padding: 10px; text-align: center; border: 1px solid #ddd; min-width: 180px; white-space: nowrap; "
-                                f"background-color: {entry.modality_color}; color: white; font-weight: bold;'>"
-                                f"{entry.modality_name}</td>"
+                                f"background-color: {modality_color}; color: white; font-weight: bold;'>"
+                                f"{modality_name}</td>"
                             )
                         else:
                             html_content += "<td style='padding: 10px; border: 1px solid #ddd; min-width: 180px;'></td>"
@@ -163,11 +172,14 @@ def render():
 
                 st.markdown(html_content, unsafe_allow_html=True)
 
-                st.markdown("### Legenda de Modalidades")
+                st.subheader("Legenda de Modalidades", anchor=False)
                 unique_modalities = {}
                 for entry in entries:
-                    if entry.modality_name not in unique_modalities:
-                        unique_modalities[entry.modality_name] = entry.modality_color
+                    # Usar a cor da modalidade atual, não a cor salva no entry
+                    modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
+                    modality_color = modality_color_map.get(entry.modality_id, entry.modality_color)
+                    if modality_name not in unique_modalities:
+                        unique_modalities[modality_name] = modality_color
 
                 legend_html = "<div style='display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px;'>"
                 for modality_name, color in sorted(unique_modalities.items()):
@@ -183,11 +195,13 @@ def render():
 
                 df_data = []
                 for entry in sorted(entries, key=lambda x: x.date, reverse=True):
+                    # Usar o nome da modalidade atual, não o nome salvo no entry
+                    modality_name = modality_name_map.get(entry.modality_id, entry.modality_name)
                     df_data.append(
                         {
                             "Data": entry.date.strftime("%d/%m/%Y"),
                             "Valor": f"R$ {entry.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
-                            "Modalidade": entry.modality_name,
+                            "Modalidade": modality_name,
                             "ID": entry.id,
                         }
                     )

@@ -1,9 +1,10 @@
 import streamlit as st
 from dependencies import get_container
+from presentation.components.page_header import render_page_header
 
 
 def render():
-    st.title("Modalidades de Pagamento", anchor=False)
+    render_page_header("Modalidades de Pagamento")
 
     container = get_container()
     use_cases = container.payment_modality_use_cases
@@ -58,12 +59,11 @@ def _render_modalities_list(use_cases):
                 col1, col2 = st.columns([5, 1])
 
                 with col1:
-                    # Nome com indicador de cor
                     st.markdown(
                         f"<div style='display: flex; align-items: center; gap: 10px;'>"
                         f"<div style='width: 20px; height: 20px; background-color: {modality.color}; "
                         f"border-radius: 4px; border: 1px solid #ccc;'></div>"
-                        f"<h3 style='margin: 0;'>{modality.name}</h3>"
+                        f"<h3 style='margin: 8px 0 0 0;'>{modality.name}</h3>"
                         f"</div>",
                         unsafe_allow_html=True,
                     )
@@ -119,10 +119,10 @@ def _render_modalities_list(use_cases):
                             key=f"status_{modality.id}",
                         )
 
-                        col_save, col_delete, col_cancel = st.columns(3)
+                        col_save, col_cancel = st.columns(2)
 
                         with col_save:
-                            if st.form_submit_button("Salvar", use_container_width=True):
+                            if st.form_submit_button("Salvar", use_container_width=True, type="primary"):
                                 try:
                                     use_cases.update_modality(
                                         modality.id, new_name, new_color, new_status
@@ -132,18 +132,6 @@ def _render_modalities_list(use_cases):
                                     st.rerun()
                                 except Exception as e:
                                     st.error(f"Erro ao atualizar: {str(e)}")
-
-                        with col_delete:
-                            if st.form_submit_button(
-                                "Excluir", use_container_width=True
-                            ):
-                                try:
-                                    use_cases.delete_modality(modality.id)
-                                    st.success("Modalidade excluída com sucesso!")
-                                    st.session_state[f"editing_{modality.id}"] = False
-                                    st.rerun()
-                                except Exception as e:
-                                    st.error(f"Erro ao excluir: {str(e)}")
 
                         with col_cancel:
                             if st.form_submit_button(

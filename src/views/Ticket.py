@@ -1,8 +1,9 @@
 import streamlit as st
+from presentation.components.page_header import render_page_header
 
 
 def render():
-    st.title("Boletos")
+    render_page_header("Boletos")
 
     col1, col2, _ = st.columns([1, 1, 4])
 

@@ -24,7 +24,6 @@ class Container:
         if not Container._initialized:
             self._http_client = HTTPClient()
 
-            # Existing repositories
             self._payment_modality_repository = PaymentModalityAPIRepository(
                 self._http_client
             )
@@ -32,12 +31,10 @@ class Container:
                 self._http_client
             )
 
-            # New repositories
             self._auth_repository = AuthAPIRepository(self._http_client)
             self._company_repository = CompanyAPIRepository(self._http_client)
             self._user_repository = UserAPIRepository(self._http_client)
 
-            # Existing use cases
             self._payment_modality_use_cases = PaymentModalityUseCases(
                 self._payment_modality_repository
             )
@@ -45,7 +42,6 @@ class Container:
                 self._financial_entry_repository
             )
 
-            # New use cases
             self._auth_use_cases = AuthUseCases(self._auth_repository)
             self._admin_use_cases = AdminUseCases(
                 self._company_repository,

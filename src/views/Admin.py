@@ -9,13 +9,11 @@ from datetime import datetime
 def Admin():
     """Admin page for super admins only"""
 
-    # Get use cases
     container = get_container()
     admin_use_cases = container.admin_use_cases
     auth_use_cases = container.auth_use_cases
     http_client = container.http_client
 
-    # Check if user is super admin
     current_user = st.session_state.get("current_user")
     if not current_user or not current_user.is_super_admin:
         st.error("❌ Acesso negado. Apenas super admins podem acessar esta página.")
@@ -23,14 +21,11 @@ def Admin():
 
     st.title("Painel Administrativo")
 
-    # Tabs for different admin sections
     tab1, tab2, tab3 = st.tabs(["Empresas", "Criar Usuário", "Criar Empresa"])
 
-    # TAB 1: Companies List with Impersonate
     with tab1:
         st.subheader("Empresas Cadastradas", divider=False)
 
-        # Filters
         col_filter1, col_filter2 = st.columns([3, 1])
         with col_filter1:
             search_company = st.text_input(
@@ -42,10 +37,8 @@ def Admin():
             show_inactive = st.checkbox("Mostrar inativas", value=False)
 
         try:
-            # Fetch companies
             companies = admin_use_cases.get_all_companies(only_active=not show_inactive)
 
-            # Filter by search
             if search_company:
                 companies = [
                     c for c in companies
@@ -56,11 +49,9 @@ def Admin():
             if not companies:
                 st.info("Nenhuma empresa encontrada")
             else:
-                # Display companies as cards in a grid
                 st.markdown(f"**{len(companies)} empresa(s) encontrada(s)**")
                 st.markdown("---")
 
-                # Create grid with 2 columns
                 for i in range(0, len(companies), 2):
                     cols = st.columns(2)
 
@@ -69,12 +60,10 @@ def Admin():
                             company = companies[i + idx]
 
                             with col:
-                                # Card container
                                 card_color = "#E8F5E9" if company.is_active else "#FFEBEE"
                                 status_icon = "✅" if company.is_active else "🚫"
                                 status_text = "Ativa" if company.is_active else "Inativa"
 
-                                # Plan badge colors
                                 plan_colors = {
                                     "basic": "#2196F3",
                                     "premium": "#9C27B0",
@@ -93,17 +82,10 @@ def Admin():
                                         min-height: 200px;
                                     ">
                                         <h3 style="margin: 0; color: #333;">{company.name}</h3>
+                                        <strong>Status:</strong> {status_icon} {status_text}<br>
                                         <p style="margin: 5px 0; color: #666;">
                                             <strong>CNPJ:</strong> {company.cnpj or "Não informado"}<br>
                                             <strong>Telefone:</strong> {company.phone or "Não informado"}<br>
-                                            <strong>Plano:</strong> <span style="
-                                                background-color: {plan_color};
-                                                color: white;
-                                                padding: 2px 8px;
-                                                border-radius: 4px;
-                                                font-weight: bold;
-                                            ">{company.plan.upper()}</span><br>
-                                            <strong>Status:</strong> {status_icon} {status_text}<br>
                                             <strong>Usuários:</strong> {company.users_count}
                                         </p>
                                     </div>
@@ -170,7 +152,7 @@ def Admin():
                                                 # Store impersonate info
                                                 st.session_state.impersonate_token = impersonate_token.token
                                                 st.session_state.impersonating_company = company.name
-                                                st.session_state.impersonate_expires = datetime.now()
+                                                st.session_state.impersonate_start_time = datetime.now()
 
                                                 # Set token in HTTP client
                                                 http_client.set_auth_token(impersonate_token.token)
@@ -374,8 +356,8 @@ def Admin():
                 # Clear impersonate data
                 del st.session_state.impersonate_token
                 del st.session_state.impersonating_company
-                if "impersonate_expires" in st.session_state:
-                    del st.session_state.impersonate_expires
+                if "impersonate_start_time" in st.session_state:
+                    del st.session_state.impersonate_start_time
 
                 # Restore super admin token
                 http_client.set_auth_token(st.session_state.access_token)
