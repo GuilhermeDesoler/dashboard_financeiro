@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 from domain.entities import FinancialEntry
 from domain.repositories import FinancialEntryRepository
@@ -9,8 +9,23 @@ class FinancialEntryUseCases:
         self.repository = repository
 
     def create_entry(
-        self, value: float, date: datetime, modality_id: str, modality_name: str, modality_color: str = "#9333EA"
-    ) -> FinancialEntry:
+        self,
+        value: float,
+        date: datetime,
+        modality_id: str,
+        modality_name: str,
+        modality_color: str = "#9333EA",
+        installments_count: Optional[int] = None,
+        start_date: Optional[datetime] = None,
+        is_credit_payment: bool = False,
+    ) -> Dict[str, Any]:
+        """
+        Create a financial entry with optional installments
+
+        Returns a dict with:
+        - entry: FinancialEntry
+        - installments: List[dict] (raw installment data from API)
+        """
         entry = FinancialEntry(
             value=value,
             date=date,
@@ -18,7 +33,9 @@ class FinancialEntryUseCases:
             modality_name=modality_name,
             modality_color=modality_color,
         )
-        return self.repository.create(entry)
+        return self.repository.create(
+            entry, installments_count, start_date, is_credit_payment
+        )
 
     def list_entries(
         self,

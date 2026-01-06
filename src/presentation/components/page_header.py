@@ -16,6 +16,7 @@ def render_page_header(page_title: str = None):
         if "company_name" not in st.session_state:
             try:
                 from dependencies import get_container
+
                 current_user = st.session_state.get("current_user")
 
                 if current_user and not current_user.is_super_admin:
@@ -36,7 +37,7 @@ def render_page_header(page_title: str = None):
                 f"""
                 <div style="
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    padding: 20px 30px;
+                    padding: 0px 30px 20px 30px;
                     border-radius: 10px;
                     margin-bottom: 20px;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -54,7 +55,7 @@ def render_page_header(page_title: str = None):
                     ">{page_title}</p>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
         else:
             st.markdown(
@@ -74,7 +75,7 @@ def render_page_header(page_title: str = None):
                     ">{company_name}</h1>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
     elif page_title:
         st.title(page_title)

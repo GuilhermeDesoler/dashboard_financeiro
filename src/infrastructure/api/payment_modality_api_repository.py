@@ -10,12 +10,23 @@ class PaymentModalityAPIRepository(PaymentModalityRepository):
         self.base_endpoint = "/api/payment-modalities"
 
     def create(self, modality: PaymentModality) -> PaymentModality:
-        data = {"name": modality.name, "color": modality.color, "is_active": modality.is_active}
+        data = {
+            "name": modality.name,
+            "color": modality.color,
+            "bank_name": modality.bank_name,
+            "fee_percentage": modality.fee_percentage,
+            "rental_fee": modality.rental_fee,
+            "is_active": modality.is_active,
+            "is_credit_plan": modality.is_credit_plan,
+            "allows_anticipation": modality.allows_anticipation,
+            "allows_credit_payment": modality.allows_credit_payment,
+        }
         response = self.http_client.post(self.base_endpoint, data)
         return PaymentModality.from_dict(response)
 
-    def get_all(self) -> List[PaymentModality]:
-        response = self.http_client.get(self.base_endpoint)
+    def get_all(self, only_active: bool = False) -> List[PaymentModality]:
+        endpoint = f"{self.base_endpoint}?only_active={'true' if only_active else 'false'}"
+        response = self.http_client.get(endpoint)
         return [PaymentModality.from_dict(item) for item in response]
 
     def get_by_id(self, modality_id: str) -> Optional[PaymentModality]:
@@ -26,7 +37,17 @@ class PaymentModalityAPIRepository(PaymentModalityRepository):
             return None
 
     def update(self, modality_id: str, modality: PaymentModality) -> PaymentModality:
-        data = {"name": modality.name, "color": modality.color, "is_active": modality.is_active}
+        data = {
+            "name": modality.name,
+            "color": modality.color,
+            "bank_name": modality.bank_name,
+            "fee_percentage": modality.fee_percentage,
+            "rental_fee": modality.rental_fee,
+            "is_active": modality.is_active,
+            "is_credit_plan": modality.is_credit_plan,
+            "allows_anticipation": modality.allows_anticipation,
+            "allows_credit_payment": modality.allows_credit_payment,
+        }
         response = self.http_client.put(f"{self.base_endpoint}/{modality_id}", data)
         return PaymentModality.from_dict(response)
 
@@ -34,5 +55,8 @@ class PaymentModalityAPIRepository(PaymentModalityRepository):
         return self.http_client.delete(f"{self.base_endpoint}/{modality_id}")
 
     def toggle(self, modality_id: str) -> PaymentModality:
-        response = self.http_client.patch(f"{self.base_endpoint}/{modality_id}/toggle")
+        response = self.http_client.patch(
+            f"{self.base_endpoint}/{modality_id}/toggle",
+            data={}
+        )
         return PaymentModality.from_dict(response)

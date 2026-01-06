@@ -47,6 +47,13 @@ class User:
             return True
         return feature in self.features
 
+    def is_admin(self) -> bool:
+        """Check if user is super admin or has admin role"""
+        if self.is_super_admin:
+            return True
+        # Verifica se tem as features de admin (users.create é uma feature exclusiva de admin)
+        return "users.create" in self.features
+
     def to_dict(self):
         """Convert to dictionary for API requests"""
         return {

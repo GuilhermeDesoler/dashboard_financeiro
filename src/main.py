@@ -1,5 +1,5 @@
 import streamlit as st
-from views import Dashboard, Database, Ticket, Modalities, Crediario
+from views import Dashboard, Database, Ticket, Modalities, Expenses, Balances
 from views.Login import Login
 from views.Admin import Admin
 from config import Environment, EnvironmentError
@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="Dashboard Financeiro",
     layout="wide",
     initial_sidebar_state="expanded",
-    page_icon="💰"
+    page_icon="💰",
 )
 
 apply_custom_styles()
@@ -47,8 +47,9 @@ AUTHENTICATED_PAGES = {
     "Dashboard": Dashboard,
     "Lançamentos": Database,
     "Modalidades": Modalities,
+    "Despesas/Investimentos": Expenses,
+    "Saldos e Limites": Balances,
     "Boletos": Ticket,
-    "Crediário": Crediario,
 }
 
 ADMIN_PAGES = {
@@ -72,14 +73,20 @@ else:
 
     with st.sidebar:
         if current_user:
-            st.markdown(f"### 👤 {current_user.name}")
-            st.caption(f"📧 {current_user.email}")
+            st.markdown(f"### {current_user.name}")
+            st.caption(f"{current_user.email}")
 
             if "impersonate_token" in st.session_state:
                 render_impersonate_timer()
 
-            if current_user and current_user.is_super_admin and "impersonate_token" in st.session_state:
-                if st.button("Sair do Impersonate", use_container_width=True, type="primary"):
+            if (
+                current_user
+                and current_user.is_super_admin
+                and "impersonate_token" in st.session_state
+            ):
+                if st.button(
+                    "Sair do Impersonate", use_container_width=True, type="primary"
+                ):
                     del st.session_state.impersonate_token
                     del st.session_state.impersonating_company
                     if "impersonate_start_time" in st.session_state:
@@ -89,15 +96,23 @@ else:
 
                     st.session_state.current_page = "Admin"
 
-                    st.success("✅ Modo impersonate desativado. Voltando ao painel admin...")
+                    st.success(
+                        "Modo impersonate desativado. Voltando ao painel admin..."
+                    )
                     st.rerun()
 
             st.divider()
 
-        if current_user and current_user.is_super_admin and "impersonate_token" not in st.session_state:
-            st.markdown("#### ⚙️ Administração")
+        if (
+            current_user
+            and current_user.is_super_admin
+            and "impersonate_token" not in st.session_state
+        ):
+            st.markdown("#### Administração")
             for page_name in ADMIN_PAGES.keys():
-                if st.button(page_name, use_container_width=True, key=f"admin_{page_name}"):
+                if st.button(
+                    page_name, use_container_width=True, key=f"admin_{page_name}"
+                ):
                     st.session_state.current_page = page_name
                     st.rerun()
             st.divider()
@@ -108,16 +123,20 @@ else:
                 "visualizar dashboards e lançamentos."
             )
 
-        if current_user and (not current_user.is_super_admin or "impersonate_token" in st.session_state):
-            st.markdown("#### 📊 Sistema")
+        if current_user and (
+            not current_user.is_super_admin or "impersonate_token" in st.session_state
+        ):
+            st.markdown("#### Sistema")
             for page_name in AUTHENTICATED_PAGES.keys():
-                if st.button(page_name, use_container_width=True, key=f"page_{page_name}"):
+                if st.button(
+                    page_name, use_container_width=True, key=f"page_{page_name}"
+                ):
                     st.session_state.current_page = page_name
                     st.rerun()
 
         st.divider()
 
-        if st.button("🚪 Sair", use_container_width=True, type="secondary"):
+        if st.button("Sair", use_container_width=True, type="secondary"):
             clear_auth_session()
 
             http_client.set_auth_token(None)
@@ -128,22 +147,26 @@ else:
             st.rerun()
 
     if st.session_state.current_page in AUTHENTICATED_PAGES:
-        if current_user and current_user.is_super_admin and "impersonate_token" not in st.session_state:
-            st.error("❌ **Acesso Negado**")
+        if (
+            current_user
+            and current_user.is_super_admin
+            and "impersonate_token" not in st.session_state
+        ):
+            st.error("**Acesso Negado**")
             st.warning(
-                "⚠️ Super admins não podem acessar páginas operacionais diretamente.\n\n"
+                "Super admins não podem acessar páginas operacionais diretamente.\n\n"
                 "**Para visualizar dados de uma empresa:**\n\n"
                 "1. Vá para a página **Admin**\n"
                 "2. Clique em **Impersonate** na empresa desejada\n"
                 "3. Você terá acesso aos dashboards e lançamentos dessa empresa por 1 hora"
             )
             st.info(
-                "💡 **Por quê?**\n\n"
+                "**Por quê?**\n\n"
                 "Super admins gerenciam empresas e usuários. Para ver dados operacionais, "
                 "você precisa escolher qual empresa deseja visualizar através do impersonate. "
                 "Isso garante clareza sobre qual empresa você está acessando."
             )
-            if st.button("➡️ Ir para Página Admin", type="primary"):
+            if st.button("Ir para Página Admin", type="primary"):
                 st.session_state.current_page = "Admin"
                 st.rerun()
         else:
@@ -151,7 +174,11 @@ else:
     elif st.session_state.current_page in ADMIN_PAGES:
         ADMIN_PAGES[st.session_state.current_page]()
     else:
-        if current_user and current_user.is_super_admin and "impersonate_token" not in st.session_state:
+        if (
+            current_user
+            and current_user.is_super_admin
+            and "impersonate_token" not in st.session_state
+        ):
             st.session_state.current_page = "Admin"
         else:
             st.session_state.current_page = "Dashboard"

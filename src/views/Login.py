@@ -21,23 +21,21 @@ def Login():
             email = st.text_input(
                 "Email",
                 placeholder="usuario@empresa.com",
-                help="Digite seu email cadastrado no sistema"
+                help="Digite seu email cadastrado no sistema",
             )
 
             password = st.text_input(
                 "Senha",
                 type="password",
                 placeholder="••••••••",
-                help="Digite sua senha"
+                help="Digite sua senha",
             )
 
             col_btn1, col_btn2 = st.columns([1, 1])
 
             with col_btn2:
                 login_button = st.form_submit_button(
-                    "🔓 Entrar",
-                    use_container_width=True,
-                    type="primary"
+                    "Entrar", use_container_width=True, type="primary"
                 )
 
             # with col_btn2:
@@ -49,16 +47,14 @@ def Login():
 
         if login_button:
             if not email or not password:
-                st.error("⚠️ Por favor, preencha email e senha")
+                st.error("Por favor, preencha email e senha")
             else:
                 try:
                     with st.spinner("Autenticando..."):
                         auth_token = auth_use_cases.login(email, password)
 
                         save_auth_to_session_state(
-                            auth_token.token,
-                            auth_token.refresh_token,
-                            auth_token.user
+                            auth_token.token, auth_token.refresh_token, auth_token.user
                         )
 
                         http_client.set_auth_token(auth_token.token)
@@ -68,17 +64,19 @@ def Login():
                         else:
                             st.session_state.current_page = "Dashboard"
 
-                        st.success(f"✅ Bem-vindo(a), {auth_token.user.name}!")
+                        st.success(f"Bem-vindo(a), {auth_token.user.name}!")
                         st.rerun()
 
                 except Exception as e:
                     error_msg = str(e)
                     if "401" in error_msg or "Unauthorized" in error_msg:
-                        st.error("❌ Email ou senha incorretos")
+                        st.error("Email ou senha incorretos")
                     elif "403" in error_msg or "Forbidden" in error_msg:
-                        st.error("❌ Usuário desativado. Entre em contato com o administrador.")
+                        st.error(
+                            "Usuário desativado. Entre em contato com o administrador."
+                        )
                     else:
-                        st.error(f"❌ Erro ao fazer login: {error_msg}")
+                        st.error(f"Erro ao fazer login: {error_msg}")
 
         st.info(
             "**Sistema Privado**\n\n"
@@ -87,9 +85,13 @@ def Login():
         )
 
         if st.session_state.get("show_debug", False):
-            with st.expander("🔧 Debug Info"):
-                st.json({
-                    "is_authenticated": st.session_state.get("is_authenticated", False),
-                    "has_token": "access_token" in st.session_state,
-                    "current_page": st.session_state.get("current_page", "Login")
-                })
+            with st.expander("Debug Info"):
+                st.json(
+                    {
+                        "is_authenticated": st.session_state.get(
+                            "is_authenticated", False
+                        ),
+                        "has_token": "access_token" in st.session_state,
+                        "current_page": st.session_state.get("current_page", "Login"),
+                    }
+                )

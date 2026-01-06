@@ -1,6 +1,7 @@
 """
 Admin page - Company management, user creation, and impersonate
 """
+
 import streamlit as st
 from dependencies import get_container
 from datetime import datetime
@@ -16,7 +17,7 @@ def Admin():
 
     current_user = st.session_state.get("current_user")
     if not current_user or not current_user.is_super_admin:
-        st.error("❌ Acesso negado. Apenas super admins podem acessar esta página.")
+        st.error("Acesso negado. Apenas super admins podem acessar esta página.")
         st.stop()
 
     st.title("Painel Administrativo")
@@ -31,7 +32,7 @@ def Admin():
             search_company = st.text_input(
                 "Buscar empresa",
                 placeholder="Digite o nome da empresa...",
-                label_visibility="collapsed"
+                label_visibility="collapsed",
             )
         with col_filter2:
             show_inactive = st.checkbox("Mostrar inativas", value=False)
@@ -41,7 +42,8 @@ def Admin():
 
             if search_company:
                 companies = [
-                    c for c in companies
+                    c
+                    for c in companies
                     if search_company.lower() in c.name.lower()
                     or (c.cnpj and search_company in c.cnpj)
                 ]
@@ -60,14 +62,17 @@ def Admin():
                             company = companies[i + idx]
 
                             with col:
-                                card_color = "#E8F5E9" if company.is_active else "#FFEBEE"
-                                status_icon = "✅" if company.is_active else "🚫"
-                                status_text = "Ativa" if company.is_active else "Inativa"
+                                card_color = (
+                                    "#E8F5E9" if company.is_active else "#FFEBEE"
+                                )
+                                status_text = (
+                                    "Ativa" if company.is_active else "Inativa"
+                                )
 
                                 plan_colors = {
                                     "basic": "#2196F3",
                                     "premium": "#9C27B0",
-                                    "enterprise": "#FF9800"
+                                    "enterprise": "#FF9800",
                                 }
                                 plan_color = plan_colors.get(company.plan, "#757575")
 
@@ -82,7 +87,7 @@ def Admin():
                                         min-height: 200px;
                                     ">
                                         <h3 style="margin: 0; color: #333;">{company.name}</h3>
-                                        <strong>Status:</strong> {status_icon} {status_text}<br>
+                                        <strong>Status:</strong>{status_text}<br>
                                         <p style="margin: 5px 0; color: #666;">
                                             <strong>CNPJ:</strong> {company.cnpj or "Não informado"}<br>
                                             <strong>Telefone:</strong> {company.phone or "Não informado"}<br>
@@ -90,11 +95,12 @@ def Admin():
                                         </p>
                                     </div>
                                     """,
-                                    unsafe_allow_html=True
+                                    unsafe_allow_html=True,
                                 )
 
                                 # Custom CSS for purple button styling
-                                st.markdown("""
+                                st.markdown(
+                                    """
                                     <style>
                                     /* Primary button - Purple background with white text */
                                     div[data-testid="stButton"] button[kind="primary"] p {
@@ -131,7 +137,9 @@ def Admin():
                                         color: #7B1FA2 !important;
                                     }
                                     </style>
-                                """, unsafe_allow_html=True)
+                                """,
+                                    unsafe_allow_html=True,
+                                )
 
                                 # Impersonate button
                                 if company.is_active:
@@ -139,41 +147,55 @@ def Admin():
                                         "🎭 Impersonate",
                                         key=f"impersonate_{company.id}",
                                         use_container_width=True,
-                                        type="primary"
+                                        type="primary",
                                     ):
                                         try:
-                                            with st.spinner(f"Acessando {company.name}..."):
+                                            with st.spinner(
+                                                f"Acessando {company.name}..."
+                                            ):
                                                 # Get impersonate token
-                                                impersonate_token = auth_use_cases.impersonate_company(
-                                                    company.id,
-                                                    st.session_state.access_token
+                                                impersonate_token = (
+                                                    auth_use_cases.impersonate_company(
+                                                        company.id,
+                                                        st.session_state.access_token,
+                                                    )
                                                 )
 
                                                 # Store impersonate info
-                                                st.session_state.impersonate_token = impersonate_token.token
-                                                st.session_state.impersonating_company = company.name
-                                                st.session_state.impersonate_start_time = datetime.now()
+                                                st.session_state.impersonate_token = (
+                                                    impersonate_token.token
+                                                )
+                                                st.session_state.impersonating_company = (
+                                                    company.name
+                                                )
+                                                st.session_state.impersonate_start_time = (
+                                                    datetime.now()
+                                                )
 
                                                 # Set token in HTTP client
-                                                http_client.set_auth_token(impersonate_token.token)
+                                                http_client.set_auth_token(
+                                                    impersonate_token.token
+                                                )
 
                                                 # Redirect to Dashboard
-                                                st.session_state.current_page = "Dashboard"
+                                                st.session_state.current_page = (
+                                                    "Dashboard"
+                                                )
 
                                                 st.success(
-                                                    f"✅ {impersonate_token.message}\n\n"
-                                                    f"⏱️ Token válido por {impersonate_token.expires_in_hours} hora"
+                                                    f"{impersonate_token.message}\n\n"
+                                                    f"Token válido por {impersonate_token.expires_in_hours} hora"
                                                 )
                                                 st.rerun()
 
                                         except Exception as e:
-                                            st.error(f"❌ Erro ao impersonate: {str(e)}")
+                                            st.error(f"Erro ao impersonate: {str(e)}")
                                 else:
                                     st.button(
                                         "Empresa Inativa",
                                         key=f"inactive_{company.id}",
                                         use_container_width=True,
-                                        disabled=True
+                                        disabled=True,
                                     )
 
         except Exception as e:
@@ -190,50 +212,40 @@ def Admin():
                 company_options = {c.name: c.id for c in companies_for_user}
             except Exception:
                 company_options = {}
-                st.error("❌ Erro ao carregar empresas")
+                st.error("Erro ao carregar empresas")
 
             user_company = st.selectbox(
                 "Empresa *",
                 options=list(company_options.keys()) if company_options else [],
-                help="Selecione a empresa do usuário"
+                help="Selecione a empresa do usuário",
             )
 
             col1, col2 = st.columns(2)
 
             with col1:
-                user_name = st.text_input(
-                    "Nome Completo *",
-                    placeholder="João Silva"
-                )
+                user_name = st.text_input("Nome Completo *", placeholder="João Silva")
 
             with col2:
-                user_email = st.text_input(
-                    "Email *",
-                    placeholder="joao@empresa.com"
-                )
+                user_email = st.text_input("Email *", placeholder="joao@empresa.com")
 
             col3, col4 = st.columns(2)
 
             with col3:
                 user_password = st.text_input(
-                    "Senha *",
-                    type="password",
-                    placeholder="Mínimo 6 caracteres"
+                    "Senha *", type="password", placeholder="Mínimo 6 caracteres"
                 )
 
             with col4:
                 user_is_super_admin = st.checkbox(
                     "Super Admin",
                     value=False,
-                    help="Marque para criar um super administrador"
+                    help="Marque para criar um super administrador",
                 )
 
             st.markdown("**Campos marcados com * são obrigatórios**")
 
             submit_user = st.form_submit_button(
-                "Criar Usuário",
-                use_container_width=True,
-                type="primary"
+                "Criar Usuário", use_container_width=True, type="primary"
             )
 
         if submit_user:
@@ -251,11 +263,11 @@ def Admin():
                             password=user_password,
                             name=user_name,
                             company_id=company_id,
-                            is_super_admin=user_is_super_admin
+                            is_super_admin=user_is_super_admin,
                         )
 
                         st.success(
-                            f"✅ Usuário criado com sucesso!\n\n"
+                            f"Usuário criado com sucesso!\n\n"
                             f"**Nome:** {created_user.name}\n\n"
                             f"**Email:** {created_user.email}\n\n"
                             f"**Empresa:** {user_company}\n\n"
@@ -265,9 +277,9 @@ def Admin():
                 except Exception as e:
                     error_msg = str(e)
                     if "409" in error_msg or "já existe" in error_msg.lower():
-                        st.error("❌ Email já cadastrado no sistema")
+                        st.error("Email já cadastrado no sistema")
                     else:
-                        st.error(f"❌ Erro ao criar usuário: {error_msg}")
+                        st.error(f"Erro ao criar usuário: {error_msg}")
 
     # TAB 3: Create Company
     with tab3:
@@ -275,24 +287,19 @@ def Admin():
 
         with st.form("create_company_form", clear_on_submit=True):
             company_name = st.text_input(
-                "Nome da Empresa *",
-                placeholder="Empresa ABC Ltda"
+                "Nome da Empresa *", placeholder="Empresa ABC Ltda"
             )
 
             col1, col2 = st.columns(2)
 
             with col1:
                 company_cnpj = st.text_input(
-                    "CNPJ",
-                    placeholder="12.345.678/0001-90",
-                    help="Opcional"
+                    "CNPJ", placeholder="12.345.678/0001-90", help="Opcional"
                 )
 
             with col2:
                 company_phone = st.text_input(
-                    "Telefone",
-                    placeholder="(11) 98765-4321",
-                    help="Opcional"
+                    "Telefone", placeholder="(11) 98765-4321", help="Opcional"
                 )
 
             company_plan = st.selectbox(
@@ -302,16 +309,14 @@ def Admin():
                 format_func=lambda x: {
                     "basic": "Basic",
                     "premium": "Premium",
-                    "enterprise": "Enterprise"
-                }.get(x, x)
+                    "enterprise": "Enterprise",
+                }.get(x, x),
             )
 
             st.markdown("**Campos marcados com * são obrigatórios**")
 
             submit_company = st.form_submit_button(
-                "Criar Empresa",
-                use_container_width=True,
-                type="primary"
+                "Criar Empresa", use_container_width=True, type="primary"
             )
 
         if submit_company:
@@ -324,11 +329,11 @@ def Admin():
                             name=company_name,
                             cnpj=company_cnpj if company_cnpj else None,
                             phone=company_phone if company_phone else None,
-                            plan=company_plan
+                            plan=company_plan,
                         )
 
                         st.success(
-                            f"✅ Empresa criada com sucesso!\n\n"
+                            f"Empresa criada com sucesso!\n\n"
                             f"**Nome:** {created_company.name}\n\n"
                             f"**CNPJ:** {created_company.cnpj or 'Não informado'}\n\n"
                             f"**Plano:** {created_company.plan.upper()}\n\n"
@@ -339,9 +344,9 @@ def Admin():
                 except Exception as e:
                     error_msg = str(e)
                     if "409" in error_msg or "já existe" in error_msg.lower():
-                        st.error("❌ Empresa com este CNPJ já cadastrada")
+                        st.error("Empresa com este CNPJ já cadastrada")
                     else:
-                        st.error(f"❌ Erro ao criar empresa: {error_msg}")
+                        st.error(f"Erro ao criar empresa: {error_msg}")
 
     # Show impersonate info if active with exit button
     if st.session_state.get("impersonate_token"):
@@ -352,7 +357,9 @@ def Admin():
 
         col1, col2, col3 = st.columns([1, 1, 1])
         with col2:
-            if st.button("🔙 Sair do Impersonate", use_container_width=True, type="primary"):
+            if st.button(
+                "🔙 Sair do Impersonate", use_container_width=True, type="primary"
+            ):
                 # Clear impersonate data
                 del st.session_state.impersonate_token
                 del st.session_state.impersonating_company
@@ -365,5 +372,5 @@ def Admin():
                 # Stay on Admin page
                 st.session_state.current_page = "Admin"
 
-                st.success("✅ Modo impersonate desativado")
+                st.success("Modo impersonate desativado")
                 st.rerun()

@@ -1,12 +1,18 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 from domain.entities import FinancialEntry
 
 
 class FinancialEntryRepository(ABC):
     @abstractmethod
-    def create(self, entry: FinancialEntry) -> FinancialEntry:
+    def create(
+        self,
+        entry: FinancialEntry,
+        installments_count: Optional[int] = None,
+        start_date: Optional[datetime] = None,
+        is_credit_payment: bool = False,
+    ) -> Dict[str, Any]:
         pass
 
     @abstractmethod
