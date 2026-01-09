@@ -1,12 +1,11 @@
 import streamlit as st
-import pandas as pd
 from datetime import datetime
 from dependencies import get_container
-from presentation.components.page_header import render_page_header
+from presentation.components.company_header import render_company_header
 
 
 def render():
-    render_page_header("Saldos e Limites")
+    render_company_header("Saldos e Limites")
 
     container = get_container()
 
@@ -23,7 +22,6 @@ def render():
 
 def _render_limites_bancarios(container):
     """Renderiza a seção de Limites Bancários com tabela editável"""
-    st.subheader("📊 Limites Bancários", anchor=False)
 
     # Buscar limites existentes
     bank_limit_use_cases = container.bank_limit_use_cases
@@ -34,156 +32,225 @@ def _render_limites_bancarios(container):
         st.error(f"Erro ao carregar limites: {str(e)}")
         bank_limits = []
 
-    # Botões de ação
-    col1, col2 = st.columns([3, 1])
+    # Botão para adicionar novo banco
+    col1, col2, col3 = st.columns([3, 1, 1])
 
-    with col2:
+    with col3:
         if st.button("➕ Adicionar Banco", use_container_width=True, type="primary"):
-            st.session_state.adding_new_bank = True
+            st.session_state.show_add_bank_modal = True
 
-    st.divider()
-
-    # Tabela com scroll horizontal
+    # Renderizar cards de totais
     if bank_limits:
         # Calcular totais
-        total_rotativo_available = sum(limit.rotativo_available for limit in bank_limits)
+        total_rotativo_available = sum(
+            limit.rotativo_available for limit in bank_limits
+        )
         total_rotativo_used = sum(limit.rotativo_used for limit in bank_limits)
         total_cheque_available = sum(limit.cheque_available for limit in bank_limits)
         total_cheque_used = sum(limit.cheque_used for limit in bank_limits)
 
-        html_content = """
-        <style>
-        .bank-limits-container {
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-        .bank-limits-container::-webkit-scrollbar {
-            height: 12px;
-        }
-        .bank-limits-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        .bank-limits-container::-webkit-scrollbar-thumb {
-            background: #9333EA;
-            border-radius: 10px;
-        }
-        .bank-limits-container::-webkit-scrollbar-thumb:hover {
-            background: #7c2cc9;
-        }
-        .bank-limits-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1000px;
-        }
-        .bank-limits-table th {
-            background-color: #9333EA;
-            color: white;
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-            font-weight: bold;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .bank-limits-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: white;
-            text-align: center;
-        }
-        .bank-limits-table tr:hover {
-            background-color: #f5f5f5;
-        }
-        .bank-limits-table .bank-col {
-            text-align: left;
-            font-weight: bold;
-        }
-        .bank-limits-table .total-row {
-            background-color: #e6e6fa !important;
-            font-weight: bold;
-        }
-        .green-bg {
-            background-color: #d4edda !important;
-        }
-        .red-bg {
-            background-color: #f8d7da !important;
-        }
-        </style>
-        <div class='bank-limits-container'>
-        <table class='bank-limits-table'>
-        <thead>
-            <tr>
-                <th rowspan="2">Banco</th>
-                <th colspan="2" style="background-color: #28a745;">Rotativo</th>
-                <th colspan="2" style="background-color: #dc3545;">Cheque Especial</th>
-            </tr>
-            <tr>
-                <th style="background-color: #28a745;">Disponível</th>
-                <th style="background-color: #28a745;">Em Uso</th>
-                <th style="background-color: #dc3545;">Disponível</th>
-                <th style="background-color: #dc3545;">Em Uso</th>
-            </tr>
-        </thead>
-        <tbody>
-        """
+        col1, col2, col3, col4 = st.columns(4)
 
-        # Renderizar linhas dos bancos
-        for limit in bank_limits:
-            rotativo_available_fmt = f"R$ {limit.rotativo_available:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            rotativo_used_fmt = f"R$ {limit.rotativo_used:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            cheque_available_fmt = f"R$ {limit.cheque_available:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            cheque_used_fmt = f"R$ {limit.cheque_used:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        with col1:
+            total_rot_avail_fmt = (
+                f"R$ {total_rotativo_available:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+            st.markdown(
+                f"""
+                <div style="border: 2px solid #28a745; border-radius: 8px; padding: 15px; background: #d4edda; text-align: center;">
+                    <p style="margin: 0; font-size: 12px; color: #155724; font-weight: 600;">ROTATIVO DISPONÍVEL</p>
+                    <h2 style="margin: 5px 0; font-size: 24px; color: #28a745;">{total_rot_avail_fmt}</h2>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-            html_content += f"<tr><td class='bank-col'>{limit.bank_name}</td><td class='green-bg'>{rotativo_available_fmt}</td><td>{rotativo_used_fmt}</td><td class='red-bg'>{cheque_available_fmt}</td><td>{cheque_used_fmt}</td></tr>"
+        with col2:
+            total_rot_used_fmt = (
+                f"R$ {total_rotativo_used:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+            st.markdown(
+                f"""
+                <div style="border: 2px solid #6c757d; border-radius: 8px; padding: 15px; background: #e2e3e5; text-align: center;">
+                    <p style="margin: 0; font-size: 12px; color: #383d41; font-weight: 600;">ROTATIVO EM USO</p>
+                    <h2 style="margin: 5px 0; font-size: 24px; color: #6c757d;">{total_rot_used_fmt}</h2>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-        # Linha de total
-        total_rot_avail = f"R$ {total_rotativo_available:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        total_rot_used = f"R$ {total_rotativo_used:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        total_cheq_avail = f"R$ {total_cheque_available:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        total_cheq_used = f"R$ {total_cheque_used:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        with col3:
+            total_cheq_avail_fmt = (
+                f"R$ {total_cheque_available:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+            st.markdown(
+                f"""
+                <div style="border: 2px solid #dc3545; border-radius: 8px; padding: 15px; background: #f8d7da; text-align: center;">
+                    <p style="margin: 0; font-size: 12px; color: #721c24; font-weight: 600;">CHEQUE DISPONÍVEL</p>
+                    <h2 style="margin: 5px 0; font-size: 24px; color: #dc3545;">{total_cheq_avail_fmt}</h2>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-        html_content += f"<tr class='total-row'><td class='bank-col'>Total</td><td class='green-bg'>{total_rot_avail}</td><td>{total_rot_used}</td><td class='red-bg'>{total_cheq_avail}</td><td>{total_cheq_used}</td></tr>"
-
-        html_content += """
-        </tbody>
-        </table>
-        </div>
-        """
-
-        st.markdown(html_content, unsafe_allow_html=True)
+        with col4:
+            total_cheq_used_fmt = (
+                f"R$ {total_cheque_used:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+            st.markdown(
+                f"""
+                <div style="border: 2px solid #6c757d; border-radius: 8px; padding: 15px; background: #e2e3e5; text-align: center;">
+                    <p style="margin: 0; font-size: 12px; color: #383d41; font-weight: 600;">CHEQUE EM USO</p>
+                    <h2 style="margin: 5px 0; font-size: 24px; color: #6c757d;">{total_cheq_used_fmt}</h2>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
         st.divider()
 
-    else:
-        st.info("Nenhum limite bancário cadastrado. Clique em 'Adicionar Banco' para começar.")
+        # Preparar dados para o data_editor
+        table_data = []
+        bank_map = {}  # Para mapear índices de volta aos IDs
 
-    # Seção de edição/criação
-    st.subheader("Editar / Adicionar Banco", anchor=False)
+        for idx, limit in enumerate(bank_limits):
+            table_data.append(
+                {
+                    "Banco": limit.bank_name,
+                    "Rotativo Disponível": limit.rotativo_available,
+                    "Rotativo Em Uso": limit.rotativo_used,
+                    "Taxa Rotativo (%)": limit.rotativo_rate,
+                    "Cheque Disponível": limit.cheque_available,
+                    "Cheque Em Uso": limit.cheque_used,
+                    "Taxa Cheque (%)": limit.cheque_rate,
+                }
+            )
+            bank_map[idx] = limit.id
 
-    with st.container(border=True):
-        # Seletor para editar ou criar novo
-        options = ["-- Criar Novo --"] + [f"{limit.bank_name}" for limit in bank_limits]
-        selected_option = st.selectbox(
-            "Selecione um banco para editar ou crie um novo",
-            options=options,
-            key="bank_limit_selector"
+        # Renderizar tabela editável
+        edited_df = st.data_editor(
+            table_data,
+            use_container_width=True,
+            hide_index=True,
+            disabled=["Banco"],  # Nome do banco não pode ser editado
+            column_config={
+                "Banco": st.column_config.TextColumn("Banco", width="medium"),
+                "Rotativo Disponível": st.column_config.NumberColumn(
+                    "Rotativo Disponível",
+                    width="small",
+                    format="R$ %.2f",
+                    min_value=0.0,
+                    step=1000.0,
+                ),
+                "Rotativo Em Uso": st.column_config.NumberColumn(
+                    "Rotativo Em Uso",
+                    width="small",
+                    format="R$ %.2f",
+                    min_value=0.0,
+                    step=100.0,
+                ),
+                "Taxa Rotativo (%)": st.column_config.NumberColumn(
+                    "Taxa Rotativo (%)",
+                    width="small",
+                    format="%.2f%%",
+                    min_value=0.0,
+                    step=0.1,
+                ),
+                "Cheque Disponível": st.column_config.NumberColumn(
+                    "Cheque Disponível",
+                    width="small",
+                    format="R$ %.2f",
+                    min_value=0.0,
+                    step=1000.0,
+                ),
+                "Cheque Em Uso": st.column_config.NumberColumn(
+                    "Cheque Em Uso",
+                    width="small",
+                    format="R$ %.2f",
+                    min_value=0.0,
+                    step=100.0,
+                ),
+                "Taxa Cheque (%)": st.column_config.NumberColumn(
+                    "Taxa Cheque (%)",
+                    width="small",
+                    format="%.2f%%",
+                    min_value=0.0,
+                    step=0.1,
+                ),
+            },
+            key="bank_limits_table",
         )
 
-        # Determinar se é edição ou criação
-        is_editing = selected_option != "-- Criar Novo --"
-        selected_limit = None
+        # Detectar mudanças e atualizar
+        # Converter edited_df para lista de dicts (se necessário)
+        if hasattr(edited_df, "to_dict"):
+            edited_data = edited_df.to_dict("records")
+        else:
+            edited_data = edited_df
 
-        if is_editing:
-            selected_limit = next((l for l in bank_limits if l.bank_name == selected_option), None)
+        for idx, (original, edited) in enumerate(zip(table_data, edited_data)):
+            # Comparar apenas os campos editáveis
+            campos_editaveis = [
+                "Rotativo Disponível",
+                "Rotativo Em Uso",
+                "Taxa Rotativo (%)",
+                "Cheque Disponível",
+                "Cheque Em Uso",
+                "Taxa Cheque (%)",
+            ]
 
-        # Formulário
+            mudou = any(original[campo] != edited[campo] for campo in campos_editaveis)
+
+            if mudou:
+                bank_id = bank_map.get(idx)
+
+                if not bank_id:
+                    st.error(f"Erro: ID do banco não encontrado para índice {idx}")
+                    continue
+
+                try:
+                    bank_limit_use_cases.update_bank_limit(
+                        bank_id,
+                        edited["Banco"],
+                        edited["Rotativo Disponível"],
+                        edited["Rotativo Em Uso"],
+                        edited["Cheque Disponível"],
+                        edited["Cheque Em Uso"],
+                        edited["Taxa Rotativo (%)"],
+                        edited["Taxa Cheque (%)"],
+                        0.0,  # interest_rate mantido para compatibilidade
+                    )
+                    st.success(f"Banco '{edited['Banco']}' atualizado com sucesso!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Erro ao atualizar: {str(e)}")
+
+    else:
+        st.info(
+            "Nenhum limite bancário cadastrado. Clique em 'Adicionar Banco' para começar."
+        )
+
+    # Modal de cadastro
+    if st.session_state.get("show_add_bank_modal", False):
+        _render_add_bank_modal(bank_limit_use_cases)
+
+
+@st.dialog("Adicionar Novo Banco")
+def _render_add_bank_modal(bank_limit_use_cases):
+    """Modal para cadastro de novo banco"""
+    st.write("Preencha as informações do banco:")
+
+    with st.form("form_novo_banco"):
         bank_name = st.text_input(
-            "Nome do Banco",
-            value=selected_limit.bank_name if selected_limit else "",
-            placeholder="Ex: Sicredi, Sicoob, etc.",
-            key="bank_name_input"
+            "Nome do Banco", placeholder="Ex: Sicredi, Sicoob, Banco do Brasil, etc."
         )
 
         col1, col2 = st.columns(2)
@@ -193,19 +260,25 @@ def _render_limites_bancarios(container):
             rotativo_available = st.number_input(
                 "Disponível (R$)",
                 min_value=0.0,
-                value=float(selected_limit.rotativo_available) if selected_limit else 0.0,
                 step=1000.00,
                 format="%.2f",
-                key="rotativo_available_input"
+                key="modal_rotativo_available",
             )
 
             rotativo_used = st.number_input(
                 "Em Uso (R$)",
                 min_value=0.0,
-                value=float(selected_limit.rotativo_used) if selected_limit else 0.0,
-                step=1000.00,
+                step=100.00,
                 format="%.2f",
-                key="rotativo_used_input"
+                key="modal_rotativo_used",
+            )
+
+            rotativo_rate = st.number_input(
+                "Taxa (%)",
+                min_value=0.0,
+                step=0.1,
+                format="%.2f",
+                key="modal_rotativo_rate",
             )
 
         with col2:
@@ -213,61 +286,59 @@ def _render_limites_bancarios(container):
             cheque_available = st.number_input(
                 "Disponível (R$)",
                 min_value=0.0,
-                value=float(selected_limit.cheque_available) if selected_limit else 0.0,
                 step=1000.00,
                 format="%.2f",
-                key="cheque_available_input"
+                key="modal_cheque_available",
             )
 
             cheque_used = st.number_input(
                 "Em Uso (R$)",
                 min_value=0.0,
-                value=float(selected_limit.cheque_used) if selected_limit else 0.0,
-                step=1000.00,
+                step=100.00,
                 format="%.2f",
-                key="cheque_used_input"
+                key="modal_cheque_used",
+            )
+
+            cheque_rate = st.number_input(
+                "Taxa (%)",
+                min_value=0.0,
+                step=0.1,
+                format="%.2f",
+                key="modal_cheque_rate",
             )
 
         # Botões de ação
-        col_save, col_delete = st.columns(2)
+        col_save, col_cancel = st.columns(2)
 
         with col_save:
-            button_label = "Atualizar" if is_editing else "Salvar"
-            if st.button(button_label, type="primary", use_container_width=True):
-                try:
-                    if is_editing and selected_limit:
-                        # Atualizar
-                        bank_limit_use_cases.update_bank_limit(
-                            selected_limit.id,
-                            bank_name,
-                            rotativo_available,
-                            rotativo_used,
-                            cheque_available,
-                            cheque_used
-                        )
-                        st.success("Limite atualizado com sucesso!")
-                    else:
-                        # Criar novo
-                        bank_limit_use_cases.create_bank_limit(
-                            bank_name,
-                            rotativo_available,
-                            rotativo_used,
-                            cheque_available,
-                            cheque_used
-                        )
-                        st.success("Banco adicionado com sucesso!")
-                        st.session_state.adding_new_bank = False
+            submit = st.form_submit_button(
+                "Salvar", use_container_width=True, type="primary"
+            )
 
+        with col_cancel:
+            cancel = st.form_submit_button("Cancelar", use_container_width=True)
+
+        if submit:
+            if not bank_name or not bank_name.strip():
+                st.error("Nome do banco é obrigatório!")
+            else:
+                try:
+                    bank_limit_use_cases.create_bank_limit(
+                        bank_name.strip(),
+                        rotativo_available,
+                        rotativo_used,
+                        cheque_available,
+                        cheque_used,
+                        rotativo_rate,
+                        cheque_rate,
+                        0.0,  # interest_rate mantido para compatibilidade
+                    )
+                    st.success("Banco cadastrado com sucesso!")
+                    st.session_state.show_add_bank_modal = False
                     st.rerun()
                 except Exception as e:
                     st.error(f"Erro ao salvar: {str(e)}")
 
-        with col_delete:
-            if is_editing and selected_limit:
-                if st.button("🗑️ Excluir", use_container_width=True):
-                    try:
-                        bank_limit_use_cases.delete_bank_limit(selected_limit.id)
-                        st.success("Banco excluído com sucesso!")
-                        st.rerun()
-                    except Exception as e:
-                        st.error(f"Erro ao excluir: {str(e)}")
+        if cancel:
+            st.session_state.show_add_bank_modal = False
+            st.rerun()

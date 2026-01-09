@@ -20,6 +20,10 @@ class AccountUseCases:
         """List all accounts, optionally filtered by date range"""
         return self.repository.list_all(start_date, end_date)
 
+    def update_account(self, account_id: str, paid: bool = None) -> Account:
+        """Update an account (principalmente o status paid)"""
+        return self.repository.update(account_id, paid=paid)
+
     def delete_account(self, account_id: str) -> bool:
         """Delete an account by ID"""
         return self.repository.delete(account_id)

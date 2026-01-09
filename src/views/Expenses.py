@@ -1,389 +1,276 @@
 import streamlit as st
-import pandas as pd
 from datetime import datetime, timedelta
 from dependencies import get_container
-from presentation.components.page_header import render_page_header
-
-
-# Cores por tipo de conta
-ACCOUNT_TYPE_COLORS = {
-    "boleto": "#DC2626",  # Vermelho
-    "payment": "#F59E0B",  # Laranja/Amarelo
-    "investment": "#10B981",  # Verde
-}
-
-ACCOUNT_TYPE_LABELS = {
-    "boleto": "Boleto",
-    "payment": "Pagamento de Boleto",
-    "investment": "Investimento",
-}
-
-
-def _render_new_account_form(account_use_cases):
-    """Renderiza o formulário para adicionar nova conta"""
-    st.subheader("Adicionar Nova Entrada", anchor=False)
-
-    with st.container(border=True):
-        col_form1, col_form2 = st.columns(2)
-
-        with col_form1:
-            account_type = st.selectbox(
-                "Tipo",
-                options=["boleto", "payment", "investment"],
-                format_func=lambda x: ACCOUNT_TYPE_LABELS.get(x, x) or x,
-                key="account_type",
-            )
-
-            value = st.number_input(
-                "Valor (R$)",
-                min_value=0.01,
-                step=0.01,
-                format="%.2f",
-                key="account_value",
-            )
-
-        with col_form2:
-            date_input = st.date_input(
-                "Data",
-                value=datetime.now(),
-                format="DD/MM/YYYY",
-                key="account_date",
-            )
-
-            description = st.text_input(
-                "Descrição",
-                placeholder="Ex: Conta de luz, Energia, etc.",
-                key="account_description",
-            )
-
-        # Validação
-        is_valid = True
-        validation_errors = []
-
-        if value <= 0:
-            is_valid = False
-            validation_errors.append("Valor deve ser maior que zero")
-
-        if not description or not description.strip():
-            is_valid = False
-            validation_errors.append("Descrição é obrigatória")
-
-        # Botão de salvar
-        if st.button(
-            "Salvar Entrada",
-            use_container_width=True,
-            type="primary",
-            disabled=not is_valid,
-            key="submit_account",
-        ):
-            try:
-                date_datetime = datetime.combine(date_input, datetime.min.time())
-                account_use_cases.create_account(
-                    value=value,
-                    date=date_datetime,
-                    description=description.strip(),
-                    account_type=account_type,
-                )
-                st.success("Entrada salva com sucesso!")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Erro ao salvar entrada: {str(e)}")
-
-        if validation_errors:
-            for error in validation_errors:
-                st.error(error)
-
-
-def _render_accounts_table(account_use_cases, start_datetime, end_datetime):
-    """Renderiza a tabela de contas agrupadas por mês (estilo crediário)"""
-    accounts = account_use_cases.list_accounts(start_datetime, end_datetime)
-
-    if not accounts:
-        st.info("Nenhuma entrada encontrada no período selecionado.")
-        return
-
-    # Agrupar por mês e dia
-    from collections import defaultdict
-
-    monthly_data = defaultdict(lambda: defaultdict(list))
-
-    for account in accounts:
-        month_key = account.date.strftime("%m/%Y")
-        day_number = account.date.day
-        monthly_data[month_key][day_number].append(account)
-
-    # Ordenar meses em ordem decrescente
-    sorted_months = sorted(
-        monthly_data.keys(), key=lambda m: datetime.strptime(m, "%m/%Y"), reverse=True
-    )
-
-    # Criar HTML da tabela
-    html_content = """
-    <style>
-    .expenses-scroll-container {
-        overflow-x: auto;
-        margin: 20px 0;
-    }
-    .expenses-scroll-container::-webkit-scrollbar {
-        height: 12px;
-        width: 12px;
-    }
-    .expenses-scroll-container::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    .expenses-scroll-container::-webkit-scrollbar-thumb {
-        background: #9333EA;
-        border-radius: 10px;
-    }
-    .expenses-scroll-container::-webkit-scrollbar-thumb:hover {
-        background: #7c2cc9;
-    }
-    .expenses-table {
-        border-collapse: collapse;
-    }
-    .expenses-table th {
-        background-color: #9333EA;
-        color: white;
-        padding: 8px 10px;
-        text-align: center;
-        border: 1px solid #ddd;
-        font-weight: bold;
-        font-size: 13px;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-    .expenses-table td {
-        padding: 6px 8px;
-        border: 1px solid #ddd;
-        text-align: center;
-        min-width: 150px;
-        font-size: 12px;
-        white-space: nowrap;
-        vertical-align: top;
-    }
-    .expenses-table .day-label {
-        background-color: #f0f0f0;
-        font-weight: bold;
-        min-width: 60px;
-        font-size: 12px;
-        position: sticky;
-        left: 0;
-        z-index: 5;
-    }
-    .expenses-entry {
-        margin: 3px 0;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 11px;
-        line-height: 1.3;
-    }
-    .boleto-entry {
-        background-color: rgba(220, 38, 38, 0.15);
-        color: #991B1B;
-        font-weight: bold;
-    }
-    .payment-entry {
-        background-color: rgba(245, 158, 11, 0.15);
-        color: #92400E;
-        font-weight: bold;
-    }
-    .investment-entry {
-        background-color: rgba(16, 185, 129, 0.15);
-        color: #065F46;
-        font-weight: bold;
-    }
-    </style>
-    <div class='expenses-scroll-container'>
-    <table class='expenses-table'>
-    """
-
-    # Cabeçalho com os meses e totais
-    html_content += "<thead><tr><th>Dia</th>"
-    month_totals = {}
-
-    for month in sorted_months:
-        month_total = sum(
-            account.value
-            for day_accounts in monthly_data[month].values()
-            for account in day_accounts
-        )
-        month_totals[month] = month_total
-
-        header_label = f"{month}"
-        html_content += f"<th>{header_label}</th>"
-
-    html_content += "</tr></thead>"
-
-    # Corpo da tabela - 31 linhas (dias)
-    html_content += "<tbody>"
-    for day in range(1, 32):
-        html_content += f"<tr><td class='day-label'>Dia {day:02d}</td>"
-
-        for month in sorted_months:
-            day_accounts = monthly_data[month].get(day, [])
-
-            if day_accounts:
-                # Ordenar por valor (maior para menor)
-                sorted_accounts = sorted(
-                    day_accounts, key=lambda x: x.value, reverse=True
-                )
-
-                entries_html = ""
-                for account in sorted_accounts:
-                    type_class = f"{account.type}-entry"
-                    label = ACCOUNT_TYPE_LABELS.get(account.type, account.type)
-                    formatted_value = (
-                        f"R$ {account.value:,.2f}".replace(",", "X")
-                        .replace(".", ",")
-                        .replace("X", ".")
-                    )
-
-                    entries_html += f"<div class='expenses-entry {type_class}'>"
-                    entries_html += f"<strong>{formatted_value}</strong><br/>"
-                    entries_html += f"<small>{label}</small><br/>"
-                    entries_html += f"<small>{account.description}</small>"
-                    entries_html += f"</div>"
-
-                html_content += f"<td>{entries_html}</td>"
-            else:
-                html_content += "<td>-</td>"
-
-        html_content += "</tr>"
-
-    html_content += "</tbody></table></div>"
-
-    st.markdown(html_content, unsafe_allow_html=True)
+from presentation.components.company_header import render_company_header
 
 
 def render():
-    render_page_header("Despesas / Investimentos")
+    render_company_header("Despesas")
 
     container = get_container()
     account_use_cases = container.account_use_cases
 
     try:
-        # Abas principais
-        tab1, tab2 = st.tabs(["Lançamentos", "Nova Entrada"])
+        # Botão de lançamento isolado
+        col1, col2, col3 = st.columns([3, 1, 1])
 
-        with tab1:
-            # Filtros de data
-            col1, col2, col3 = st.columns(3)
+        with col3:
+            if st.button("Lançamento", use_container_width=True, type="primary"):
+                st.session_state.show_expense_modal = True
 
-            today = datetime.now()
-            start_of_month = datetime(today.year, today.month, 1)
-            end_of_month = today.replace(
-                day=1, month=today.month % 12 + 1, year=today.year + (today.month // 12)
-            ) - timedelta(days=1)
+        # Filtros de data
+        col1, col2, col3 = st.columns([2, 2, 1])
 
-            with col1:
-                st.date_input(
-                    "Data Início",
-                    value=start_of_month,
-                    format="DD/MM/YYYY",
-                    key="expenses_start",
-                )
+        today = datetime.now()
+        start_of_month = datetime(today.year, today.month, 1)
+        end_of_month = today.replace(
+            day=1, month=today.month % 12 + 1, year=today.year + (today.month // 12)
+        ) - timedelta(days=1)
 
-            with col2:
-                st.date_input(
-                    "Data Fim",
-                    value=end_of_month,
-                    format="DD/MM/YYYY",
-                    key="expenses_end",
-                )
-
-            with col3:
-                st.write("")
-                st.write("")
-                if st.button("Atualizar", use_container_width=True):
-                    st.rerun()
-
-            start_datetime = datetime.combine(
-                st.session_state.expenses_start, datetime.min.time()
-            )
-            end_datetime = datetime.combine(
-                st.session_state.expenses_end, datetime.max.time()
+        with col1:
+            st.date_input(
+                "Data Início",
+                value=start_of_month,
+                format="DD/MM/YYYY",
+                key="expenses_start",
             )
 
-            st.divider()
+        with col2:
+            st.date_input(
+                "Data Fim",
+                value=end_of_month,
+                format="DD/MM/YYYY",
+                key="expenses_end",
+            )
 
-            # Tabela de contas
-            _render_accounts_table(account_use_cases, start_datetime, end_datetime)
+        with col3:
+            st.write("")
+            st.write("")
+            if st.button("Atualizar", use_container_width=True):
+                st.rerun()
 
-            # Seção de exclusão
-            accounts = account_use_cases.list_accounts(start_datetime, end_datetime)
+        start_datetime = datetime.combine(
+            st.session_state.expenses_start, datetime.min.time()
+        )
+        end_datetime = datetime.combine(
+            st.session_state.expenses_end, datetime.max.time()
+        )
 
-            if accounts:
-                st.divider()
+        # Buscar apenas despesas (type=payment)
+        all_accounts = account_use_cases.list_accounts(start_datetime, end_datetime)
+        expenses = [acc for acc in all_accounts if acc.type == "payment"]
 
-                # Preparar dados para o selectbox
-                df_data = []
-                for account in sorted(accounts, key=lambda x: x.date, reverse=True):
-                    label = ACCOUNT_TYPE_LABELS.get(account.type, account.type)
-                    formatted_value = (
-                        f"R$ {account.value:,.2f}".replace(",", "X")
-                        .replace(".", ",")
-                        .replace("X", ".")
-                    )
-                    date_formatted = account.date.strftime("%d/%m/%Y")
+        st.divider()
 
-                    df_data.append(
-                        {
-                            "Data": date_formatted,
-                            "Tipo": label,
-                            "Descrição": account.description,
-                            "Valor": formatted_value,
-                            "ID": account.id,
-                        }
-                    )
+        # Cards de resumo
+        _render_cards_resumo(expenses, today)
 
-                st.subheader("Excluir Entrada", anchor=False)
-                account_to_delete = st.selectbox(
-                    "Selecione a entrada para excluir",
-                    options=[
-                        f"{e['Data']} - {e['Tipo']} - {e['Descrição']} - {e['Valor']}"
-                        for e in df_data
-                    ],
-                    key="delete_account",
-                )
+        st.divider()
 
-                @st.dialog("Confirmar Exclusão")
-                def confirm_delete_modal():
-                    st.write("Tem certeza que deseja excluir esta entrada?")
-                    st.write(f"**{account_to_delete}**")
-
-                    col1, col2 = st.columns(2)
-
-                    with col1:
-                        if st.button(
-                            "Sim, excluir", type="primary", use_container_width=True
-                        ):
-                            idx = [
-                                f"{e['Data']} - {e['Tipo']} - {e['Descrição']} - {e['Valor']}"
-                                for e in df_data
-                            ].index(account_to_delete)
-                            account_id = df_data[idx]["ID"]
-                            try:
-                                account_use_cases.delete_account(account_id)
-                                st.success("Entrada excluída com sucesso!")
-                                st.rerun()
-                            except Exception as e:
-                                st.error(f"Erro ao excluir: {str(e)}")
-
-                    with col2:
-                        if st.button("Cancelar", use_container_width=True):
-                            st.rerun()
-
-                if st.button("Excluir", type="primary"):
-                    confirm_delete_modal()
-
-        with tab2:
-            # Formulário para adicionar nova conta
-            _render_new_account_form(account_use_cases)
+        # Tabela de despesas agrupadas por mês
+        _render_expenses_table(expenses, account_use_cases)
 
     except Exception as e:
         st.error(f"Erro ao carregar dados: {str(e)}")
-        st.info(
-            "Verifique se a URL da API está configurada corretamente no arquivo .env"
+        import traceback
+
+        st.code(traceback.format_exc())
+
+    # Modal de cadastro
+    if st.session_state.get("show_expense_modal", False):
+        _render_cadastro_modal(account_use_cases)
+
+
+def _render_cards_resumo(expenses, today):
+    """Renderiza cards de resumo"""
+    expenses_pagas = [exp for exp in expenses if exp.paid]
+    total_pago = sum(exp.value for exp in expenses_pagas)
+    total_geral = sum(exp.value for exp in expenses)
+
+    expenses_hoje = [
+        exp for exp in expenses if not exp.paid and exp.date.date() == today.date()
+    ]
+    total_hoje = sum(exp.value for exp in expenses_hoje)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        total_hoje_fmt = (
+            f"R$ {total_hoje:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
         )
+        st.markdown(
+            f"""
+            <div style="border: 3px solid #DC2626; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #991B1B; font-weight: 600;">A PAGAR HOJE</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #DC2626;">{total_hoje_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #991B1B;">{len(expenses_hoje)} despesa(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        total_pago_fmt = (
+            f"R$ {total_pago:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        st.markdown(
+            f"""
+            <div style="border: 3px solid #10B981; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">JÁ PAGAS</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #10B981;">{total_pago_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #047857;">{len(expenses_pagas)} despesa(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col3:
+        total_geral_fmt = (
+            f"R$ {total_geral:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        st.markdown(
+            f"""
+            <div style="border: 3px solid #9333EA; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #6b21a8; font-weight: 600;">TOTAL</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #9333EA;">{total_geral_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #6b21a8;">{len(expenses)} despesa(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
+def _render_expenses_table(expenses, account_use_cases):
+    """Renderiza tabela de despesas com data_editor agrupada por mês"""
+    if not expenses:
+        st.info("Nenhuma despesa encontrada no período selecionado.")
+        return
+
+    st.subheader("Lista de Despesas por Mês", anchor=False)
+
+    # Agrupar despesas por mês
+    expenses_by_month = {}
+    for expense in expenses:
+        month_key = expense.date.strftime("%Y-%m")
+        month_label = expense.date.strftime("%b/%Y")
+
+        if month_key not in expenses_by_month:
+            expenses_by_month[month_key] = {"label": month_label, "expenses": []}
+
+        expenses_by_month[month_key]["expenses"].append(expense)
+
+    # Ordenar meses (mais recente primeiro)
+    sorted_months = sorted(expenses_by_month.keys(), reverse=True)
+
+    # Renderizar cada mês em um expander com data_editor
+    for month_key in sorted_months:
+        month_data = expenses_by_month[month_key]
+        month_expenses = sorted(
+            month_data["expenses"], key=lambda x: x.date, reverse=True
+        )
+
+        with st.expander(f"📅 {month_data['label']}", expanded=True):
+            # Preparar dados para o data_editor
+            table_data = []
+            expense_map = {}  # Para mapear índices de volta aos IDs
+
+            for idx, expense in enumerate(month_expenses):
+                value_str = (
+                    f"R$ {expense.value:,.2f}".replace(",", "X")
+                    .replace(".", ",")
+                    .replace("X", ".")
+                )
+                table_data.append(
+                    {
+                        "Data": expense.date.strftime("%d/%m/%Y"),
+                        "Descrição": expense.description,
+                        "Valor": value_str,
+                        "Pago": expense.paid,
+                    }
+                )
+                expense_map[idx] = expense.id
+
+            # Renderizar tabela editável
+            edited_df = st.data_editor(
+                table_data,
+                use_container_width=True,
+                hide_index=True,
+                disabled=["Data", "Descrição", "Valor"],
+                column_config={
+                    "Data": st.column_config.TextColumn("Data", width="small"),
+                    "Descrição": st.column_config.TextColumn(
+                        "Descrição", width="medium"
+                    ),
+                    "Valor": st.column_config.TextColumn("Valor", width="small"),
+                    "Pago": st.column_config.CheckboxColumn("Pago", width="small"),
+                },
+                key=f"expenses_table_{month_key}",
+            )
+
+            # Detectar mudanças e atualizar
+            for idx, (original, edited) in enumerate(zip(table_data, edited_df)):
+                if original["Pago"] != edited["Pago"]:
+                    expense_id = expense_map[idx]
+                    try:
+                        account_use_cases.update_account(
+                            expense_id, paid=edited["Pago"]
+                        )
+                        st.success(f"Status atualizado para: {edited['Descrição']}")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Erro ao atualizar: {str(e)}")
+
+
+@st.dialog("Nova Despesa")
+def _render_cadastro_modal(account_use_cases):
+    """Modal para cadastro de nova despesa"""
+    st.write("Preencha os dados da despesa:")
+
+    with st.form("form_nova_despesa"):
+        data_despesa = st.date_input("Data", value=datetime.now(), format="DD/MM/YYYY")
+
+        valor = st.number_input("Valor (R$)", min_value=0.01, step=0.01, format="%.2f")
+
+        descricao = st.text_input(
+            "Descrição", placeholder="Ex: Combustível, Alimentação, etc."
+        )
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            submit = st.form_submit_button(
+                "Salvar", use_container_width=True, type="primary"
+            )
+
+        with col2:
+            cancel = st.form_submit_button("Cancelar", use_container_width=True)
+
+        if submit:
+            if not descricao or not descricao.strip():
+                st.error("Descrição é obrigatória!")
+            elif valor <= 0:
+                st.error("Valor deve ser maior que zero!")
+            else:
+                try:
+                    date_datetime = datetime.combine(data_despesa, datetime.min.time())
+                    account_use_cases.create_account(
+                        value=valor,
+                        date=date_datetime,
+                        description=descricao.strip(),
+                        account_type="payment",
+                    )
+                    st.success("Despesa cadastrada com sucesso!")
+                    st.session_state.show_expense_modal = False
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Erro ao salvar: {str(e)}")
+
+        if cancel:
+            st.session_state.show_expense_modal = False
+            st.rerun()

@@ -17,6 +17,8 @@ class BankLimit:
         rotativo_used: Valor em uso do rotativo
         cheque_available: Valor disponível do cheque especial
         cheque_used: Valor em uso do cheque especial
+        rotativo_rate: Taxa de juros do rotativo (%)
+        cheque_rate: Taxa de juros do cheque especial (%)
         id: Bank limit UUID
         created_at: When the limit was created
         updated_at: When the limit was last updated
@@ -27,6 +29,9 @@ class BankLimit:
     rotativo_used: float = 0.0
     cheque_available: float = 0.0
     cheque_used: float = 0.0
+    rotativo_rate: float = 0.0
+    cheque_rate: float = 0.0
+    interest_rate: float = 0.0  # Mantido para compatibilidade
     id: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
@@ -41,6 +46,9 @@ class BankLimit:
             rotativo_used=float(data.get("rotativo_used", 0)),
             cheque_available=float(data.get("cheque_available", 0)),
             cheque_used=float(data.get("cheque_used", 0)),
+            rotativo_rate=float(data.get("rotativo_rate", 0)),
+            cheque_rate=float(data.get("cheque_rate", 0)),
+            interest_rate=float(data.get("interest_rate", 0)),
             created_at=datetime.fromisoformat(data["created_at"].replace("Z", "+00:00"))
             if data.get("created_at")
             else None,

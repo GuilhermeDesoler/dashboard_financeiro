@@ -2,12 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 from dependencies import get_container
-from presentation.components.page_header import render_page_header
+from presentation.components.company_header import render_company_header
 import plotly.express as px
 
 
 def render():
-    render_page_header("Dashboard Financeiro")
+    render_company_header("Dashboard Financeiro")
 
     # Verificar se o usuário é admin
     current_user = st.session_state.get("current_user")
@@ -67,6 +67,43 @@ def render():
         grouped = entry_use_cases.get_entries_grouped_by_modality(
             start_datetime, end_datetime
         )
+
+        st.divider()
+
+        # Cards principais: Total Geral e Total sem Crediário
+        col_card1, col_card2 = st.columns(2)
+
+        # Calcular total sem crediário (usando o campo booleano is_credit_plan)
+        total_sem_crediario = sum(
+            e.value for e in entries
+            if not e.is_credit_plan
+        )
+
+        with col_card1:
+            total_formatted = f"R$ {total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            st.markdown(
+                f"""
+                <div style="border: 3px solid #9333EA; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center;">
+                    <p style="margin: 0; font-size: 14px; color: #6b21a8; font-weight: 600;">TOTAL GERAL</p>
+                    <h1 style="margin: 10px 0; font-size: 32px; color: #9333EA;">{total_formatted}</h1>
+                    <p style="margin: 0; font-size: 12px; color: #6b21a8;">{len(entries)} lançamentos</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col_card2:
+            total_sem_crediario_formatted = f"R$ {total_sem_crediario:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            st.markdown(
+                f"""
+                <div style="border: 3px solid #10B981; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); text-align: center;">
+                    <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">TOTAL SEM CREDIÁRIO</p>
+                    <h1 style="margin: 10px 0; font-size: 32px; color: #10B981;">{total_sem_crediario_formatted}</h1>
+                    <p style="margin: 0; font-size: 12px; color: #047857;">Excluindo lançamentos crediário</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
         st.divider()
 

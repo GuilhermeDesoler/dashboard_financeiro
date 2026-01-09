@@ -1,5 +1,5 @@
 import streamlit as st
-from views import Dashboard, Database, Ticket, Modalities, Expenses, Balances
+from views import Dashboard, Database, Ticket, Modalities, Expenses, Investments, Balances
 from views.Login import Login
 from views.Admin import Admin
 from config import Environment, EnvironmentError
@@ -47,7 +47,8 @@ AUTHENTICATED_PAGES = {
     "Dashboard": Dashboard,
     "Lançamentos": Database,
     "Modalidades": Modalities,
-    "Despesas/Investimentos": Expenses,
+    "Despesas": Expenses,
+    "Investimentos": Investments,
     "Saldos e Limites": Balances,
     "Boletos": Ticket,
 }

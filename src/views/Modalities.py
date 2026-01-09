@@ -1,11 +1,11 @@
 import streamlit as st
 from dependencies import get_container
-from presentation.components.page_header import render_page_header
+from presentation.components.company_header import render_company_header
 from collections import defaultdict
 
 
 def render():
-    render_page_header("Modalidades de Pagamento")
+    render_company_header("Modalidades de Pagamento")
 
     # Verificar se o usuário é admin
     current_user = st.session_state.get("current_user")
@@ -29,7 +29,7 @@ def render():
     # Botão para criar nova modalidade
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("➕ Criar Nova Modalidade", use_container_width=True, type="primary"):
+        if st.button("Criar Nova Modalidade", use_container_width=True, type="primary"):
             st.session_state.show_create_modal = True
 
     st.divider()
@@ -72,7 +72,9 @@ def _render_platform_settings(settings_use_cases):
             status_text = (
                 "Ativada" if settings.is_anticipation_enabled else "Desativada"
             )
-            status_color = "#4CAF50" if settings.is_anticipation_enabled else "Desativada"
+            status_color = (
+                "#4CAF50" if settings.is_anticipation_enabled else "Desativada"
+            )
 
             st.markdown(
                 f"""
@@ -146,7 +148,9 @@ def _render_modalities_by_bank(use_cases):
 
             # Cards das modalidades do banco
             cols = st.columns(3)
-            for idx, modality in enumerate(sorted(bank_modalities, key=lambda x: x.name)):
+            for idx, modality in enumerate(
+                sorted(bank_modalities, key=lambda x: x.name)
+            ):
                 with cols[idx % 3]:
                     _render_modality_card_compact(modality)
 
@@ -177,12 +181,18 @@ def _render_modality_card_compact(modality):
     features_text = " • ".join(features) if features else "Sem recursos especiais"
 
     # Format fee
-    fee_text = f"{modality.fee_percentage:.1f}%" if modality.fee_percentage > 0 else "Sem taxa"
+    fee_text = (
+        f"{modality.fee_percentage:.1f}%" if modality.fee_percentage > 0 else "Sem taxa"
+    )
 
     # Format rental
     rental_row = ""
     if modality.rental_fee > 0:
-        rental_formatted = f"R$ {modality.rental_fee:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        rental_formatted = (
+            f"R$ {modality.rental_fee:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
         rental_row = f'<p style="margin: 0; font-size: 11px; color: #e74c3c;"><strong>Aluguel:</strong> {rental_formatted}</p>'
 
     # Build complete HTML (single line to avoid whitespace issues)
@@ -224,7 +234,7 @@ def _show_create_modality_modal(use_cases):
                 value=0.0,
                 step=0.1,
                 format="%.2f",
-                help="Taxa percentual da modalidade (ex: 0.9, 1.1, 1.4)"
+                help="Taxa percentual da modalidade (ex: 0.9, 1.1, 1.4)",
             )
 
         with col2:
@@ -236,7 +246,7 @@ def _show_create_modality_modal(use_cases):
                 value=0.0,
                 step=1.0,
                 format="%.2f",
-                help="Valor do aluguel mensal (se houver)"
+                help="Valor do aluguel mensal (se houver)",
             )
 
             is_active = st.checkbox(
@@ -352,7 +362,7 @@ def _show_edit_modality_modal(use_cases):
                 value=float(selected_modality.fee_percentage),
                 step=0.1,
                 format="%.2f",
-                help="Taxa percentual da modalidade (ex: 0.9, 1.1, 1.4)"
+                help="Taxa percentual da modalidade (ex: 0.9, 1.1, 1.4)",
             )
 
         with col2:
@@ -364,7 +374,7 @@ def _show_edit_modality_modal(use_cases):
                 value=float(selected_modality.rental_fee),
                 step=1.0,
                 format="%.2f",
-                help="Valor do aluguel mensal (se houver)"
+                help="Valor do aluguel mensal (se houver)",
             )
 
             is_active = st.checkbox(
@@ -453,5 +463,3 @@ def _show_edit_modality_modal(use_cases):
                 st.rerun()
             except Exception as e:
                 st.error(f"Erro ao excluir: {str(e)}")
-
-

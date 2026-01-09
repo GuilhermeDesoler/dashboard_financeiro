@@ -32,6 +32,14 @@ class AccountAPIRepository(AccountRepository):
         response = self.http_client.get(self.base_endpoint, params=params)
         return [Account.from_dict(account) for account in response]
 
+    def update(self, account_id: str, paid: bool = None) -> Account:
+        data = {}
+        if paid is not None:
+            data["paid"] = paid
+
+        response = self.http_client.patch(f"{self.base_endpoint}/{account_id}", data=data)
+        return Account.from_dict(response)
+
     def delete(self, account_id: str) -> bool:
         try:
             self.http_client.delete(f"{self.base_endpoint}/{account_id}")

@@ -17,10 +17,14 @@ class BankLimitUseCases:
         rotativo_used: float = 0.0,
         cheque_available: float = 0.0,
         cheque_used: float = 0.0,
+        rotativo_rate: float = 0.0,
+        cheque_rate: float = 0.0,
+        interest_rate: float = 0.0,
     ) -> BankLimit:
         """Create a new bank limit"""
         return self.repository.create(
-            bank_name, rotativo_available, rotativo_used, cheque_available, cheque_used
+            bank_name, rotativo_available, rotativo_used, cheque_available, cheque_used,
+            rotativo_rate, cheque_rate, interest_rate
         )
 
     def list_bank_limits(self) -> List[BankLimit]:
@@ -35,10 +39,14 @@ class BankLimitUseCases:
         rotativo_used: float = 0.0,
         cheque_available: float = 0.0,
         cheque_used: float = 0.0,
+        rotativo_rate: float = 0.0,
+        cheque_rate: float = 0.0,
+        interest_rate: float = 0.0,
     ) -> BankLimit:
         """Update a bank limit"""
         return self.repository.update(
-            limit_id, bank_name, rotativo_available, rotativo_used, cheque_available, cheque_used
+            limit_id, bank_name, rotativo_available, rotativo_used, cheque_available, cheque_used,
+            rotativo_rate, cheque_rate, interest_rate
         )
 
     def delete_bank_limit(self, limit_id: str) -> bool:

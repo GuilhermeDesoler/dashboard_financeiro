@@ -16,6 +16,9 @@ class BankLimitAPIRepository(BankLimitRepository):
         rotativo_used: float = 0.0,
         cheque_available: float = 0.0,
         cheque_used: float = 0.0,
+        rotativo_rate: float = 0.0,
+        cheque_rate: float = 0.0,
+        interest_rate: float = 0.0,
     ) -> BankLimit:
         data = {
             "bank_name": bank_name,
@@ -23,6 +26,9 @@ class BankLimitAPIRepository(BankLimitRepository):
             "rotativo_used": rotativo_used,
             "cheque_available": cheque_available,
             "cheque_used": cheque_used,
+            "rotativo_rate": rotativo_rate,
+            "cheque_rate": cheque_rate,
+            "interest_rate": interest_rate,
         }
         response = self.http_client.post(self.base_endpoint, data=data)
         return BankLimit.from_dict(response)
@@ -39,6 +45,9 @@ class BankLimitAPIRepository(BankLimitRepository):
         rotativo_used: float = 0.0,
         cheque_available: float = 0.0,
         cheque_used: float = 0.0,
+        rotativo_rate: float = 0.0,
+        cheque_rate: float = 0.0,
+        interest_rate: float = 0.0,
     ) -> BankLimit:
         data = {
             "bank_name": bank_name,
@@ -46,6 +55,9 @@ class BankLimitAPIRepository(BankLimitRepository):
             "rotativo_used": rotativo_used,
             "cheque_available": cheque_available,
             "cheque_used": cheque_used,
+            "rotativo_rate": rotativo_rate,
+            "cheque_rate": cheque_rate,
+            "interest_rate": interest_rate,
         }
         response = self.http_client.put(f"{self.base_endpoint}/{limit_id}", data=data)
         return BankLimit.from_dict(response)
