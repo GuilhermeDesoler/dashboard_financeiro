@@ -70,6 +70,11 @@ def render():
         # Tabela de despesas agrupadas por mês
         _render_expenses_table(expenses, account_use_cases)
 
+        st.divider()
+
+        # Seção de exclusão
+        _render_delete_section(expenses, account_use_cases)
+
     except Exception as e:
         st.error(f"Erro ao carregar dados: {str(e)}")
         import traceback
@@ -175,7 +180,11 @@ def _render_expenses_table(expenses, account_use_cases):
             month_data["expenses"], key=lambda x: x.date, reverse=True
         )
 
-        with st.expander(f"📅 {month_data['label']}", expanded=True):
+        # Calcular total do mês
+        month_total = sum(exp.value for exp in month_expenses)
+        month_total_fmt = f"R$ {month_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+        with st.expander(f"📅 {month_data['label']} - {month_total_fmt}", expanded=True):
             # Preparar dados para o data_editor
             table_data = []
             expense_map = {}  # Para mapear índices de volta aos IDs
@@ -274,3 +283,55 @@ def _render_cadastro_modal(account_use_cases):
         if cancel:
             st.session_state.show_expense_modal = False
             st.rerun()
+
+
+def _render_delete_section(expenses, account_use_cases):
+    """Renderiza seção de exclusão de despesas"""
+    if not expenses:
+        return
+
+    st.subheader("Excluir Despesa", anchor=False)
+
+    # Preparar lista de despesas para seleção
+    expense_options = []
+    expense_map = {}
+
+    for expense in sorted(expenses, key=lambda x: x.date, reverse=True):
+        value_str = f"R$ {expense.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        date_str = expense.date.strftime("%d/%m/%Y")
+        status_str = "✅ Paga" if expense.paid else "⏳ Pendente"
+
+        option_label = f"{date_str} - {expense.description} - {value_str} - {status_str}"
+        expense_options.append(option_label)
+        expense_map[option_label] = expense.id
+
+    expense_to_delete = st.selectbox(
+        "Selecione a despesa para excluir",
+        options=expense_options,
+        key="delete_expense",
+    )
+
+    @st.dialog("Confirmar Exclusão")
+    def confirm_delete_modal():
+        st.write("Tem certeza que deseja excluir esta despesa?")
+        st.write(f"**{expense_to_delete}**")
+        st.warning("⚠️ Esta ação não pode ser desfeita!")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("Sim, excluir", type="primary", use_container_width=True):
+                expense_id = expense_map[expense_to_delete]
+                try:
+                    account_use_cases.delete_account(expense_id)
+                    st.success("Despesa excluída com sucesso!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Erro ao excluir: {str(e)}")
+
+        with col2:
+            if st.button("Cancelar", use_container_width=True):
+                st.rerun()
+
+    if st.button("Excluir", type="primary", use_container_width=True):
+        confirm_delete_modal()

@@ -70,6 +70,11 @@ def render():
         # Tabela de boletos
         _render_boletos_table(boletos, account_use_cases)
 
+        st.divider()
+
+        # Seção de exclusão
+        _render_delete_section(boletos, account_use_cases)
+
     except Exception as e:
         st.error(f"Erro ao carregar dados: {str(e)}")
         import traceback
@@ -175,7 +180,11 @@ def _render_boletos_table(boletos, account_use_cases):
             month_data["boletos"], key=lambda x: x.date, reverse=True
         )
 
-        with st.expander(f"📅 {month_data['label']}", expanded=True):
+        # Calcular total do mês
+        month_total = sum(bol.value for bol in month_boletos)
+        month_total_fmt = f"R$ {month_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+        with st.expander(f"📅 {month_data['label']} - {month_total_fmt}", expanded=True):
             # Preparar dados para o data_editor
             table_data = []
             boleto_map = {}  # Para mapear índices de volta aos IDs
@@ -274,3 +283,55 @@ def _render_cadastro_modal(account_use_cases):
         if cancel:
             st.session_state.show_ticket_modal = False
             st.rerun()
+
+
+def _render_delete_section(boletos, account_use_cases):
+    """Renderiza seção de exclusão de boletos"""
+    if not boletos:
+        return
+
+    st.subheader("Excluir Boleto", anchor=False)
+
+    # Preparar lista de boletos para seleção
+    boleto_options = []
+    boleto_map = {}
+
+    for boleto in sorted(boletos, key=lambda x: x.date, reverse=True):
+        value_str = f"R$ {boleto.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        date_str = boleto.date.strftime("%d/%m/%Y")
+        status_str = "✅ Pago" if boleto.paid else "⏳ Pendente"
+
+        option_label = f"{date_str} - {boleto.description} - {value_str} - {status_str}"
+        boleto_options.append(option_label)
+        boleto_map[option_label] = boleto.id
+
+    boleto_to_delete = st.selectbox(
+        "Selecione o boleto para excluir",
+        options=boleto_options,
+        key="delete_boleto",
+    )
+
+    @st.dialog("Confirmar Exclusão")
+    def confirm_delete_modal():
+        st.write("Tem certeza que deseja excluir este boleto?")
+        st.write(f"**{boleto_to_delete}**")
+        st.warning("⚠️ Esta ação não pode ser desfeita!")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("Sim, excluir", type="primary", use_container_width=True):
+                boleto_id = boleto_map[boleto_to_delete]
+                try:
+                    account_use_cases.delete_account(boleto_id)
+                    st.success("Boleto excluído com sucesso!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Erro ao excluir: {str(e)}")
+
+        with col2:
+            if st.button("Cancelar", use_container_width=True):
+                st.rerun()
+
+    if st.button("Excluir", type="primary", use_container_width=True):
+        confirm_delete_modal()
