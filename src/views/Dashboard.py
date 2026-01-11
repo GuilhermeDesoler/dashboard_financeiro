@@ -9,6 +9,12 @@ import plotly.express as px
 def render():
     render_company_header("Dashboard Financeiro")
 
+    # TEMPORÁRIO - Mostrar token para desenvolvimento
+    with st.expander("🔑 TOKEN DE DESENVOLVIMENTO (TEMPORÁRIO)", expanded=False):
+        access_token = st.session_state.get("access_token", "Token não encontrado")
+        st.code(access_token, language="text")
+        st.caption("⚠️ Use este token no script import_lancamentos.py")
+
     # Verificar se o usuário é admin
     current_user = st.session_state.get("current_user")
     if not current_user or not current_user.is_admin():
