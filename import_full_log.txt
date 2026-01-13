@@ -1,0 +1,1045 @@
+⚠️  ATENÇÃO: Você está prestes a executar o import REAL. Confirma? (sim/não): 
+================================================================================
+PROCESSANDO ARQUIVO: Planilha sem título - Página1.csv
+MODO: EXECUÇÃO REAL
+================================================================================
+
+📅 Encontradas 20 datas
+📝 Total de linhas no arquivo: 114
+
+  ✅ SUCESSO: 2025-12-09 - R$ 344.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 80.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 236.77 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-12 - R$ 250.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 18.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 55.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-16 - R$ 129.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 820.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-18 - R$ 89.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-20 - R$ 143.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-21 - R$ 177.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-22 - R$ 99.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 4.50 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 200.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 300.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-27 - R$ 261.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 18.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 102.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-31 - R$ 45.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-09 - R$ 382.50 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 80.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 99.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 90.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 116.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 121.50 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 310.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 155.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 239.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 75.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-21 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 135.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 149.40 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 288.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 134.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 170.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 135.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-30 - R$ 139.50 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-31 - R$ 85.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 269.98 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 107.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 86.10 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 189.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 252.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 99.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 198.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 847.28 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 89.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 152.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-21 - R$ 45.30 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-22 - R$ 140.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 90.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 18.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 274.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 36.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-29 - R$ 126.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 81.67 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-31 - R$ 209.99 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 116.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 143.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 70.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-13 - R$ 99.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 100.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 50.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-17 - R$ 143.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 89.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 242.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 125.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-21 - R$ 214.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 143.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 368.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 219.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 49.50 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-27 - R$ 187.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-29 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 35.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 200.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 100.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 97.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 377.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 187.37 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 129.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-15 - R$ 99.90 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 206.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 242.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-18 - R$ 249.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 134.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 179.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-21 - R$ 50.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 179.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 125.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 430.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-26 - R$ 83.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 116.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 119.99 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 350.97 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 309.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 224.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-10 - R$ 50.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 178.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 97.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-13 - R$ 69.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-15 - R$ 260.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 154.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 239.99 - BonusCred
+  ✅ SUCESSO: 2025-12-18 - R$ 356.00 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 177.30 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 332.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-21 - R$ 162.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-22 - R$ 188.90 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 206.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 328.48 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 149.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-27 - R$ 79.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 60.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 89.99 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 150.00 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 385.97 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 135.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 179.98 - Crediário
+  ✅ SUCESSO: 2025-12-15 - R$ 314.97 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 7.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 299.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 99.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 110.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 439.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-21 - R$ 251.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 85.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 170.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 243.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-26 - R$ 205.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 81.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-29 - R$ 205.04 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 80.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-31 - R$ 153.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 225.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 64.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 144.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 269.97 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 233.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 10.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 129.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 323.98 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 125.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 179.90 - Dinheiro
+  ✅ SUCESSO: 2025-12-21 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 50.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 109.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 163.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 139.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-27 - R$ 189.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 72.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 895.83 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-31 - R$ 69.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 111.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-10 - R$ 100.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-11 - R$ 479.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 152.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 107.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 170.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 135.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 80.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 124.37 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-21 - R$ 105.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 624.96 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 350.97 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 22.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 40.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 47.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 400.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 116.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 132.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 479.98 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 249.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 419.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 106.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-16 - R$ 143.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 116.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 62.50 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 57.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 38.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-21 - R$ 311.38 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 100.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 62.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 169.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 80.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-27 - R$ 206.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 90.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 116.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 143.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 125.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 489.97 - BonusCred
+  ✅ SUCESSO: 2025-12-11 - R$ 135.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-12 - R$ 89.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 37.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-15 - R$ 414.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 162.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 89.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 50.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 90.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-20 - R$ 152.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-21 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 162.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 139.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 278.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 344.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 215.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 89.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 80.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 396.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-12 - R$ 239.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 189.98 - Crediário
+  ✅ SUCESSO: 2025-12-15 - R$ 251.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 169.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 211.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 116.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-20 - R$ 50.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-21 - R$ 369.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 150.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 55.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 197.37 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 315.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 269.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 175.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-30 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 157.50 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 215.00 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 235.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-11 - R$ 243.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-12 - R$ 206.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 216.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-15 - R$ 129.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 200.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 470.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-18 - R$ 152.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 269.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 206.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-21 - R$ 109.99 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 359.97 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 269.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 195.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-27 - R$ 115.28 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 50.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 407.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 162.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 300.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 17.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 179.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 260.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 129.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 72.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 50.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 79.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 90.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 161.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 242.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-21 - R$ 319.98 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 245.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 129.99 - BonusCred
+  ✅ SUCESSO: 2025-12-26 - R$ 115.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-27 - R$ 459.96 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 19.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 153.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-31 - R$ 125.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 125.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 144.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 209.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 95.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-13 - R$ 157.50 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 65.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-16 - R$ 129.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 200.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 360.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 116.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 36.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 70.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 964.94 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 350.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 85.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-27 - R$ 71.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 99.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 198.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 499.97 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 90.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-12 - R$ 189.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 289.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 239.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 118.75 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-17 - R$ 150.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 180.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-19 - R$ 71.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 412.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 215.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 200.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 143.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 260.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 110.70 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 234.20 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 200.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-31 - R$ 80.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 100.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 100.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 180.33 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-12 - R$ 161.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 143.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 113.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 227.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-17 - R$ 272.40 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 45.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 206.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 225.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 111.38 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 114.99 - BonusCred
+  ✅ SUCESSO: 2025-12-26 - R$ 283.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-27 - R$ 189.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 230.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 35.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-31 - R$ 156.57 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 100.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 100.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 65.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-12 - R$ 879.97 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-15 - R$ 229.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 189.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 119.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 103.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-19 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 100.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-22 - R$ 279.99 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 125.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 71.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 80.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 99.90 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 727.98 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 99.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 131.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 449.95 - BonusCred
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 160.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-15 - R$ 82.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 59.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 179.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 86.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 188.90 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 159.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 153.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 126.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 292.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 100.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 65.00 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 153.24 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 10.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-09 - R$ 50.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-10 - R$ 107.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 60.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 196.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 418.48 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 219.97 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 161.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 107.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 80.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 254.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 279.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 323.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-27 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 81.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-30 - R$ 116.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 89.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 98.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 166.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 90.00 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 246.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-13 - R$ 134.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 77.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-16 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 189.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-18 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 116.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 65.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 231.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 429.97 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 199.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 81.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-27 - R$ 22.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 104.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 234.90 - Dinheiro
+  ✅ SUCESSO: 2025-12-31 - R$ 189.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 256.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 206.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 116.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-12 - R$ 9.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 289.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 269.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 179.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 100.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 185.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 279.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 152.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 98.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 45.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 279.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 260.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 439.98 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 59.90 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 134.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 202.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 100.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-11 - R$ 100.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 161.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 249.98 - Crediário
+  ✅ SUCESSO: 2025-12-15 - R$ 143.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 152.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 125.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-18 - R$ 80.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 161.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 190.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 319.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 944.91 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 99.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-27 - R$ 214.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-30 - R$ 242.98 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 119.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 26.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 52.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-12 - R$ 169.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 99.99 - Crediário
+  ✅ SUCESSO: 2025-12-15 - R$ 99.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 398.75 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-17 - R$ 129.99 - BonusCred
+  ✅ SUCESSO: 2025-12-18 - R$ 296.98 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-20 - R$ 63.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-22 - R$ 269.97 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 89.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 170.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-26 - R$ 99.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-27 - R$ 60.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-29 - R$ 174.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 135.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-31 - R$ 229.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 70.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-11 - R$ 160.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 63.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 224.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 60.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-16 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 386.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 148.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 117.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 864.96 - BonusCred
+  ✅ SUCESSO: 2025-12-23 - R$ 108.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 199.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 216.99 - BonusCred
+  ✅ SUCESSO: 2025-12-29 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 170.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 259.97 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-11 - R$ 323.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 224.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 89.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 135.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 125.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-17 - R$ 195.00 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 115.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 104.40 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 149.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 161.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 212.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 98.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 283.50 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 110.83 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 126.00 - Debito Sicoob
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 249.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 269.97 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 195.32 - Recebimento Crediario
+  ❌ ERRO: 2025-12-16 - 335.99 - Parcelado 5 a 6 Sicoob
+     Status: 400
+     Resposta: {
+  "error": "Modalidade de pagamento est\u00e1 inativa"
+}
+
+  ✅ SUCESSO: 2025-12-17 - R$ 139.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 81.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-19 - R$ 199.99 - BonusCred
+  ✅ SUCESSO: 2025-12-20 - R$ 339.99 - BonusCred
+  ✅ SUCESSO: 2025-12-22 - R$ 159.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 107.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-29 - R$ 90.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-30 - R$ 79.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 66.50 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 91.60 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 139.50 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 389.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 148.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 13.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 240.59 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 229.99 - BonusCred
+  ✅ SUCESSO: 2025-12-18 - R$ 99.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 169.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 233.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 330.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 116.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 200.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-26 - R$ 262.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-29 - R$ 161.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 135.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 80.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 108.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 107.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 279.99 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 150.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 109.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 179.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 189.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-20 - R$ 209.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 143.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 107.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 95.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 21.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 9.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-30 - R$ 229.40 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 69.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 98.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 242.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 143.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 249.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 20.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 206.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 251.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 413.97 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 189.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 122.40 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 449.97 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-26 - R$ 350.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 9.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 157.50 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 283.42 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 99.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 219.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-12 - R$ 315.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 130.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-15 - R$ 36.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 95.40 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 189.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-18 - R$ 89.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 143.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 62.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 279.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 116.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 215.00 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 249.99 - Crediário
+  ✅ SUCESSO: 2025-12-30 - R$ 460.88 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 135.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-10 - R$ 499.95 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 80.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-12 - R$ 129.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 50.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-15 - R$ 80.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 223.98 - BonusCred
+  ✅ SUCESSO: 2025-12-17 - R$ 117.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-18 - R$ 400.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 135.90 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 179.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 50.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 279.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 219.99 - BonusCred
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 100.00 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 249.99 - Crediário
+  ✅ SUCESSO: 2025-12-30 - R$ 166.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 62.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 50.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 219.99 - Crediário
+  ✅ SUCESSO: 2025-12-12 - R$ 53.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 100.00 - Crediário
+  ✅ SUCESSO: 2025-12-15 - R$ 117.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 137.50 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 162.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 375.98 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 89.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 125.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 139.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 177.30 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 269.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 155.99 - Crediário
+  ✅ SUCESSO: 2025-12-30 - R$ 49.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 50.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 149.99 - BonusCred
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 149.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 449.98 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 110.00 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 142.90 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-17 - R$ 99.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 99.99 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 89.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 187.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-22 - R$ 139.50 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 159.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 224.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-26 - R$ 702.94 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 129.99 - Crediário
+  ✅ SUCESSO: 2025-12-30 - R$ 135.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-09 - R$ 143.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 300.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 150.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-13 - R$ 121.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 135.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 54.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 79.99 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 143.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 341.97 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 359.97 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 298.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 60.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-29 - R$ 259.97 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 434.98 - Crediário
+  ✅ SUCESSO: 2025-12-09 - R$ 179.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 64.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-11 - R$ 26.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 385.95 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-15 - R$ 266.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 125.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 150.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-18 - R$ 149.99 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 202.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 279.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 116.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 269.99 - BonusCred
+  ✅ SUCESSO: 2025-12-24 - R$ 339.99 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-29 - R$ 89.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 239.99 - Crediário
+  ✅ SUCESSO: 2025-12-09 - R$ 424.97 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 89.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 179.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 159.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-15 - R$ 129.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-16 - R$ 175.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 281.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-18 - R$ 89.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 50.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-20 - R$ 90.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-22 - R$ 598.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 208.80 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 161.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 180.00 - Crediário
+  ✅ SUCESSO: 2025-12-09 - R$ 89.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 130.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 139.99 - BonusCred
+  ✅ SUCESSO: 2025-12-13 - R$ 99.99 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 109.99 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 125.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 165.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 180.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-20 - R$ 382.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 50.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 233.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 140.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 140.00 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 50.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 254.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 99.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 339.99 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 188.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 116.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 200.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-20 - R$ 99.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-22 - R$ 189.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 107.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 170.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-30 - R$ 130.00 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 50.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 89.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 55.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 341.97 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 149.99 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 169.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 170.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 279.98 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 242.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 400.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 170.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 157.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-30 - R$ 153.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 308.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 40.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 418.50 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 179.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 189.99 - Crediário
+  ✅ SUCESSO: 2025-12-17 - R$ 152.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 67.50 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 143.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 95.30 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 143.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-09 - R$ 72.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-10 - R$ 159.99 - BonusCred
+  ✅ SUCESSO: 2025-12-11 - R$ 108.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 63.00 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 119.99 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 135.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 279.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 161.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 139.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 179.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 49.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 664.97 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 63.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-11 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 224.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 129.99 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 89.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 175.61 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 108.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 107.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 422.97 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 206.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 279.99 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 122.99 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 149.40 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-11 - R$ 429.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 89.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 49.99 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 549.98 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 30.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 330.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-20 - R$ 72.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 170.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 350.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 81.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 379.89 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 99.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 67.00 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-15 - R$ 299.97 - Crediário
+  ✅ SUCESSO: 2025-12-16 - R$ 36.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 252.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-19 - R$ 99.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 80.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-22 - R$ 391.47 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 229.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 87.50 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 319.97 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 63.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-13 - R$ 140.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-16 - R$ 225.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 36.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 99.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 249.99 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 189.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 56.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 119.99 - Crediário
+  ✅ SUCESSO: 2025-12-10 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 249.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 47.50 - Crediário
+  ✅ SUCESSO: 2025-12-17 - R$ 209.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 259.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 125.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 66.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 121.50 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 249.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-09 - R$ 97.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 569.98 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 170.00 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 199.99 - Crediário
+  ✅ SUCESSO: 2025-12-17 - R$ 140.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 107.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 190.00 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 89.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 80.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 265.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 299.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 107.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 189.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 37.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 250.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 194.99 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 206.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 99.80 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 349.98 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 204.98 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 557.97 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-16 - R$ 109.99 - Crediário
+  ✅ SUCESSO: 2025-12-17 - R$ 126.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 37.98 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 154.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 99.99 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 476.17 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 116.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 100.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 116.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 135.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 169.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 106.50 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 149.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 365.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-10 - R$ 479.98 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 149.99 - Crediário
+  ✅ SUCESSO: 2025-12-17 - R$ 143.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 197.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 109.99 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 135.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 153.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 89.99 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 300.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-13 - R$ 107.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 224.97 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-19 - R$ 380.59 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 109.99 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 539.96 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 125.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 50.00 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 189.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-19 - R$ 171.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 219.98 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 100.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 109.99 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 548.97 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-10 - R$ 669.95 - Crediário
+  ✅ SUCESSO: 2025-12-13 - R$ 80.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-17 - R$ 116.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-19 - R$ 341.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 60.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 149.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 304.98 - BonusCred
+  ✅ SUCESSO: 2025-12-24 - R$ 161.98 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 159.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 249.99 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 161.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-20 - R$ 199.97 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 161.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 185.38 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 78.90 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 216.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 359.96 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 143.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 170.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 257.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 245.52 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 252.98 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-13 - R$ 59.99 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 129.99 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 80.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-20 - R$ 159.99 - Parcelado 2 a 4 Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 153.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 264.99 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 252.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-13 - R$ 117.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 149.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 168.75 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-22 - R$ 257.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 50.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 99.99 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 414.96 - Crediário
+  ✅ SUCESSO: 2025-12-19 - R$ 116.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 125.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 152.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 250.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-17 - R$ 99.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 139.99 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 143.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 89.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 299.99 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-17 - R$ 170.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 239.89 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 314.98 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-23 - R$ 171.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 152.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 244.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 100.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-23 - R$ 129.99 - BonusCred
+  ✅ SUCESSO: 2025-12-24 - R$ 179.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 159.90 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 81.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 80.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 116.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 329.97 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 26.00 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 128.00 - Recebimento Crediario
+  ✅ SUCESSO: 2025-12-24 - R$ 198.00 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 107.99 - Crediário
+  ✅ SUCESSO: 2025-12-22 - R$ 85.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-23 - R$ 84.60 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 278.96 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 159.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 134.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 554.36 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 114.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 189.90 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 80.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 252.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 44.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 99.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 166.50 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 162.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-19 - R$ 399.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 119.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 89.99 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 229.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 35.00 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 71.99 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 317.97 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 479.95 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 274.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 244.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 489.98 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 278.98 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 189.00 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 239.98 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 45.00 - Pix Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 134.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 264.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 45.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 99.60 - Recebimento Crediario
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 117.00 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 253.99 - Parcelado 2 a 4 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 129.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 519.96 - Parcelado 5 a 6 Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 152.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 229.98 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 200.00 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 89.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 219.98 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 175.00 - Crédito Av Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 224.99 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 449.98 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 107.99 - Dinheiro
+  ✅ SUCESSO: 2025-12-24 - R$ 202.50 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 174.99 - Crediário
+  ✅ SUCESSO: 2025-12-23 - R$ 116.99 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-24 - R$ 176.40 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-22 - R$ 239.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 205.98 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 121.50 - Débito Sicredi
+  ✅ SUCESSO: 2025-12-22 - R$ 80.40 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 189.98 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 80.99 - Crédito Av Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 356.00 - Dinheiro
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 279.99 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 98.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 339.97 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 251.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 229.99 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 98.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 329.99 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 429.98 - Parcelado 5 a 6 Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 109.99 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 98.99 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 89.99 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 225.00 - Débito Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 249.98 - Crediário
+  ✅ SUCESSO: 2025-12-24 - R$ 116.99 - Pix Sicredi
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 299.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 159.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-23 - R$ 705.94 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 169.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 99.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 159.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 109.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 104.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 280.00 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 89.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 189.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 339.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 289.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 227.88 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 495.97 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 99.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 202.80 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 99.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 179.98 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 389.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 219.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 149.99 - Crediário
+  ⏭️  IGNORADO (Crediário): 2025-12-24 - R$ 209.98 - Crediário
+
+================================================================================
+RESUMO:
+  Total processado: 1021
+  Sucesso: 730
+  Ignorados (Crediário): 290
+  IDs faltando: 0
+  Erros: 1
+================================================================================
+
