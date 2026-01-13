@@ -177,7 +177,7 @@ def _render_expenses_table(expenses, account_use_cases):
     for month_key in sorted_months:
         month_data = expenses_by_month[month_key]
         month_expenses = sorted(
-            month_data["expenses"], key=lambda x: x.date, reverse=True
+            month_data["expenses"], key=lambda x: x.date, reverse=False
         )
 
         # Calcular total do mês
@@ -205,6 +205,11 @@ def _render_expenses_table(expenses, account_use_cases):
                 )
                 expense_map[idx] = expense.id
 
+            # Salvar estado anterior para detectar mudanças
+            prev_state_key = f"prev_expenses_{month_key}"
+            if prev_state_key not in st.session_state:
+                st.session_state[prev_state_key] = table_data.copy()
+
             # Renderizar tabela editável
             edited_df = st.data_editor(
                 table_data,
@@ -223,15 +228,16 @@ def _render_expenses_table(expenses, account_use_cases):
             )
 
             # Detectar mudanças e atualizar
-            for idx, (original, edited) in enumerate(zip(table_data, edited_df)):
+            prev_data = st.session_state[prev_state_key]
+            for idx, (original, edited) in enumerate(zip(prev_data, edited_df)):
                 if original["Pago"] != edited["Pago"]:
                     expense_id = expense_map[idx]
                     try:
                         account_use_cases.update_account(
                             expense_id, paid=edited["Pago"]
                         )
-                        st.success(f"Status atualizado para: {edited['Descrição']}")
-                        st.rerun()
+                        # Atualizar estado anterior
+                        st.session_state[prev_state_key][idx]["Pago"] = edited["Pago"]
                     except Exception as e:
                         st.error(f"Erro ao atualizar: {str(e)}")
 

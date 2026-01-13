@@ -177,7 +177,7 @@ def _render_boletos_table(boletos, account_use_cases):
     for month_key in sorted_months:
         month_data = boletos_by_month[month_key]
         month_boletos = sorted(
-            month_data["boletos"], key=lambda x: x.date, reverse=True
+            month_data["boletos"], key=lambda x: x.date, reverse=False
         )
 
         # Calcular total do mês
@@ -205,6 +205,11 @@ def _render_boletos_table(boletos, account_use_cases):
                 )
                 boleto_map[idx] = boleto.id
 
+            # Salvar estado anterior para detectar mudanças
+            prev_state_key = f"prev_boletos_{month_key}"
+            if prev_state_key not in st.session_state:
+                st.session_state[prev_state_key] = table_data.copy()
+
             # Renderizar tabela editável
             edited_df = st.data_editor(
                 table_data,
@@ -223,13 +228,14 @@ def _render_boletos_table(boletos, account_use_cases):
             )
 
             # Detectar mudanças e atualizar
-            for idx, (original, edited) in enumerate(zip(table_data, edited_df)):
+            prev_data = st.session_state[prev_state_key]
+            for idx, (original, edited) in enumerate(zip(prev_data, edited_df)):
                 if original["Pago"] != edited["Pago"]:
                     boleto_id = boleto_map[idx]
                     try:
                         account_use_cases.update_account(boleto_id, paid=edited["Pago"])
-                        st.success(f"Status atualizado para: {edited['Descrição']}")
-                        st.rerun()
+                        # Atualizar estado anterior
+                        st.session_state[prev_state_key][idx]["Pago"] = edited["Pago"]
                     except Exception as e:
                         st.error(f"Erro ao atualizar: {str(e)}")
 

@@ -7,6 +7,11 @@ from presentation.components.page_header import render_page_header
 def render():
     render_page_header("Registrar Lançamento")
 
+    # Exibir toast se existir no session_state
+    if "toast_message" in st.session_state:
+        st.toast(st.session_state.toast_message)
+        del st.session_state.toast_message
+
     container = get_container()
     modality_use_cases = container.payment_modality_use_cases
     entry_use_cases = container.financial_entry_use_cases
@@ -29,13 +34,26 @@ def render():
             col1, col2 = st.columns(2)
 
             with col1:
+                # Usar session_state para manter a data sem recarregar
+                if "entry_date_value" not in st.session_state:
+                    st.session_state.entry_date_value = datetime.now()
+
                 date = st.date_input(
-                    "Data", format="DD/MM/YYYY", value=datetime.now(), key="entry_date"
+                    "Data",
+                    format="DD/MM/YYYY",
+                    value=st.session_state.entry_date_value,
+                    key="entry_date"
                 )
 
             with col2:
                 value = st.number_input(
-                    "Valor (R$)", min_value=0.0, step=0.01, key="entry_value"
+                    "Valor (R$)",
+                    min_value=0.0,
+                    value=None,
+                    step=0.01,
+                    format="%.2f",
+                    key="entry_value",
+                    help="Digite o valor do lançamento (mínimo R$ 0,01)"
                 )
 
             # Criar opções com formato "nome (banco)" - apenas modalidades ativas
@@ -99,9 +117,10 @@ def render():
             is_valid = True
             validation_errors = []
 
-            if value <= 0:
+            if value is None or value <= 0:
                 is_valid = False
-                validation_errors.append("Valor deve ser maior que zero")
+                if value is not None:  # Só mostra erro se usuário digitou algo inválido
+                    validation_errors.append("Valor deve ser maior que zero")
 
             if selected_modality.is_credit_plan:
                 if not installments_count or installments_count < 1:
@@ -112,69 +131,78 @@ def render():
                     validation_errors.append("Data da primeira parcela é obrigatória")
 
             # Show validation errors if any
-            if validation_errors and value > 0:
+            if validation_errors:
                 for error in validation_errors:
                     st.warning(f"⚠️ {error}")
 
-            # Submit button
-            if st.button(
+            # Submit button com loading
+            submit_button = st.button(
                 "Salvar Lançamento",
                 use_container_width=True,
                 type="primary",
                 disabled=not can_submit or not is_valid,
                 key="submit_entry",
-            ):
-                try:
-                    entry_datetime = datetime.combine(date, datetime.min.time())
+            )
 
-                    # Nome da modalidade com banco se disponível
-                    modality_display_name = f"{selected_modality.name} ({selected_modality.bank_name})" if selected_modality.bank_name else selected_modality.name
+            if submit_button:
+                # Mostrar spinner durante o envio
+                with st.spinner("Salvando lançamento..."):
+                    try:
+                        entry_datetime = datetime.combine(date, datetime.min.time())
 
-                    result = entry_use_cases.create_entry(
-                        value=value,
-                        date=entry_datetime,
-                        modality_id=selected_modality.id or "",
-                        modality_name=modality_display_name,
-                        modality_color=selected_modality.color,
-                        is_credit_payment=is_credit_payment,
-                        installments_count=installments_count,
-                        start_date=start_date,
-                    )
+                        # Nome da modalidade com banco se disponível
+                        modality_display_name = f"{selected_modality.name} ({selected_modality.bank_name})" if selected_modality.bank_name else selected_modality.name
 
-                    # Show success message with installment info if applicable
-                    if installments_count and installments_count >= 1:
-                        installment_value = value / installments_count
-                        st.success(
-                            f"Crediário criado com sucesso!\n\n"
-                            f"{installments_count} parcelas de R$ {installment_value:,.2f}".replace(
-                                ",", "X"
-                            )
-                            .replace(".", ",")
-                            .replace("X", ".")
+                        result = entry_use_cases.create_entry(
+                            value=value,
+                            date=entry_datetime,
+                            modality_id=selected_modality.id or "",
+                            modality_name=modality_display_name,
+                            modality_color=selected_modality.color,
+                            is_credit_payment=is_credit_payment,
+                            installments_count=installments_count,
+                            start_date=start_date,
                         )
 
-                        # Show installments created
-                        if "installments" in result and result["installments"]:
-                            with st.expander("Ver parcelas criadas"):
-                                for inst in result["installments"]:
-                                    paid_status = (
-                                        "Paga" if inst.get("is_paid") else "Pendente"
-                                    )
-                                    inst_date = datetime.fromisoformat(
-                                        inst["due_date"].replace("Z", "+00:00")
-                                    )
-                                    st.write(
-                                        f"**Parcela {inst['installment_number']}/{inst['total_installments']}**: "
-                                        f"R$ {inst['amount']:,.2f}".replace(",", "X")
-                                        .replace(".", ",")
-                                        .replace("X", ".")
-                                        + f" - Vencimento: {inst_date.strftime('%d/%m/%Y')} - {paid_status}"
-                                    )
-                    else:
-                        st.success("Lançamento salvo com sucesso!")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Erro ao salvar: {str(e)}")
+                        # Formatar valor para exibição
+                        value_formatted = f"R$ {value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                        date_formatted = entry_datetime.strftime("%d/%m/%Y")
+
+                        # Salvar mensagem de sucesso no session_state para exibir após rerun
+                        if installments_count and installments_count >= 1:
+                            installment_value = value / installments_count
+                            installment_value_formatted = f"R$ {installment_value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+                            st.session_state.success_message = (
+                                f"✅ **Crediário criado com sucesso!**\n\n"
+                                f"**Valor:** {value_formatted}\n\n"
+                                f"**Data:** {date_formatted}\n\n"
+                                f"**Modalidade:** {modality_display_name}\n\n"
+                                f"**Parcelas:** {installments_count}x de {installment_value_formatted}"
+                            )
+
+                            # Salvar toast para exibir após rerun
+                            st.session_state.toast_message = f"✅ Crediário criado: {value_formatted}"
+                        else:
+                            st.session_state.success_message = (
+                                f"✅ **Lançamento enviado com sucesso!**\n\n"
+                                f"**Valor:** {value_formatted}\n\n"
+                                f"**Data:** {date_formatted}\n\n"
+                                f"**Modalidade:** {modality_display_name}"
+                            )
+
+                            # Salvar toast para exibir após rerun
+                            st.session_state.toast_message = f"✅ Lançamento salvo: {value_formatted}"
+
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Erro ao salvar: {str(e)}")
+
+            # Mostrar mensagem de sucesso abaixo do formulário
+            if "success_message" in st.session_state:
+                st.success(st.session_state.success_message)
+                # Limpar a mensagem após exibir
+                del st.session_state.success_message
 
         st.divider()
         st.subheader("Lançamentos Registrados", anchor=False)
@@ -234,7 +262,8 @@ def render():
                 st.divider()
 
                 entries_by_date = {}
-                for entry in sorted(entries, key=lambda x: x.date, reverse=True):
+                # Ordena por created_at crescente (primeiro lançamento embaixo, mais recente em cima)
+                for entry in sorted(entries, key=lambda x: x.created_at or x.date, reverse=False):
                     date_str = entry.date.strftime("%d/%m/%Y")
                     if date_str not in entries_by_date:
                         entries_by_date[date_str] = []
@@ -292,12 +321,18 @@ def render():
                 html_content += "</tr></thead>"
 
                 html_content += "<tbody>"
+
+                # Criar estrutura para rastrear IDs dos entries por posição
+                entries_grid = {}  # {(row_idx, col_idx): entry}
+
                 for i in range(max_entries):
                     html_content += "<tr>"
-                    for date_str in dates_sorted:
+                    for col_idx, date_str in enumerate(dates_sorted):
                         date_entries = entries_by_date[date_str]
                         if i < len(date_entries):
                             entry = date_entries[i]
+                            entries_grid[(i, col_idx)] = entry
+
                             value_formatted = (
                                 f"R$ {entry.value:,.2f}".replace(",", "X")
                                 .replace(".", ",")
@@ -324,10 +359,15 @@ def render():
 
                             bg_color = hex_to_rgba(modality_color, 0.6)
 
+                            # Adicionar texto "Pgto Crediário" se for pagamento de crediário
+                            credit_payment_text = ""
+                            if entry.credit_payment:
+                                credit_payment_text = "<br><span style='font-size: 11px; font-weight: normal;'>Pgto Crediário</span>"
+
                             html_content += (
                                 f"<td style='padding: 10px; text-align: center; border: 1px solid #ddd; min-width: 180px; white-space: nowrap; "
                                 f"background-color: {bg_color}; color: #333; font-weight: bold;'>"
-                                f"{modality_name}</td>"
+                                f"{modality_name}{credit_payment_text}</td>"
                             )
                         else:
                             html_content += "<td style='padding: 10px; border: 1px solid #ddd; min-width: 180px;'></td>"
@@ -337,6 +377,35 @@ def render():
                 html_content += "</div>"
 
                 st.markdown(html_content, unsafe_allow_html=True)
+
+                # Modal de confirmação
+                if st.session_state.get("show_delete_modal", False):
+                    @st.dialog("Confirmar Exclusão")
+                    def confirm_delete_modal():
+                        st.write("Tem certeza que deseja excluir este lançamento?")
+                        st.write(f"**{st.session_state.entry_to_delete_label}**")
+                        st.warning("⚠️ Esta ação não pode ser desfeita!")
+
+                        col1, col2 = st.columns(2)
+
+                        with col1:
+                            if st.button("Sim, excluir", type="primary", use_container_width=True):
+                                try:
+                                    entry_use_cases.delete_entry(st.session_state.entry_to_delete_id)
+                                    st.success("Lançamento excluído com sucesso!")
+                                    del st.session_state.show_delete_modal
+                                    del st.session_state.entry_to_delete_id
+                                    del st.session_state.entry_to_delete_label
+                                    st.rerun()
+                                except Exception as e:
+                                    st.error(f"Erro ao excluir: {str(e)}")
+
+                        with col2:
+                            if st.button("Cancelar", use_container_width=True):
+                                del st.session_state.show_delete_modal
+                                st.rerun()
+
+                    confirm_delete_modal()
 
                 st.subheader("Legenda de Modalidades", anchor=False)
                 unique_modalities = {}
@@ -364,29 +433,36 @@ def render():
                 st.markdown(legend_html, unsafe_allow_html=True)
 
                 df_data = []
-                for entry in sorted(entries, key=lambda x: x.date, reverse=True):
+                entry_options = []
+                entry_map = {}
+
+                # Ordena por created_at crescente para listagem de exclusão (primeiro embaixo, mais recente em cima)
+                for entry in sorted(entries, key=lambda x: x.created_at or x.date, reverse=False):
                     # Usar o nome da modalidade atual, não o nome salvo no entry
                     modality_name = modality_name_map.get(
                         entry.modality_id, entry.modality_name
                     )
+
+                    data_str = entry.date.strftime("%d/%m/%Y")
+                    valor_str = f"R$ {entry.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                    option_label = f"{data_str} - {modality_name} - {valor_str}"
+
                     df_data.append(
                         {
-                            "Data": entry.date.strftime("%d/%m/%Y"),
-                            "Valor": f"R$ {entry.value:,.2f}".replace(",", "X")
-                            .replace(".", ",")
-                            .replace("X", "."),
+                            "Data": data_str,
+                            "Valor": valor_str,
                             "Modalidade": modality_name,
                             "ID": entry.id,
                         }
                     )
 
+                    entry_options.append(option_label)
+                    entry_map[option_label] = entry.id
+
                 st.subheader("Excluir Lançamento", anchor=False)
                 entry_to_delete = st.selectbox(
                     "Selecione o lançamento para excluir",
-                    options=[
-                        f"{e['Data']} - {e['Modalidade']} - {e['Valor']}"
-                        for e in df_data
-                    ],
+                    options=entry_options,
                     key="delete_entry",
                 )
 
@@ -394,6 +470,7 @@ def render():
                 def confirm_delete_modal():
                     st.write("Tem certeza que deseja excluir este lançamento?")
                     st.write(f"**{entry_to_delete}**")
+                    st.warning("⚠️ Esta ação não pode ser desfeita!")
 
                     col1, col2 = st.columns(2)
 
@@ -401,11 +478,7 @@ def render():
                         if st.button(
                             "Sim, excluir", type="primary", use_container_width=True
                         ):
-                            idx = [
-                                f"{e['Data']} - {e['Modalidade']} - {e['Valor']}"
-                                for e in df_data
-                            ].index(entry_to_delete)
-                            entry_id = df_data[idx]["ID"]
+                            entry_id = entry_map[entry_to_delete]
                             try:
                                 entry_use_cases.delete_entry(entry_id)
                                 st.success("Lançamento excluído com sucesso!")

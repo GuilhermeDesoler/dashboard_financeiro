@@ -74,13 +74,12 @@ def render():
         col_card1, col_card2 = st.columns(2)
 
         # Calcular total sem crediário (usando o campo booleano is_credit_plan)
-        total_sem_crediario = sum(
-            e.value for e in entries
-            if not e.is_credit_plan
-        )
+        total_sem_crediario = sum(e.value for e in entries if not e.is_credit_plan)
 
         with col_card1:
-            total_formatted = f"R$ {total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            total_formatted = (
+                f"R$ {total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            )
             st.markdown(
                 f"""
                 <div style="border: 3px solid #9333EA; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center;">
@@ -89,11 +88,15 @@ def render():
                     <p style="margin: 0; font-size: 12px; color: #6b21a8;">{len(entries)} lançamentos</p>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         with col_card2:
-            total_sem_crediario_formatted = f"R$ {total_sem_crediario:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            total_sem_crediario_formatted = (
+                f"R$ {total_sem_crediario:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
             st.markdown(
                 f"""
                 <div style="border: 3px solid #10B981; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); text-align: center;">
@@ -102,7 +105,7 @@ def render():
                     <p style="margin: 0; font-size: 12px; color: #047857;">Excluindo lançamentos crediário</p>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         st.divider()
@@ -117,6 +120,64 @@ def render():
             # Incluir banco no nome se disponível
             display_name = f"{m.name} ({m.bank_name})" if m.bank_name else m.name
             modality_name_map[m.id] = display_name
+
+        # Card de Pagamentos de Crediário
+        credit_payments = [e for e in entries if e.credit_payment]
+
+        if credit_payments:
+            # Agrupar pagamentos de crediário por modalidade
+            credit_payment_by_modality = {}
+            for entry in credit_payments:
+                modality_key = entry.modality_id
+                # Usar o nome da modalidade com banco do mapeamento
+                modality_display_name = modality_name_map.get(
+                    entry.modality_id, entry.modality_name
+                )
+
+                if modality_key not in credit_payment_by_modality:
+                    credit_payment_by_modality[modality_key] = {
+                        "modality_name": modality_display_name,
+                        "total": 0,
+                        "count": 0,
+                    }
+                credit_payment_by_modality[modality_key]["total"] += entry.value
+                credit_payment_by_modality[modality_key]["count"] += 1
+
+            # Calcular total geral de pagamentos de crediário
+            total_credit_payments = sum(e.value for e in credit_payments)
+            total_credit_payments_formatted = (
+                f"R$ {total_credit_payments:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+
+            # Card de Pagamentos de Crediário (estilo compacto com subcards, alinhado à esquerda)
+            card_html = f"""<div style="border: 2px solid #F59E0B; border-radius: 8px; padding: 15px; background: #fffbeb; margin-bottom: 15px;">
+<p style="margin: 0 0 8px 0; font-size: 12px; color: #92400e; font-weight: 600;">Pagamento de Crediário</p>
+<h2 style="margin: 0 0 10px 0; font-size: 24px; color: #F59E0B;">{total_credit_payments_formatted}</h2>
+<p style="margin: 0 0 12px 0; font-size: 11px; color: #92400e;">{len(credit_payments)} lançamentos</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 8px; margin-top: 12px;">"""
+
+            # Adicionar cada modalidade (informações em linha dentro de cada subcard)
+            for modality_data in sorted(
+                credit_payment_by_modality.values(),
+                key=lambda x: x["total"],
+                reverse=True,
+            ):
+                modality_total_formatted = (
+                    f"R$ {modality_data['total']:,.2f}".replace(",", "X")
+                    .replace(".", ",")
+                    .replace("X", ".")
+                )
+                card_html += f"""<div style="background: white; border: 1px solid #FCD34D; border-radius: 6px; padding: 10px; text-align: left;">
+<p style="margin: 0 0 4px 0; font-size: 11px; color: #92400e; font-weight: 600;">{modality_data['modality_name']} - {modality_data['count']} lançamentos</p>
+<p style="margin: 0; font-size: 16px; color: #F59E0B; font-weight: bold;">{modality_total_formatted}</p>
+</div>"""
+
+            card_html += "</div></div>"
+            st.markdown(card_html, unsafe_allow_html=True)
+
+            st.divider()
 
         # Agrupar lançamentos por modalidade
         modality_stats = {}
@@ -286,6 +347,7 @@ def render():
             if daily_summary:
                 # Organizar dados por mês e dia
                 from collections import defaultdict
+
                 monthly_data = defaultdict(lambda: {})
 
                 for day in daily_summary:
@@ -299,13 +361,15 @@ def render():
                     monthly_data[month_key][day_number] = {
                         "receivable": day["total_receivable"],
                         "received": day["total_received"],
-                        "difference": day["difference"]
+                        "difference": day["difference"],
                     }
 
                 # Ordenar meses (mais recente primeiro)
-                sorted_months = sorted(monthly_data.keys(),
-                                      key=lambda x: datetime.strptime(x, "%m/%Y"),
-                                      reverse=True)
+                sorted_months = sorted(
+                    monthly_data.keys(),
+                    key=lambda x: datetime.strptime(x, "%m/%Y"),
+                    reverse=True,
+                )
 
                 # Criar HTML da tabela
                 html_content = """
@@ -380,11 +444,25 @@ def render():
                 html_content += "<thead><tr><th>Dia</th>"
                 month_totals = {}
                 for month in sorted_months:
-                    month_receivable = sum(data.get("receivable", 0) for data in monthly_data[month].values())
-                    month_received = sum(data.get("received", 0) for data in monthly_data[month].values())
-                    month_totals[month] = {"receivable": month_receivable, "received": month_received}
+                    month_receivable = sum(
+                        data.get("receivable", 0)
+                        for data in monthly_data[month].values()
+                    )
+                    month_received = sum(
+                        data.get("received", 0) for data in monthly_data[month].values()
+                    )
+                    month_totals[month] = {
+                        "receivable": month_receivable,
+                        "received": month_received,
+                    }
 
-                    header_label = f"{month}<br/>A Rec: R$ {month_receivable:,.2f} | Receb: R$ {month_received:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                    header_label = (
+                        f"{month}<br/>A Rec: R$ {month_receivable:,.2f} | Receb: R$ {month_received:,.2f}".replace(
+                            ",", "X"
+                        )
+                        .replace(".", ",")
+                        .replace("X", ".")
+                    )
                     html_content += f"<th colspan='2'>{header_label}</th>"
                 html_content += "</tr>"
 
@@ -401,18 +479,28 @@ def render():
                     html_content += f"<tr><td class='day-label'>Dia {day:02d}</td>"
 
                     for month in sorted_months:
-                        day_data = monthly_data[month].get(day, {"receivable": 0, "received": 0})
+                        day_data = monthly_data[month].get(
+                            day, {"receivable": 0, "received": 0}
+                        )
 
                         # A Receber - só pinta se tiver valor
-                        if day_data['receivable'] > 0:
-                            receivable_formatted = f"R$ {day_data['receivable']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                        if day_data["receivable"] > 0:
+                            receivable_formatted = (
+                                f"R$ {day_data['receivable']:,.2f}".replace(",", "X")
+                                .replace(".", ",")
+                                .replace("X", ".")
+                            )
                             html_content += f"<td class='receivable-cell-filled'>{receivable_formatted}</td>"
                         else:
                             html_content += "<td>-</td>"
 
                         # Recebido - só pinta se tiver valor
-                        if day_data['received'] > 0:
-                            received_formatted = f"R$ {day_data['received']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                        if day_data["received"] > 0:
+                            received_formatted = (
+                                f"R$ {day_data['received']:,.2f}".replace(",", "X")
+                                .replace(".", ",")
+                                .replace("X", ".")
+                            )
                             html_content += f"<td class='received-cell-filled'>{received_formatted}</td>"
                         else:
                             html_content += "<td>-</td>"
@@ -429,6 +517,7 @@ def render():
         except Exception as e:
             st.error(f"Erro ao carregar resumo do crediário: {str(e)}")
             import traceback
+
             st.code(traceback.format_exc())
 
     except Exception as e:
