@@ -100,6 +100,75 @@ def apply_custom_styles():
         [data-testid='stHeaderActionElements'] {
             display: none !important;
         }
+
+        /* Estilos para linhas de tabela de despesas/boletos */
+        .table-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row .col-date {
+            flex: 2;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .table-row .col-desc {
+            flex: 4;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .table-row .col-value {
+            flex: 2;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        /* Reduzir espaçamento entre elementos do Streamlit dentro de expanders */
+        [data-testid="stExpander"] [data-testid="stVerticalBlock"] > div {
+            margin-bottom: -12px !important;
+        }
+
+        [data-testid="stExpander"] [data-testid="stHorizontalBlock"] {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 6px 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        [data-testid="stExpander"] [data-testid="stHorizontalBlock"]:last-child {
+            border-bottom: none;
+        }
+
+        /* Reduzir padding dos textos nas linhas */
+        [data-testid="stExpander"] [data-testid="stText"] {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        [data-testid="stExpander"] [data-testid="stText"] p {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.4 !important;
+        }
+
+        /* Reduzir espaçamento do checkbox */
+        [data-testid="stExpander"] [data-testid="stCheckbox"] {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        [data-testid="stExpander"] [data-testid="stCheckbox"] > label {
+            padding: 0 !important;
+            min-height: auto !important;
+        }
         </style>
         """,
         unsafe_allow_html=True
