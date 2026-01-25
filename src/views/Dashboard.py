@@ -2,12 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 from dependencies import get_container
-from presentation.components.company_header import render_company_header
+from presentation.components.page_header import render_page_header
 import plotly.express as px
 
 
 def render():
-    render_company_header("Dashboard Financeiro")
+    render_page_header("Registrar Lançamento")
 
     # Verificar se o usuário é admin
     current_user = st.session_state.get("current_user")
@@ -70,11 +70,17 @@ def render():
 
         st.divider()
 
-        # Cards principais: Total Geral e Total sem Crediário
-        col_card1, col_card2 = st.columns(2)
+        # Cards principais: Total Geral, Total sem Crediário e Acumulado Anual
+        col_card1, col_card2, col_card3 = st.columns(3)
 
         # Calcular total sem crediário (usando o campo booleano is_credit_plan)
         total_sem_crediario = sum(e.value for e in entries if not e.is_credit_plan)
+
+        # Calcular acumulado anual (ano atual até hoje)
+        year_start = datetime(today.year, 1, 1)
+        year_end = datetime.now()
+        entries_year = entry_use_cases.list_entries(year_start, year_end)
+        total_year = sum(e.value for e in entries_year)
 
         with col_card1:
             total_formatted = (
@@ -83,7 +89,7 @@ def render():
             st.markdown(
                 f"""
                 <div style="border: 3px solid #9333EA; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center;">
-                    <p style="margin: 0; font-size: 14px; color: #6b21a8; font-weight: 600;">TOTAL GERAL</p>
+                    <p style="margin: 0; font-size: 14px; color: #6b21a8; font-weight: 600;">TOTAL GERAL (PERÍODO)</p>
                     <h1 style="margin: 10px 0; font-size: 32px; color: #9333EA;">{total_formatted}</h1>
                     <p style="margin: 0; font-size: 12px; color: #6b21a8;">{len(entries)} lançamentos</p>
                 </div>
@@ -103,6 +109,33 @@ def render():
                     <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">TOTAL SEM CREDIÁRIO</p>
                     <h1 style="margin: 10px 0; font-size: 32px; color: #10B981;">{total_sem_crediario_formatted}</h1>
                     <p style="margin: 0; font-size: 12px; color: #047857;">Excluindo lançamentos crediário</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with col_card3:
+            # Formatar valor por extenso
+            def format_currency_text(value):
+                """Formata valor em reais por extenso (simplificado)"""
+                if value >= 1000000:
+                    return f"{value/1000000:.1f}".replace(".", ",") + " milhões"
+                elif value >= 1000:
+                    return f"{value/1000:.1f}".replace(".", ",") + " mil"
+                else:
+                    return f"{value:.2f}".replace(".", ",")
+
+            total_year_formatted = (
+                f"R$ {total_year:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            )
+            total_year_text = format_currency_text(total_year)
+
+            st.markdown(
+                f"""
+                <div style="border: 3px solid #F59E0B; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); text-align: center;">
+                    <p style="margin: 0; font-size: 14px; color: #92400e; font-weight: 600;">ACUMULADO ANUAL {today.year}</p>
+                    <h1 style="margin: 10px 0; font-size: 32px; color: #F59E0B;">{total_year_formatted}</h1>
+                    <p style="margin: 0; font-size: 12px; color: #92400e;">Aproximadamente R$ {total_year_text}</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -222,126 +255,154 @@ def render():
             st.divider()
         else:
             st.info("Nenhum lançamento encontrado no período selecionado.")
-            return
 
-        if not entries:
-            st.info("Nenhum lançamento encontrado no período selecionado.")
-            return
+        if entries:
+            # Gráfico de barras por data com cores das modalidades
+            st.subheader("Lançamentos por Data", anchor=False)
 
-        # Gráfico de barras por data com cores das modalidades
-        st.subheader("Lançamentos por Data", anchor=False)
+            # Agrupar por data e modalidade
+            date_modality_data = {}
+            for entry in entries:
+                date_str = entry.date.strftime("%d/%m/%Y")
+                # Usar a cor da modalidade atual, não a cor salva no entry
+                modality_color = modality_color_map.get(
+                    entry.modality_id, entry.modality_color
+                )
+                modality_name = modality_name_map.get(
+                    entry.modality_id, entry.modality_name
+                )
 
-        # Agrupar por data e modalidade
-        date_modality_data = {}
-        for entry in entries:
-            date_str = entry.date.strftime("%d/%m/%Y")
-            # Usar a cor da modalidade atual, não a cor salva no entry
-            modality_color = modality_color_map.get(
-                entry.modality_id, entry.modality_color
-            )
-            modality_name = modality_name_map.get(
-                entry.modality_id, entry.modality_name
-            )
-
-            if date_str not in date_modality_data:
-                date_modality_data[date_str] = {}
-            if modality_name not in date_modality_data[date_str]:
-                date_modality_data[date_str][modality_name] = {
-                    "count": 0,
-                    "color": modality_color,
-                }
-            date_modality_data[date_str][modality_name]["count"] += 1
-
-        # Criar dados para o gráfico
-        chart_data = []
-        for date_str, modalities_data in sorted(date_modality_data.items()):
-            for modality_name, data in modalities_data.items():
-                chart_data.append(
-                    {
-                        "Data": date_str,
-                        "Modalidade": modality_name,
-                        "Quantidade": data["count"],
-                        "Cor": data["color"],
+                if date_str not in date_modality_data:
+                    date_modality_data[date_str] = {}
+                if modality_name not in date_modality_data[date_str]:
+                    date_modality_data[date_str][modality_name] = {
+                        "count": 0,
+                        "color": modality_color,
                     }
-                )
+                date_modality_data[date_str][modality_name]["count"] += 1
 
-        if chart_data:
-            df_chart = pd.DataFrame(chart_data)
-
-            # Criar gráfico de barras com plotly
-            color_map = {
-                row["Modalidade"]: row["Cor"] for _, row in df_chart.iterrows()
-            }
-
-            fig = px.bar(
-                df_chart,
-                x="Data",
-                y="Quantidade",
-                color="Modalidade",
-                color_discrete_map=color_map,
-                barmode="group",
-                height=400,
-            )
-
-            fig.update_layout(
-                xaxis_title="",
-                yaxis_title="Quantidade",
-                showlegend=True,
-                legend=dict(
-                    orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
-                ),
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-            )
-
-            st.plotly_chart(fig, use_container_width=True)
-
-        st.divider()
-        st.subheader("Detalhamento por Modalidade", anchor=False)
-
-        for modality_name, modality_entries in sorted(
-            grouped.items(), key=lambda x: sum(e.value for e in x[1]), reverse=True
-        ):
-            modality_total = sum(e.value for e in modality_entries)
-            percentage = (modality_total / total * 100) if total > 0 else 0
-
-            with st.expander(
-                f"{modality_name} - R$ {modality_total:,.2f}".replace(",", "X")
-                .replace(".", ",")
-                .replace("X", ".")
-                + f" ({percentage:.1f}%)"
-            ):
-                df_entries = pd.DataFrame(
-                    [
+            # Criar dados para o gráfico
+            chart_data = []
+            for date_str, modalities_data in sorted(date_modality_data.items()):
+                for modality_name, data in modalities_data.items():
+                    chart_data.append(
                         {
-                            "Data": e.date.strftime("%d/%m/%Y"),
-                            "Valor": f"R$ {e.value:,.2f}".replace(",", "X")
-                            .replace(".", ",")
-                            .replace("X", "."),
+                            "Data": date_str,
+                            "Modalidade": modality_name,
+                            "Quantidade": data["count"],
+                            "Cor": data["color"],
                         }
-                        for e in sorted(modality_entries, key=lambda x: x.date)
-                    ]
+                    )
+
+            if chart_data:
+                df_chart = pd.DataFrame(chart_data)
+
+                # Criar gráfico de barras com plotly
+                color_map = {
+                    row["Modalidade"]: row["Cor"] for _, row in df_chart.iterrows()
+                }
+
+                fig = px.bar(
+                    df_chart,
+                    x="Data",
+                    y="Quantidade",
+                    color="Modalidade",
+                    color_discrete_map=color_map,
+                    barmode="group",
+                    height=400,
                 )
 
-                st.dataframe(df_entries, use_container_width=True, hide_index=True)
+                fig.update_layout(
+                    xaxis_title="",
+                    yaxis_title="Quantidade",
+                    showlegend=True,
+                    legend=dict(
+                        orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
+                    ),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                )
 
-                st.markdown(
-                    f"**Total de lançamentos:** {len(modality_entries)} | "
-                    f"**Ticket médio:** R$ {(modality_total / len(modality_entries)):,.2f}".replace(
-                        ",", "X"
-                    )
+                st.plotly_chart(fig, use_container_width=True)
+
+            st.divider()
+            st.subheader("Detalhamento por Modalidade", anchor=False)
+
+            for modality_name, modality_entries in sorted(
+                grouped.items(), key=lambda x: sum(e.value for e in x[1]), reverse=True
+            ):
+                modality_total = sum(e.value for e in modality_entries)
+                percentage = (modality_total / total * 100) if total > 0 else 0
+
+                with st.expander(
+                    f"{modality_name} - R$ {modality_total:,.2f}".replace(",", "X")
                     .replace(".", ",")
                     .replace("X", ".")
-                )
+                    + f" ({percentage:.1f}%)"
+                ):
+                    df_entries = pd.DataFrame(
+                        [
+                            {
+                                "Data": e.date.strftime("%d/%m/%Y"),
+                                "Valor": f"R$ {e.value:,.2f}".replace(",", "X")
+                                .replace(".", ",")
+                                .replace("X", "."),
+                            }
+                            for e in sorted(modality_entries, key=lambda x: x.date)
+                        ]
+                    )
+
+                    st.dataframe(df_entries, use_container_width=True, hide_index=True)
+
+                    st.markdown(
+                        f"**Total de lançamentos:** {len(modality_entries)} | "
+                        f"**Ticket médio:** R$ {(modality_total / len(modality_entries)):,.2f}".replace(
+                            ",", "X"
+                        )
+                        .replace(".", ",")
+                        .replace("X", ".")
+                    )
 
         st.divider()
 
         # Seção de Resumo Diário do Crediário (última seção)
         st.subheader("📊 Resumo Diário - Crediário", anchor=False)
 
+        # Filtro independente para a seção de Crediário
+        col_cred1, col_cred2, col_cred3 = st.columns(3)
+
+        with col_cred1:
+            st.date_input(
+                "Data Início",
+                value=start_of_month,
+                format="DD/MM/YYYY",
+                key="crediario_start",
+            )
+
+        with col_cred2:
+            st.date_input(
+                "Data Fim",
+                value=end_of_month,
+                format="DD/MM/YYYY",
+                key="crediario_end",
+            )
+
+        with col_cred3:
+            st.write("")
+            st.write("")
+            if st.button("Filtrar Crediário", use_container_width=True, key="btn_crediario"):
+                st.rerun()
+
+        crediario_start_datetime = datetime.combine(
+            st.session_state.crediario_start, datetime.min.time()
+        )
+        crediario_end_datetime = datetime.combine(
+            st.session_state.crediario_end, datetime.max.time()
+        )
+
         try:
             daily_summary = installment_use_cases.get_daily_summary(
-                start_datetime, end_datetime
+                crediario_start_datetime, crediario_end_datetime
             )
 
             if daily_summary:
@@ -364,11 +425,11 @@ def render():
                         "difference": day["difference"],
                     }
 
-                # Ordenar meses (mais recente primeiro)
+                # Ordenar meses (de janeiro a dezembro - ordem crescente)
                 sorted_months = sorted(
                     monthly_data.keys(),
                     key=lambda x: datetime.strptime(x, "%m/%Y"),
-                    reverse=True,
+                    reverse=False,
                 )
 
                 # Criar HTML da tabela

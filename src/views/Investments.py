@@ -2,11 +2,11 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 from dependencies import get_container
-from presentation.components.company_header import render_company_header
+from presentation.components.page_header import render_page_header
 
 
 def render():
-    render_company_header("Investimentos")
+    render_page_header("Investimentos")
 
     container = get_container()
     account_use_cases = container.account_use_cases

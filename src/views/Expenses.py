@@ -1,11 +1,11 @@
 import streamlit as st
 from datetime import datetime, timedelta
 from dependencies import get_container
-from presentation.components.company_header import render_company_header
+from presentation.components.page_header import render_page_header
 
 
 def render():
-    render_company_header("Despesas")
+    render_page_header("Despesas")
 
     container = get_container()
     account_use_cases = container.account_use_cases
@@ -85,6 +85,14 @@ def render():
     if st.session_state.get("show_expense_modal", False):
         _render_cadastro_modal(account_use_cases)
 
+    # Modal de edição inline
+    if st.session_state.get("show_edit_expense_modal", False):
+        _render_edit_modal(account_use_cases)
+
+    # Modal de exclusão inline
+    if st.session_state.get("show_delete_expense_modal", False):
+        _render_delete_modal(account_use_cases)
+
 
 def _render_cards_resumo(expenses, today):
     """Renderiza cards de resumo"""
@@ -92,12 +100,45 @@ def _render_cards_resumo(expenses, today):
     total_pago = sum(exp.value for exp in expenses_pagas)
     total_geral = sum(exp.value for exp in expenses)
 
-    expenses_hoje = [
-        exp for exp in expenses if not exp.paid and exp.date.date() == today.date()
-    ]
+    # Despesas a pagar hoje (incluindo final de semana)
+    # Domingo: incluir sábado e domingo
+    # Segunda: incluir sábado e domingo anteriores
+    if today.weekday() == 6:  # Domingo
+        sabado = today - timedelta(days=1)
+        expenses_hoje = [
+            exp
+            for exp in expenses
+            if not exp.paid
+            and (
+                exp.date.date() == today.date()
+                or exp.date.date() == sabado.date()
+            )
+        ]
+    elif today.weekday() == 0:  # Segunda-feira
+        sabado = today - timedelta(days=2)
+        domingo = today - timedelta(days=1)
+        expenses_hoje = [
+            exp
+            for exp in expenses
+            if not exp.paid
+            and (
+                exp.date.date() == today.date()
+                or exp.date.date() == sabado.date()
+                or exp.date.date() == domingo.date()
+            )
+        ]
+    else:
+        # Incluir despesas de hoje + atrasadas (não pagas de dias anteriores)
+        expenses_hoje = [
+            exp for exp in expenses if not exp.paid and exp.date.date() <= today.date()
+        ]
     total_hoje = sum(exp.value for exp in expenses_hoje)
 
-    col1, col2, col3 = st.columns(3)
+    # Total a pagar (todas não pagas do período)
+    expenses_a_pagar = [exp for exp in expenses if not exp.paid]
+    total_a_pagar = sum(exp.value for exp in expenses_a_pagar)
+
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         total_hoje_fmt = (
@@ -117,6 +158,23 @@ def _render_cards_resumo(expenses, today):
         )
 
     with col2:
+        total_a_pagar_fmt = (
+            f"R$ {total_a_pagar:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        st.markdown(
+            f"""
+            <div style="border: 3px solid #6B7280; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #374151; font-weight: 600;">A PAGAR</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #6B7280;">{total_a_pagar_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #374151;">{len(expenses_a_pagar)} despesa(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col3:
         total_pago_fmt = (
             f"R$ {total_pago:,.2f}".replace(",", "X")
             .replace(".", ",")
@@ -133,7 +191,7 @@ def _render_cards_resumo(expenses, today):
             unsafe_allow_html=True,
         )
 
-    with col3:
+    with col4:
         total_geral_fmt = (
             f"R$ {total_geral:,.2f}".replace(",", "X")
             .replace(".", ",")
@@ -170,8 +228,8 @@ def _render_expenses_table(expenses, account_use_cases):
 
         expenses_by_month[month_key]["expenses"].append(expense)
 
-    # Ordenar meses (mais recente primeiro)
-    sorted_months = sorted(expenses_by_month.keys(), reverse=True)
+    # Ordenar meses (mais antigo primeiro - ordem crescente)
+    sorted_months = sorted(expenses_by_month.keys(), reverse=False)
 
     # Renderizar cada mês em um expander com data_editor
     for month_key in sorted_months:
@@ -185,61 +243,50 @@ def _render_expenses_table(expenses, account_use_cases):
         month_total_fmt = f"R$ {month_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
         with st.expander(f"📅 {month_data['label']} - {month_total_fmt}", expanded=True):
-            # Preparar dados para o data_editor
-            table_data = []
-            expense_map = {}  # Para mapear índices de volta aos IDs
+            # Renderizar tabela com checkboxes individuais
+            for expense in month_expenses:
+                _render_expense_row(expense, account_use_cases)
 
-            for idx, expense in enumerate(month_expenses):
-                value_str = (
-                    f"R$ {expense.value:,.2f}".replace(",", "X")
-                    .replace(".", ",")
-                    .replace("X", ".")
-                )
-                table_data.append(
-                    {
-                        "Data": expense.date.strftime("%d/%m/%Y"),
-                        "Descrição": expense.description,
-                        "Valor": value_str,
-                        "Pago": expense.paid,
-                    }
-                )
-                expense_map[idx] = expense.id
 
-            # Salvar estado anterior para detectar mudanças
-            prev_state_key = f"prev_expenses_{month_key}"
-            if prev_state_key not in st.session_state:
-                st.session_state[prev_state_key] = table_data.copy()
+def _render_expense_row(expense, account_use_cases):
+    """Renderiza uma linha de despesa com checkbox"""
+    col1, col2, col3, col4 = st.columns([2, 4, 2, 1])
 
-            # Renderizar tabela editável
-            edited_df = st.data_editor(
-                table_data,
-                use_container_width=True,
-                hide_index=True,
-                disabled=["Data", "Descrição", "Valor"],
-                column_config={
-                    "Data": st.column_config.TextColumn("Data", width="small"),
-                    "Descrição": st.column_config.TextColumn(
-                        "Descrição", width="medium"
-                    ),
-                    "Valor": st.column_config.TextColumn("Valor", width="small"),
-                    "Pago": st.column_config.CheckboxColumn("Pago", width="small"),
-                },
-                key=f"expenses_table_{month_key}",
-            )
+    with col1:
+        st.text(expense.date.strftime("%d/%m/%Y"))
 
-            # Detectar mudanças e atualizar
-            prev_data = st.session_state[prev_state_key]
-            for idx, (original, edited) in enumerate(zip(prev_data, edited_df)):
-                if original["Pago"] != edited["Pago"]:
-                    expense_id = expense_map[idx]
-                    try:
-                        account_use_cases.update_account(
-                            expense_id, paid=edited["Pago"]
-                        )
-                        # Atualizar estado anterior
-                        st.session_state[prev_state_key][idx]["Pago"] = edited["Pago"]
-                    except Exception as e:
-                        st.error(f"Erro ao atualizar: {str(e)}")
+    with col2:
+        st.text(expense.description)
+
+    with col3:
+        value_str = f"R$ {expense.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        st.text(value_str)
+
+    with col4:
+        checkbox_key = f"expense_paid_{expense.id}"
+        sync_key = f"expense_sync_{expense.id}"
+
+        # Inicializar sync_key com valor do banco (só na primeira vez)
+        if sync_key not in st.session_state:
+            st.session_state[sync_key] = expense.paid
+
+        # Inicializar checkbox com valor sincronizado
+        if checkbox_key not in st.session_state:
+            st.session_state[checkbox_key] = st.session_state[sync_key]
+
+        new_paid = st.checkbox(
+            "Pago",
+            key=checkbox_key,
+            label_visibility="collapsed"
+        )
+
+        # Atualizar banco quando valor muda (comparar com sync_key)
+        if new_paid != st.session_state[sync_key]:
+            try:
+                account_use_cases.update_account(expense.id, paid=new_paid)
+                st.session_state[sync_key] = new_paid
+            except Exception as e:
+                st.error(f"Erro: {str(e)}")
 
 
 @st.dialog("Nova Despesa")
@@ -254,6 +301,14 @@ def _render_cadastro_modal(account_use_cases):
 
         descricao = st.text_input(
             "Descrição", placeholder="Ex: Combustível, Alimentação, etc."
+        )
+
+        recorrencia = st.number_input(
+            "Recorrência (meses)",
+            min_value=1,
+            value=1,
+            step=1,
+            help="Quantidade de meses para repetir esta despesa (1 = apenas este mês)"
         )
 
         col1, col2 = st.columns(2)
@@ -274,13 +329,17 @@ def _render_cadastro_modal(account_use_cases):
             else:
                 try:
                     date_datetime = datetime.combine(data_despesa, datetime.min.time())
-                    account_use_cases.create_account(
+                    account_use_cases.create_recurring_account(
                         value=valor,
                         date=date_datetime,
                         description=descricao.strip(),
                         account_type="payment",
+                        recurrence=int(recorrencia),
                     )
-                    st.success("Despesa cadastrada com sucesso!")
+                    if recorrencia > 1:
+                        st.success(f"Despesa cadastrada para {int(recorrencia)} meses!")
+                    else:
+                        st.success("Despesa cadastrada com sucesso!")
                     st.session_state.show_expense_modal = False
                     st.rerun()
                 except Exception as e:
@@ -289,6 +348,127 @@ def _render_cadastro_modal(account_use_cases):
         if cancel:
             st.session_state.show_expense_modal = False
             st.rerun()
+
+
+@st.dialog("Editar Despesa")
+def _render_edit_modal(account_use_cases):
+    """Modal para edição de despesa"""
+    expense_id = st.session_state.get("edit_expense_id")
+    if not expense_id:
+        st.session_state.show_edit_expense_modal = False
+        st.rerun()
+        return
+
+    try:
+        # Buscar despesa
+        all_accounts = account_use_cases.list_accounts(None, None)
+        expense = next((acc for acc in all_accounts if acc.id == expense_id and acc.type == "payment"), None)
+
+        if not expense:
+            st.error("Despesa não encontrada!")
+            st.session_state.show_edit_expense_modal = False
+            st.rerun()
+            return
+
+        st.write("Editar dados da despesa:")
+
+        with st.form("form_edit_despesa"):
+            data_despesa = st.date_input("Data", value=expense.date.date(), format="DD/MM/YYYY")
+            valor = st.number_input("Valor (R$)", min_value=0.01, step=0.01, format="%.2f", value=float(expense.value))
+            descricao = st.text_input("Descrição", value=expense.description)
+            pago = st.checkbox("Pago", value=expense.paid)
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                submit = st.form_submit_button("Salvar", use_container_width=True, type="primary")
+
+            with col2:
+                cancel = st.form_submit_button("Cancelar", use_container_width=True)
+
+            if submit:
+                if not descricao or not descricao.strip():
+                    st.error("Descrição é obrigatória!")
+                elif valor <= 0:
+                    st.error("Valor deve ser maior que zero!")
+                else:
+                    try:
+                        date_datetime = datetime.combine(data_despesa, datetime.min.time())
+                        account_use_cases.update_account(
+                            expense_id,
+                            value=valor,
+                            date=date_datetime,
+                            description=descricao.strip(),
+                            paid=pago
+                        )
+                        st.success("Despesa atualizada com sucesso!")
+                        st.session_state.show_edit_expense_modal = False
+                        del st.session_state.edit_expense_id
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Erro ao atualizar: {str(e)}")
+
+            if cancel:
+                st.session_state.show_edit_expense_modal = False
+                del st.session_state.edit_expense_id
+                st.rerun()
+
+    except Exception as e:
+        st.error(f"Erro ao carregar despesa: {str(e)}")
+        st.session_state.show_edit_expense_modal = False
+        st.rerun()
+
+
+@st.dialog("Confirmar Exclusão")
+def _render_delete_modal(account_use_cases):
+    """Modal para confirmação de exclusão"""
+    expense_id = st.session_state.get("delete_expense_id")
+    if not expense_id:
+        st.session_state.show_delete_expense_modal = False
+        st.rerun()
+        return
+
+    try:
+        # Buscar despesa
+        all_accounts = account_use_cases.list_accounts(None, None)
+        expense = next((acc for acc in all_accounts if acc.id == expense_id and acc.type == "payment"), None)
+
+        if not expense:
+            st.error("Despesa não encontrada!")
+            st.session_state.show_delete_expense_modal = False
+            st.rerun()
+            return
+
+        value_str = f"R$ {expense.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        date_str = expense.date.strftime("%d/%m/%Y")
+
+        st.write("Tem certeza que deseja excluir esta despesa?")
+        st.write(f"**{date_str} - {expense.description} - {value_str}**")
+        st.warning("⚠️ Esta ação não pode ser desfeita!")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            if st.button("Sim, excluir", type="primary", use_container_width=True):
+                try:
+                    account_use_cases.delete_account(expense_id)
+                    st.success("Despesa excluída com sucesso!")
+                    st.session_state.show_delete_expense_modal = False
+                    del st.session_state.delete_expense_id
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Erro ao excluir: {str(e)}")
+
+        with col2:
+            if st.button("Cancelar", use_container_width=True):
+                st.session_state.show_delete_expense_modal = False
+                del st.session_state.delete_expense_id
+                st.rerun()
+
+    except Exception as e:
+        st.error(f"Erro: {str(e)}")
+        st.session_state.show_delete_expense_modal = False
+        st.rerun()
 
 
 def _render_delete_section(expenses, account_use_cases):
@@ -302,6 +482,7 @@ def _render_delete_section(expenses, account_use_cases):
     expense_options = []
     expense_map = {}
 
+    # Ordenar por data decrescente (mais recentes primeiro no select)
     for expense in sorted(expenses, key=lambda x: x.date, reverse=True):
         value_str = f"R$ {expense.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
         date_str = expense.date.strftime("%d/%m/%Y")

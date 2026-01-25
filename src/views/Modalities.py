@@ -1,11 +1,11 @@
 import streamlit as st
 from dependencies import get_container
-from presentation.components.company_header import render_company_header
+from presentation.components.page_header import render_page_header
 from collections import defaultdict
 
 
 def render():
-    render_company_header("Modalidades de Pagamento")
+    render_page_header("Modalidades de Pagamento")
 
     # Verificar se o usuário é admin
     current_user = st.session_state.get("current_user")

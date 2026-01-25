@@ -194,6 +194,20 @@ def render():
                             # Salvar toast para exibir após rerun
                             st.session_state.toast_message = f"✅ Lançamento salvo: {value_formatted}"
 
+                        # Limpar campos do formulário
+                        if "entry_value" in st.session_state:
+                            del st.session_state.entry_value
+                        if "entry_date" in st.session_state:
+                            st.session_state.entry_date_value = datetime.now()
+                        if "modality_selector" in st.session_state:
+                            del st.session_state.modality_selector
+                        if "is_credit_payment" in st.session_state:
+                            del st.session_state.is_credit_payment
+                        if "installments_count" in st.session_state:
+                            del st.session_state.installments_count
+                        if "start_date" in st.session_state:
+                            del st.session_state.start_date
+
                         st.rerun()
                     except Exception as e:
                         st.error(f"Erro ao salvar: {str(e)}")
@@ -357,17 +371,19 @@ def render():
                                 )
                                 return f"rgba({r}, {g}, {b}, {opacity})"
 
-                            bg_color = hex_to_rgba(modality_color, 0.6)
-
-                            # Adicionar texto "Pgto Crediário" se for pagamento de crediário
-                            credit_payment_text = ""
+                            # Se for pagamento de crediário, usar cor verde; senão, usar cor da modalidade
                             if entry.credit_payment:
-                                credit_payment_text = "<br><span style='font-size: 11px; font-weight: normal;'>Pgto Crediário</span>"
+                                # Verde para recebimento de crediário
+                                bg_color = "rgba(34, 197, 94, 0.7)"  # Verde mais forte
+                                display_text = f"Recebimento Crediário<br><span style='font-size: 11px; font-weight: normal;'>{modality_name}</span>"
+                            else:
+                                bg_color = hex_to_rgba(modality_color, 0.6)
+                                display_text = modality_name
 
                             html_content += (
                                 f"<td style='padding: 10px; text-align: center; border: 1px solid #ddd; min-width: 180px; white-space: nowrap; "
                                 f"background-color: {bg_color}; color: #333; font-weight: bold;'>"
-                                f"{modality_name}{credit_payment_text}</td>"
+                                f"{display_text}</td>"
                             )
                         else:
                             html_content += "<td style='padding: 10px; border: 1px solid #ddd; min-width: 180px;'></td>"
@@ -436,8 +452,8 @@ def render():
                 entry_options = []
                 entry_map = {}
 
-                # Ordena por created_at crescente para listagem de exclusão (primeiro embaixo, mais recente em cima)
-                for entry in sorted(entries, key=lambda x: x.created_at or x.date, reverse=False):
+                # Ordena por created_at decrescente para listagem de exclusão (mais recente primeiro no select)
+                for entry in sorted(entries, key=lambda x: x.created_at or x.date, reverse=True):
                     # Usar o nome da modalidade atual, não o nome salvo no entry
                     modality_name = modality_name_map.get(
                         entry.modality_id, entry.modality_name

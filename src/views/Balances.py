@@ -1,11 +1,11 @@
 import streamlit as st
 from datetime import datetime
 from dependencies import get_container
-from presentation.components.company_header import render_company_header
+from presentation.components.page_header import render_page_header
 
 
 def render():
-    render_company_header("Saldos e Limites")
+    render_page_header("Saldos e Limites")
 
     container = get_container()
 

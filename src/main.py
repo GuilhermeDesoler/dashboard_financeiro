@@ -43,14 +43,24 @@ PUBLIC_PAGES = {
     "Login": Login,
 }
 
-AUTHENTICATED_PAGES = {
+# Páginas para Super Admin (quando está em modo impersonate)
+SUPER_ADMIN_PAGES = {
     "Dashboard": Dashboard,
-    "Lançamentos": Database,
-    "Modalidades": Modalities,
     "Despesas": Expenses,
-    "Investimentos": Investments,
-    "Saldos e Limites": Balances,
     "Boletos": Ticket,
+    "Saldos e Limites": Balances,
+    "Lançamentos": Database,
+    "Investimentos": Investments,
+    "Modalidades": Modalities,
+}
+
+# Páginas para usuários normais
+USER_PAGES = {
+    "Lançamentos": Database,
+    "Despesas": Expenses,
+    "Boletos": Ticket,
+    "Saldos e Limites": Balances,
+    "Investimentos": Investments,
 }
 
 ADMIN_PAGES = {
@@ -128,7 +138,13 @@ else:
             not current_user.is_super_admin or "impersonate_token" in st.session_state
         ):
             st.markdown("#### Sistema")
-            for page_name in AUTHENTICATED_PAGES.keys():
+            # Definir quais páginas mostrar baseado no tipo de usuário
+            if current_user.is_super_admin and "impersonate_token" in st.session_state:
+                pages_to_show = SUPER_ADMIN_PAGES
+            else:
+                pages_to_show = USER_PAGES
+
+            for page_name in pages_to_show.keys():
                 if st.button(
                     page_name, use_container_width=True, key=f"page_{page_name}"
                 ):
@@ -147,7 +163,10 @@ else:
 
             st.rerun()
 
-    if st.session_state.current_page in AUTHENTICATED_PAGES:
+    # Determinar quais páginas estão disponíveis
+    all_pages = {**SUPER_ADMIN_PAGES, **USER_PAGES}
+
+    if st.session_state.current_page in all_pages:
         if (
             current_user
             and current_user.is_super_admin
@@ -171,7 +190,7 @@ else:
                 st.session_state.current_page = "Admin"
                 st.rerun()
         else:
-            AUTHENTICATED_PAGES[st.session_state.current_page].render()
+            all_pages[st.session_state.current_page].render()
     elif st.session_state.current_page in ADMIN_PAGES:
         ADMIN_PAGES[st.session_state.current_page]()
     else:
