@@ -376,6 +376,10 @@ def render():
                                 # Verde para recebimento de crediário
                                 bg_color = "rgba(34, 197, 94, 0.7)"  # Verde mais forte
                                 display_text = f"Recebimento Crediário<br><span style='font-size: 11px; font-weight: normal;'>{modality_name}</span>"
+                            elif entry.is_credit_plan:
+                                # Mostrar "Pgto Crediário" abaixo do nome da modalidade
+                                bg_color = hex_to_rgba(modality_color, 0.6)
+                                display_text = f"{modality_name}<br><span style='font-size: 11px; font-weight: normal;'>Pgto Crediário</span>"
                             else:
                                 bg_color = hex_to_rgba(modality_color, 0.6)
                                 display_text = modality_name
