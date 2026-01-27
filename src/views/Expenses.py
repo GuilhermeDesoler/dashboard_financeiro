@@ -96,68 +96,24 @@ def render():
 
 def _render_cards_resumo(expenses, today):
     """Renderiza cards de resumo"""
+    # A pagar: não pagas com data <= hoje
+    expenses_a_pagar = [exp for exp in expenses if not exp.paid and exp.date.date() <= today.date()]
+    total_a_pagar = sum(exp.value for exp in expenses_a_pagar)
+
+    # A vencer: não pagas com data > hoje
+    expenses_a_vencer = [exp for exp in expenses if not exp.paid and exp.date.date() > today.date()]
+    total_a_vencer = sum(exp.value for exp in expenses_a_vencer)
+
+    # Total pago: todas pagas
     expenses_pagas = [exp for exp in expenses if exp.paid]
     total_pago = sum(exp.value for exp in expenses_pagas)
+
+    # Total geral
     total_geral = sum(exp.value for exp in expenses)
-
-    # Despesas a pagar hoje (incluindo final de semana)
-    # Domingo: incluir sábado e domingo
-    # Segunda: incluir sábado e domingo anteriores
-    if today.weekday() == 6:  # Domingo
-        sabado = today - timedelta(days=1)
-        expenses_hoje = [
-            exp
-            for exp in expenses
-            if not exp.paid
-            and (
-                exp.date.date() == today.date()
-                or exp.date.date() == sabado.date()
-            )
-        ]
-    elif today.weekday() == 0:  # Segunda-feira
-        sabado = today - timedelta(days=2)
-        domingo = today - timedelta(days=1)
-        expenses_hoje = [
-            exp
-            for exp in expenses
-            if not exp.paid
-            and (
-                exp.date.date() == today.date()
-                or exp.date.date() == sabado.date()
-                or exp.date.date() == domingo.date()
-            )
-        ]
-    else:
-        # Incluir despesas de hoje + atrasadas (não pagas de dias anteriores)
-        expenses_hoje = [
-            exp for exp in expenses if not exp.paid and exp.date.date() <= today.date()
-        ]
-    total_hoje = sum(exp.value for exp in expenses_hoje)
-
-    # Total a pagar (todas não pagas do período)
-    expenses_a_pagar = [exp for exp in expenses if not exp.paid]
-    total_a_pagar = sum(exp.value for exp in expenses_a_pagar)
 
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        total_hoje_fmt = (
-            f"R$ {total_hoje:,.2f}".replace(",", "X")
-            .replace(".", ",")
-            .replace("X", ".")
-        )
-        st.markdown(
-            f"""
-            <div style="border: 3px solid #DC2626; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #991B1B; font-weight: 600;">A PAGAR HOJE</p>
-                <h1 style="margin: 10px 0; font-size: 32px; color: #DC2626;">{total_hoje_fmt}</h1>
-                <p style="margin: 0; font-size: 12px; color: #991B1B;">{len(expenses_hoje)} despesa(s)</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with col2:
         total_a_pagar_fmt = (
             f"R$ {total_a_pagar:,.2f}".replace(",", "X")
             .replace(".", ",")
@@ -165,10 +121,27 @@ def _render_cards_resumo(expenses, today):
         )
         st.markdown(
             f"""
+            <div style="border: 3px solid #DC2626; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #991B1B; font-weight: 600;">A PAGAR</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #DC2626;">{total_a_pagar_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #991B1B;">{len(expenses_a_pagar)} despesa(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        total_a_vencer_fmt = (
+            f"R$ {total_a_vencer:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        st.markdown(
+            f"""
             <div style="border: 3px solid #6B7280; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #374151; font-weight: 600;">A PAGAR</p>
-                <h1 style="margin: 10px 0; font-size: 32px; color: #6B7280;">{total_a_pagar_fmt}</h1>
-                <p style="margin: 0; font-size: 12px; color: #374151;">{len(expenses_a_pagar)} despesa(s)</p>
+                <p style="margin: 0; font-size: 14px; color: #374151; font-weight: 600;">A VENCER</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #6B7280;">{total_a_vencer_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #374151;">{len(expenses_a_vencer)} despesa(s)</p>
             </div>
             """,
             unsafe_allow_html=True,
@@ -183,7 +156,7 @@ def _render_cards_resumo(expenses, today):
         st.markdown(
             f"""
             <div style="border: 3px solid #10B981; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">JÁ PAGAS</p>
+                <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">TOTAL PAGO</p>
                 <h1 style="margin: 10px 0; font-size: 32px; color: #10B981;">{total_pago_fmt}</h1>
                 <p style="margin: 0; font-size: 12px; color: #047857;">{len(expenses_pagas)} despesa(s)</p>
             </div>
@@ -199,10 +172,10 @@ def _render_cards_resumo(expenses, today):
         )
         st.markdown(
             f"""
-            <div style="border: 3px solid #9333EA; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #6b21a8; font-weight: 600;">TOTAL</p>
-                <h1 style="margin: 10px 0; font-size: 32px; color: #9333EA;">{total_geral_fmt}</h1>
-                <p style="margin: 0; font-size: 12px; color: #6b21a8;">{len(expenses)} despesa(s)</p>
+            <div style="border: 3px solid #F59E0B; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #92400E; font-weight: 600;">TOTAL</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #F59E0B;">{total_geral_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #92400E;">{len(expenses)} despesa(s)</p>
             </div>
             """,
             unsafe_allow_html=True,

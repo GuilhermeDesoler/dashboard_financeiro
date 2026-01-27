@@ -96,69 +96,24 @@ def render():
 
 def _render_cards_resumo(boletos, today):
     """Renderiza cards de resumo"""
-    # Calcular boletos pagos e a pagar
-    boletos_pagos = [b for b in boletos if b.paid]
-
-    total_pago = sum(b.value for b in boletos_pagos)
-
-    # Boletos a pagar hoje (incluindo final de semana)
-    # Domingo: incluir sábado e domingo
-    # Segunda: incluir sábado e domingo anteriores
-    if today.weekday() == 6:  # Domingo
-        sabado = today - timedelta(days=1)
-        boletos_hoje = [
-            b
-            for b in boletos
-            if not b.paid
-            and (
-                b.date.date() == today.date()
-                or b.date.date() == sabado.date()
-            )
-        ]
-    elif today.weekday() == 0:  # Segunda-feira
-        sabado = today - timedelta(days=2)
-        domingo = today - timedelta(days=1)
-        boletos_hoje = [
-            b
-            for b in boletos
-            if not b.paid
-            and (
-                b.date.date() == today.date()
-                or b.date.date() == sabado.date()
-                or b.date.date() == domingo.date()
-            )
-        ]
-    else:
-        boletos_hoje = [
-            b for b in boletos if not b.paid and b.date.date() == today.date()
-        ]
-
-    total_hoje = sum(b.value for b in boletos_hoje)
-
-    # Total a pagar (todos não pagos do período)
-    boletos_a_pagar = [b for b in boletos if not b.paid]
+    # A pagar: não pagos com data <= hoje
+    boletos_a_pagar = [b for b in boletos if not b.paid and b.date.date() <= today.date()]
     total_a_pagar = sum(b.value for b in boletos_a_pagar)
 
-    col1, col2, col3 = st.columns(3)
+    # A vencer: não pagos com data > hoje
+    boletos_a_vencer = [b for b in boletos if not b.paid and b.date.date() > today.date()]
+    total_a_vencer = sum(b.value for b in boletos_a_vencer)
+
+    # Total pago: todos pagos
+    boletos_pagos = [b for b in boletos if b.paid]
+    total_pago = sum(b.value for b in boletos_pagos)
+
+    # Total geral
+    total_geral = sum(b.value for b in boletos)
+
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        total_hoje_fmt = (
-            f"R$ {total_hoje:,.2f}".replace(",", "X")
-            .replace(".", ",")
-            .replace("X", ".")
-        )
-        st.markdown(
-            f"""
-            <div style="border: 3px solid #DC2626; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #991B1B; font-weight: 600;">A PAGAR HOJE</p>
-                <h1 style="margin: 10px 0; font-size: 32px; color: #DC2626;">{total_hoje_fmt}</h1>
-                <p style="margin: 0; font-size: 12px; color: #991B1B;">{len(boletos_hoje)} boleto(s)</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with col2:
         total_a_pagar_fmt = (
             f"R$ {total_a_pagar:,.2f}".replace(",", "X")
             .replace(".", ",")
@@ -166,10 +121,27 @@ def _render_cards_resumo(boletos, today):
         )
         st.markdown(
             f"""
+            <div style="border: 3px solid #DC2626; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #991B1B; font-weight: 600;">A PAGAR</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #DC2626;">{total_a_pagar_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #991B1B;">{len(boletos_a_pagar)} boleto(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        total_a_vencer_fmt = (
+            f"R$ {total_a_vencer:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        st.markdown(
+            f"""
             <div style="border: 3px solid #6B7280; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #374151; font-weight: 600;">A PAGAR</p>
-                <h1 style="margin: 10px 0; font-size: 32px; color: #6B7280;">{total_a_pagar_fmt}</h1>
-                <p style="margin: 0; font-size: 12px; color: #374151;">{len(boletos_a_pagar)} boleto(s)</p>
+                <p style="margin: 0; font-size: 14px; color: #374151; font-weight: 600;">A VENCER</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #6B7280;">{total_a_vencer_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #374151;">{len(boletos_a_vencer)} boleto(s)</p>
             </div>
             """,
             unsafe_allow_html=True,
@@ -184,9 +156,26 @@ def _render_cards_resumo(boletos, today):
         st.markdown(
             f"""
             <div style="border: 3px solid #10B981; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); text-align: center;">
-                <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">JÁ PAGOS</p>
+                <p style="margin: 0; font-size: 14px; color: #047857; font-weight: 600;">TOTAL PAGO</p>
                 <h1 style="margin: 10px 0; font-size: 32px; color: #10B981;">{total_pago_fmt}</h1>
                 <p style="margin: 0; font-size: 12px; color: #047857;">{len(boletos_pagos)} boleto(s)</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col4:
+        total_geral_fmt = (
+            f"R$ {total_geral:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        st.markdown(
+            f"""
+            <div style="border: 3px solid #F59E0B; border-radius: 12px; padding: 20px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #92400E; font-weight: 600;">TOTAL</p>
+                <h1 style="margin: 10px 0; font-size: 32px; color: #F59E0B;">{total_geral_fmt}</h1>
+                <p style="margin: 0; font-size: 12px; color: #92400E;">{len(boletos)} boleto(s)</p>
             </div>
             """,
             unsafe_allow_html=True,

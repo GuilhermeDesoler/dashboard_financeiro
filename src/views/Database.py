@@ -88,7 +88,7 @@ def render():
                         "Número de Parcelas",
                         min_value=1,
                         max_value=100,
-                        value=10,
+                        value=2,
                         step=1,
                         help="Quantas parcelas serão geradas para este crediário",
                         key="installments_count",
@@ -221,25 +221,30 @@ def render():
         st.divider()
         st.subheader("Lançamentos Registrados", anchor=False)
 
+        # Calcular primeiro e último dia do mês atual
+        today = datetime.now()
+        start_of_month = datetime(today.year, today.month, 1).date()
+        end_of_month = (today.replace(day=1, month=today.month % 12 + 1, year=today.year + (today.month // 12)) - timedelta(days=1)).date()
+
         st.markdown("### Filtros")
         col1, col2, col3 = st.columns([2, 2, 1])
 
         with col1:
             start_date = st.date_input(
-                "Data Início", value=None, format="DD/MM/YYYY", key="filtro_inicio"
+                "Data Início", value=start_of_month, format="DD/MM/YYYY", key="filtro_inicio"
             )
 
         with col2:
             end_date = st.date_input(
-                "Data Fim", value=None, format="DD/MM/YYYY", key="filtro_fim"
+                "Data Fim", value=end_of_month, format="DD/MM/YYYY", key="filtro_fim"
             )
 
         with col3:
             st.write("")
             st.write("")
             if st.button("Limpar", use_container_width=True):
-                st.session_state.filtro_inicio = None
-                st.session_state.filtro_fim = None
+                st.session_state.filtro_inicio = start_of_month
+                st.session_state.filtro_fim = end_of_month
                 st.rerun()
 
         try:
@@ -265,9 +270,8 @@ def render():
             if not entries:
                 st.info("Nenhum lançamento encontrado no período selecionado.")
             else:
-                total = entry_use_cases.get_total_by_period(
-                    start_datetime, end_datetime
-                )
+                # Calcular total diretamente dos lançamentos filtrados
+                total = sum(e.value for e in entries)
                 st.markdown(
                     f"### Total Geral: R$ {total:,.2f}".replace(",", "X")
                     .replace(".", ",")
