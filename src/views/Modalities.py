@@ -19,12 +19,6 @@ def render():
 
     container = get_container()
     modality_use_cases = container.payment_modality_use_cases
-    settings_use_cases = container.platform_settings_use_cases
-
-    # Platform Settings Section
-    _render_platform_settings(settings_use_cases)
-
-    st.divider()
 
     # Botão para criar nova modalidade
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -43,83 +37,6 @@ def render():
 
     if st.session_state.get("show_edit_modal", False):
         _show_edit_modality_modal(modality_use_cases)
-
-
-def _render_platform_settings(settings_use_cases):
-    """Render platform settings section with anticipation toggle"""
-    st.subheader("Configurações da Plataforma", anchor=False)
-
-    try:
-        settings = settings_use_cases.get_settings()
-
-        col1, col2 = st.columns([3, 1])
-
-        with col1:
-            st.markdown(
-                """
-                <div style="padding: 15px; background-color: #f0f2f6; border-radius: 8px;">
-                    <h4 style="margin: 0 0 8px 0;">Antecipação de Valores</h4>
-                    <p style="margin: 0; color: #666; font-size: 14px;">
-                        Permite que os usuários antecipem valores futuros no sistema.
-                        Quando ativado, as modalidades que permitem antecipação estarão disponíveis.
-                    </p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            status_text = (
-                "Ativada" if settings.is_anticipation_enabled else "Desativada"
-            )
-            status_color = (
-                "#4CAF50" if settings.is_anticipation_enabled else "Desativada"
-            )
-
-            st.markdown(
-                f"""
-                <div style="
-                    padding: 10px;
-                    background-color: {status_color}20;
-                    border-radius: 8px;
-                    text-align: center;
-                    margin-bottom: 10px;
-                ">
-                    <span style="color: {status_color}; font-weight: bold; font-size: 14px;">
-                        {status_text}
-                    </span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-            toggle_label = "Desativar" if settings.is_anticipation_enabled else "Ativar"
-            button_type = "secondary" if settings.is_anticipation_enabled else "primary"
-
-            if st.button(
-                toggle_label,
-                key="toggle_anticipation",
-                use_container_width=True,
-                type=button_type,
-            ):
-                try:
-                    updated_settings = settings_use_cases.toggle_anticipation()
-                    action = (
-                        "ativada"
-                        if updated_settings.is_anticipation_enabled
-                        else "desativada"
-                    )
-                    st.success(f"Antecipação {action} com sucesso!")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Erro ao alterar configuração: {str(e)}")
-
-    except Exception as e:
-        st.error(f"Erro ao carregar configurações: {str(e)}")
-        st.info(
-            "Verifique se a URL da API está configurada corretamente no arquivo .env"
-        )
-
 
 def _render_modalities_by_bank(use_cases):
     """Renderiza modalidades agrupadas por banco"""
