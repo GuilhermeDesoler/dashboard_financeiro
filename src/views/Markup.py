@@ -36,7 +36,7 @@ def _render_config_modal(platform_settings_use_cases, settings):
             "Percentual de Aumento (%)",
             min_value=0.0,
             max_value=100.0,
-            value=float(settings.markup_percentage * 100),
+            value=float(settings.markup_percentage),
             step=0.5,
             format="%.2f",
             help="Percentual de aumento sobre o total (ex: 5 = 5%)",
@@ -56,7 +56,7 @@ def _render_config_modal(platform_settings_use_cases, settings):
                 platform_settings_use_cases.update_markup_settings(
                     markup_default=new_markup,
                     markup_cost=new_cost,
-                    markup_percentage=new_percentage / 100
+                    markup_percentage=new_percentage  # Envia em % inteira, back divide por 100
                 )
                 st.session_state.show_markup_config_modal = False
                 st.success("Configurações salvas com sucesso!")
@@ -135,7 +135,7 @@ def render():
                     "Percentual de Aumento (%)",
                     min_value=0.0,
                     max_value=100.0,
-                    value=float(default_percentage * 100),
+                    value=float(default_percentage),
                     step=0.5,
                     format="%.2f",
                     help="Percentual de aumento",
@@ -148,8 +148,8 @@ def render():
                 warnings.append(f"Markup ({markup:.2f}) está abaixo do padrão ({default_markup:.2f})")
             if default_cost > 0 and custo < default_cost:
                 warnings.append(f"Custo ({custo:.2f}) está abaixo do padrão ({default_cost:.2f})")
-            if default_percentage > 0 and (percentual / 100) < default_percentage:
-                warnings.append(f"Percentual ({percentual:.2f}%) está abaixo do padrão ({default_percentage * 100:.2f}%)")
+            if default_percentage > 0 and percentual < default_percentage:
+                warnings.append(f"Percentual ({percentual:.2f}%) está abaixo do padrão ({default_percentage:.2f}%)")
 
             # Mostrar avisos
             if warnings:
@@ -157,7 +157,7 @@ def render():
                     st.warning(f"⚠️ {warning}")
 
             # Calcular resultado
-            A = 1 - percentual
+            A = 1 -(percentual / 100)
             preco_venda = (valor_compra * markup + custo) / A
 
             # Card com resultado
