@@ -1,3 +1,4 @@
+from typing import Optional
 from domain.entities.platform_settings import PlatformSettings
 from domain.repositories.platform_settings_repository import PlatformSettingsRepository
 
@@ -10,6 +11,15 @@ class PlatformSettingsUseCases:
         """Get platform settings"""
         return self.repository.get_settings()
 
-    def toggle_anticipation(self) -> PlatformSettings:
-        """Toggle anticipation feature on/off"""
-        return self.repository.toggle_anticipation()
+    def update_markup_settings(
+        self,
+        markup_default: Optional[float] = None,
+        markup_cost: Optional[float] = None,
+        markup_percentage: Optional[float] = None
+    ) -> PlatformSettings:
+        """Update markup settings (admin only)"""
+        return self.repository.update_markup_settings(
+            markup_default=markup_default,
+            markup_cost=markup_cost,
+            markup_percentage=markup_percentage
+        )
