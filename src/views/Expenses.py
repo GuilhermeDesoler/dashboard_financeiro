@@ -222,20 +222,54 @@ def _render_expenses_table(expenses, account_use_cases):
 
 
 def _render_expense_row(expense, account_use_cases):
-    """Renderiza uma linha de despesa com checkbox"""
-    col1, col2, col3, col4 = st.columns([2, 4, 2, 1])
+    """Renderiza uma linha de despesa com checkbox e botões de ação"""
+    col1, col2, col3, col4, col5 = st.columns([0.5, 1.8, 3.5, 2, 1])
 
     with col1:
-        st.text(expense.date.strftime("%d/%m/%Y"))
+        # Botão de delete
+        if st.button("🗑️", key=f"delete_btn_expense_{expense.id}", help="Excluir despesa"):
+            st.session_state.delete_expense_id = expense.id
+            st.session_state.show_delete_expense_modal = True
+            st.rerun()
 
     with col2:
-        st.text(expense.description)
+        st.text(expense.date.strftime("%d/%m/%Y"))
 
     with col3:
-        value_str = f"R$ {expense.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        st.text(value_str)
+        st.text(expense.description)
 
     with col4:
+        # Valor editável inline
+        value_key = f"expense_value_{expense.id}"
+        value_sync_key = f"expense_value_sync_{expense.id}"
+
+        # Inicializar sync_key com valor do banco
+        if value_sync_key not in st.session_state:
+            st.session_state[value_sync_key] = float(expense.value)
+
+        # Inicializar value_key
+        if value_key not in st.session_state:
+            st.session_state[value_key] = st.session_state[value_sync_key]
+
+        new_value = st.number_input(
+            "Valor",
+            min_value=0.01,
+            step=0.01,
+            format="%.2f",
+            key=value_key,
+            label_visibility="collapsed"
+        )
+
+        # Atualizar banco quando valor muda
+        if abs(new_value - st.session_state[value_sync_key]) > 0.001:
+            try:
+                account_use_cases.update_account(expense.id, value=new_value)
+                st.session_state[value_sync_key] = new_value
+                st.rerun()
+            except Exception as e:
+                st.error(f"Erro: {str(e)}")
+
+    with col5:
         checkbox_key = f"expense_paid_{expense.id}"
         sync_key = f"expense_sync_{expense.id}"
 

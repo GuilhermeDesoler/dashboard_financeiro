@@ -60,3 +60,12 @@ class AuthAPIRepository(AuthRepository):
         finally:
             # Restore original token
             self._http_client.set_auth_token(original_token)
+
+    def change_password(self, current_password: str, new_password: str) -> bool:
+        """Change password via API"""
+        data = {
+            "current_password": current_password,
+            "new_password": new_password
+        }
+        response = self._http_client.post("/api/auth/change-password", data)
+        return response.get("message") == "Senha alterada com sucesso"

@@ -1,5 +1,5 @@
 import streamlit as st
-from views import Dashboard, Database, Ticket, Modalities, Expenses, Investments, Balances, Markup
+from views import Dashboard, Database, Ticket, Modalities, Expenses, Investments, Balances, Markup, Profile
 from views.Login import Login
 from views.Admin import Admin
 from config import Environment, EnvironmentError
@@ -53,6 +53,7 @@ SUPER_ADMIN_PAGES = {
     "Investimentos": Investments,
     "Modalidades": Modalities,
     "Utilitários": Markup,
+    "Perfil": Profile,
 }
 
 # Páginas para usuários normais
@@ -63,6 +64,7 @@ USER_PAGES = {
     "Saldos e Limites": Balances,
     "Investimentos": Investments,
     "Utilitários": Markup,
+    "Perfil": Profile,
 }
 
 ADMIN_PAGES = {

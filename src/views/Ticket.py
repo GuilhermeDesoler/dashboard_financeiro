@@ -222,20 +222,54 @@ def _render_boletos_table(boletos, account_use_cases):
 
 
 def _render_boleto_row(boleto, account_use_cases):
-    """Renderiza uma linha de boleto com checkbox"""
-    col1, col2, col3, col4 = st.columns([2, 4, 2, 1])
+    """Renderiza uma linha de boleto com checkbox e botões de ação"""
+    col1, col2, col3, col4, col5 = st.columns([0.5, 1.8, 3.5, 2, 1])
 
     with col1:
-        st.text(boleto.date.strftime("%d/%m/%Y"))
+        # Botão de delete
+        if st.button("🗑️", key=f"delete_btn_boleto_{boleto.id}", help="Excluir boleto"):
+            st.session_state.delete_boleto_id = boleto.id
+            st.session_state.show_delete_boleto_modal = True
+            st.rerun()
 
     with col2:
-        st.text(boleto.description)
+        st.text(boleto.date.strftime("%d/%m/%Y"))
 
     with col3:
-        value_str = f"R$ {boleto.value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        st.text(value_str)
+        st.text(boleto.description)
 
     with col4:
+        # Valor editável inline
+        value_key = f"boleto_value_{boleto.id}"
+        value_sync_key = f"boleto_value_sync_{boleto.id}"
+
+        # Inicializar sync_key com valor do banco
+        if value_sync_key not in st.session_state:
+            st.session_state[value_sync_key] = float(boleto.value)
+
+        # Inicializar value_key
+        if value_key not in st.session_state:
+            st.session_state[value_key] = st.session_state[value_sync_key]
+
+        new_value = st.number_input(
+            "Valor",
+            min_value=0.01,
+            step=0.01,
+            format="%.2f",
+            key=value_key,
+            label_visibility="collapsed"
+        )
+
+        # Atualizar banco quando valor muda
+        if abs(new_value - st.session_state[value_sync_key]) > 0.001:
+            try:
+                account_use_cases.update_account(boleto.id, value=new_value)
+                st.session_state[value_sync_key] = new_value
+                st.rerun()
+            except Exception as e:
+                st.error(f"Erro: {str(e)}")
+
+    with col5:
         checkbox_key = f"boleto_paid_{boleto.id}"
         sync_key = f"boleto_sync_{boleto.id}"
 

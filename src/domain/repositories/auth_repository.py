@@ -61,3 +61,20 @@ class AuthRepository(ABC):
             ImpersonateToken with 1-hour token for the company
         """
         pass
+
+    @abstractmethod
+    def change_password(self, current_password: str, new_password: str) -> bool:
+        """
+        Change user password
+
+        Args:
+            current_password: Current password
+            new_password: New password
+
+        Returns:
+            True if password was changed successfully
+
+        Raises:
+            Exception if current password is incorrect or new password is invalid
+        """
+        pass
