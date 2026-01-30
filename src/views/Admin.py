@@ -205,15 +205,15 @@ def Admin():
     with tab2:
         st.subheader("Criar Novo Usuário", divider=False)
 
-        with st.form("create_user_form", clear_on_submit=True):
-            # Fetch companies for dropdown
-            try:
-                companies_for_user = admin_use_cases.get_all_companies(only_active=True)
-                company_options = {c.name: c.id for c in companies_for_user}
-            except Exception:
-                company_options = {}
-                st.error("Erro ao carregar empresas")
+        # Fetch companies for dropdown (outside form to avoid error feedback loop)
+        try:
+            companies_for_user = admin_use_cases.get_all_companies(only_active=True)
+            company_options = {c.name: c.id for c in companies_for_user}
+        except Exception as e:
+            company_options = {}
+            st.error(f"Erro ao carregar empresas: {str(e)}")
 
+        with st.form("create_user_form", clear_on_submit=True):
             user_company = st.selectbox(
                 "Empresa *",
                 options=list(company_options.keys()) if company_options else [],
@@ -267,12 +267,17 @@ def Admin():
                         )
 
                         st.success(
-                            f"Usuário criado com sucesso!\n\n"
+                            f"✅ Usuário criado com sucesso!\n\n"
                             f"**Nome:** {created_user.name}\n\n"
                             f"**Email:** {created_user.email}\n\n"
                             f"**Empresa:** {user_company}\n\n"
                             f"**Super Admin:** {'Sim' if user_is_super_admin else 'Não'}"
                         )
+
+                        # Aguardar um momento para o usuário ver a mensagem
+                        import time
+                        time.sleep(1.5)
+                        st.rerun()
 
                 except Exception as e:
                     error_msg = str(e)
@@ -333,13 +338,18 @@ def Admin():
                         )
 
                         st.success(
-                            f"Empresa criada com sucesso!\n\n"
+                            f"✅ Empresa criada com sucesso!\n\n"
                             f"**Nome:** {created_company.name}\n\n"
                             f"**CNPJ:** {created_company.cnpj or 'Não informado'}\n\n"
                             f"**Plano:** {created_company.plan.upper()}\n\n"
                             f"**ID:** {created_company.id}\n\n"
                             f"💡 Agora você pode criar usuários para esta empresa na aba 'Criar Usuário'"
                         )
+
+                        # Aguardar um momento para o usuário ver a mensagem
+                        import time
+                        time.sleep(1.5)
+                        st.rerun()
 
                 except Exception as e:
                     error_msg = str(e)
