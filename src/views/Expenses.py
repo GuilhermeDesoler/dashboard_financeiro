@@ -216,9 +216,58 @@ def _render_expenses_table(expenses, account_use_cases):
         month_total_fmt = f"R$ {month_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
         with st.expander(f"📅 {month_data['label']} - {month_total_fmt}", expanded=True):
-            # Renderizar tabela com checkboxes individuais
-            for expense in month_expenses:
+            # Configuração de paginação
+            items_per_page = 10
+            page_key = f"expense_page_{month_key}"
+
+            # Inicializar página no session_state
+            if page_key not in st.session_state:
+                st.session_state[page_key] = 0
+
+            total_items = len(month_expenses)
+            total_pages = (total_items + items_per_page - 1) // items_per_page
+            current_page = st.session_state[page_key]
+
+            # Garantir que a página atual está dentro dos limites
+            if current_page >= total_pages:
+                current_page = max(0, total_pages - 1)
+                st.session_state[page_key] = current_page
+
+            # Calcular índices para a página atual
+            start_idx = current_page * items_per_page
+            end_idx = min(start_idx + items_per_page, total_items)
+
+            # Renderizar tabela com checkboxes individuais da página atual
+            for expense in month_expenses[start_idx:end_idx]:
                 _render_expense_row(expense, account_use_cases)
+
+            # Controles de paginação
+            if total_pages > 1:
+                st.divider()
+                col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
+
+                with col1:
+                    if st.button("⏮️ Primeira", key=f"first_{month_key}", disabled=current_page == 0, use_container_width=True):
+                        st.session_state[page_key] = 0
+                        st.rerun()
+
+                with col2:
+                    if st.button("◀️ Anterior", key=f"prev_{month_key}", disabled=current_page == 0, use_container_width=True):
+                        st.session_state[page_key] = current_page - 1
+                        st.rerun()
+
+                with col3:
+                    st.markdown(f"<div style='text-align: center; padding-top: 8px;'>Página {current_page + 1} de {total_pages} ({total_items} itens)</div>", unsafe_allow_html=True)
+
+                with col4:
+                    if st.button("Próxima ▶️", key=f"next_{month_key}", disabled=current_page >= total_pages - 1, use_container_width=True):
+                        st.session_state[page_key] = current_page + 1
+                        st.rerun()
+
+                with col5:
+                    if st.button("Última ⏭️", key=f"last_{month_key}", disabled=current_page >= total_pages - 1, use_container_width=True):
+                        st.session_state[page_key] = total_pages - 1
+                        st.rerun()
 
 
 def _render_expense_row(expense, account_use_cases):
