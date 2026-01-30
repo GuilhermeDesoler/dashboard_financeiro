@@ -9,19 +9,18 @@ def render():
     container = get_container()
     auth_use_cases = container.auth_use_cases
 
-    # Informações do usuário
-    user_name = st.session_state.get("user_name", "Usuário")
-    user_email = st.session_state.get("user_email", "")
+    # Informações de segurança
+    with st.expander("ℹ️ Dicas de Segurança"):
+        st.markdown("""
+        **Recomendações para uma senha segura:**
 
-    st.subheader("Informações da Conta", anchor=False)
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.text_input("Nome", value=user_name, disabled=True)
-
-    with col2:
-        st.text_input("Email", value=user_email, disabled=True)
+        - Use pelo menos 8 caracteres
+        - Combine letras maiúsculas e minúsculas
+        - Inclua números e caracteres especiais
+        - Não use informações pessoais óbvias
+        - Não reutilize senhas de outras contas
+        - Troque sua senha periodicamente
+        """)
 
     st.divider()
 
@@ -30,28 +29,23 @@ def render():
     st.write("Preencha os campos abaixo para alterar sua senha:")
 
     with st.form("change_password_form", clear_on_submit=True):
-        # Toggle para mostrar/esconder senhas
-        show_passwords = st.checkbox("Mostrar senhas", value=False)
-
-        password_type = "text" if show_passwords else "password"
-
         current_password = st.text_input(
             "Senha Atual",
-            type=password_type,
+            type="password",
             placeholder="Digite sua senha atual",
             help="Digite a senha que você usa atualmente"
         )
 
         new_password = st.text_input(
             "Nova Senha",
-            type=password_type,
+            type="password",
             placeholder="Digite a nova senha",
             help="A nova senha deve ter pelo menos 6 caracteres"
         )
 
         confirm_password = st.text_input(
             "Confirmar Nova Senha",
-            type=password_type,
+            type="password",
             placeholder="Digite a nova senha novamente",
             help="Digite a mesma senha para confirmar"
         )
@@ -100,17 +94,3 @@ def render():
                     else:
                         st.error(f"❌ Erro ao alterar senha: {error_msg}")
 
-    st.divider()
-
-    # Informações de segurança
-    with st.expander("ℹ️ Dicas de Segurança"):
-        st.markdown("""
-        **Recomendações para uma senha segura:**
-
-        - Use pelo menos 8 caracteres
-        - Combine letras maiúsculas e minúsculas
-        - Inclua números e caracteres especiais
-        - Não use informações pessoais óbvias
-        - Não reutilize senhas de outras contas
-        - Troque sua senha periodicamente
-        """)
