@@ -5,7 +5,6 @@ from views.Admin import Admin
 from config import Environment, EnvironmentError
 from presentation.components.custom_styles import apply_custom_styles
 from presentation.components.theme_toggle import render_theme_toggle
-from presentation.components.impersonate_timer import render_impersonate_timer
 from presentation.auth_persistence import restore_auth_if_exists, clear_auth_session
 from dependencies import get_container
 
@@ -92,7 +91,10 @@ else:
             st.caption(f"{current_user.email}")
 
             if "impersonate_token" in st.session_state:
-                render_impersonate_timer()
+                st.info(
+                    f"🎭 **Modo Impersonate Ativo**\n\n"
+                    f"Você está visualizando dados de: **{st.session_state.get('impersonating_company', 'Empresa')}**"
+                )
 
             if (
                 current_user
@@ -104,8 +106,6 @@ else:
                 ):
                     del st.session_state.impersonate_token
                     del st.session_state.impersonating_company
-                    if "impersonate_start_time" in st.session_state:
-                        del st.session_state.impersonate_start_time
 
                     http_client.set_auth_token(st.session_state.access_token)
 

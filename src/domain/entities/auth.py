@@ -56,7 +56,7 @@ class ImpersonateToken:
     Impersonate token response
 
     Attributes:
-        token: Impersonate JWT token (1 hour expiry)
+        token: Impersonate JWT token (24 hours expiry)
         company: Basic company info
         message: Success message
         expires_in_hours: Token expiry in hours
@@ -64,7 +64,7 @@ class ImpersonateToken:
     token: str
     company: dict
     message: str
-    expires_in_hours: int = 1
+    expires_in_hours: int = 24
 
     @staticmethod
     def from_dict(data: dict) -> 'ImpersonateToken':
@@ -73,5 +73,5 @@ class ImpersonateToken:
             token=data["token"],
             company=data["company"],
             message=data["message"],
-            expires_in_hours=data.get("expires_in_hours", 1),
+            expires_in_hours=data.get("expires_in_hours", 24),
         )

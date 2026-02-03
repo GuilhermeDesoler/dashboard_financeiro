@@ -3,6 +3,9 @@ headless = true
 enableCORS = false
 enableXsrfProtection = false
 runOnSave = true
+maxUploadSize = 200
+maxMessageSize = 200
+enableWebsocketCompression = false
 
 [runner]
 fastReruns = true

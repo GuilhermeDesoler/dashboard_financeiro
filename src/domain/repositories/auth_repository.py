@@ -58,7 +58,7 @@ class AuthRepository(ABC):
             token: Super admin JWT token
 
         Returns:
-            ImpersonateToken with 1-hour token for the company
+            ImpersonateToken with 24-hour token for the company
         """
         pass
 

@@ -168,9 +168,6 @@ def Admin():
                                                 st.session_state.impersonating_company = (
                                                     company.name
                                                 )
-                                                st.session_state.impersonate_start_time = (
-                                                    datetime.now()
-                                                )
 
                                                 # Set token in HTTP client
                                                 http_client.set_auth_token(
@@ -184,7 +181,7 @@ def Admin():
 
                                                 st.success(
                                                     f"{impersonate_token.message}\n\n"
-                                                    f"Token válido por {impersonate_token.expires_in_hours} hora"
+                                                    f"Token válido por {impersonate_token.expires_in_hours} horas"
                                                 )
                                                 st.rerun()
 
@@ -373,8 +370,6 @@ def Admin():
                 # Clear impersonate data
                 del st.session_state.impersonate_token
                 del st.session_state.impersonating_company
-                if "impersonate_start_time" in st.session_state:
-                    del st.session_state.impersonate_start_time
 
                 # Restore super admin token
                 http_client.set_auth_token(st.session_state.access_token)
