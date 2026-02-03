@@ -32,10 +32,16 @@ class AccountAPIRepository(AccountRepository):
         response = self.http_client.get(self.base_endpoint, params=params)
         return [Account.from_dict(account) for account in response]
 
-    def update(self, account_id: str, paid: bool = None) -> Account:
+    def update(self, account_id: str, paid: bool = None, value: float = None, date: datetime = None, description: str = None) -> Account:
         data = {}
         if paid is not None:
             data["paid"] = paid
+        if value is not None:
+            data["value"] = value
+        if date is not None:
+            data["date"] = date.isoformat()
+        if description is not None:
+            data["description"] = description
 
         response = self.http_client.patch(f"{self.base_endpoint}/{account_id}", data=data)
         return Account.from_dict(response)

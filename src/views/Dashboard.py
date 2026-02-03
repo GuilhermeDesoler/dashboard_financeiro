@@ -334,26 +334,81 @@ def render():
                 modality_total = sum(e.value for e in modality_entries)
                 percentage = (modality_total / total * 100) if total > 0 else 0
 
+                # Separar crediário de não-crediário
+                crediario_entries = [e for e in modality_entries if e.is_credit_plan]
+                pagamentos_crediario = [e for e in modality_entries if e.credit_payment]
+                outros_entries = [e for e in modality_entries if not e.is_credit_plan and not e.credit_payment]
+
+                crediario_total = sum(e.value for e in crediario_entries)
+                pagamentos_total = sum(e.value for e in pagamentos_crediario)
+                outros_total = sum(e.value for e in outros_entries)
+
                 with st.expander(
                     f"{modality_name} - R$ {modality_total:,.2f}".replace(",", "X")
                     .replace(".", ",")
                     .replace("X", ".")
                     + f" ({percentage:.1f}%)"
                 ):
-                    df_entries = pd.DataFrame(
-                        [
-                            {
-                                "Data": e.date.strftime("%d/%m/%Y"),
-                                "Valor": f"R$ {e.value:,.2f}".replace(",", "X")
-                                .replace(".", ",")
-                                .replace("X", "."),
-                            }
-                            for e in sorted(modality_entries, key=lambda x: x.date)
-                        ]
-                    )
+                    # Se houver crediário, mostrar separado
+                    if crediario_entries:
+                        st.markdown("### 💳 Pagamento de Crediário")
+                        crediario_fmt = f"R$ {crediario_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                        st.markdown(f"**Total:** {crediario_fmt} ({len(crediario_entries)} lançamentos)")
 
-                    st.dataframe(df_entries, use_container_width=True, hide_index=True)
+                        df_crediario = pd.DataFrame(
+                            [
+                                {
+                                    "Data": e.date.strftime("%d/%m/%Y"),
+                                    "Valor": f"R$ {e.value:,.2f}".replace(",", "X")
+                                    .replace(".", ",")
+                                    .replace("X", "."),
+                                }
+                                for e in sorted(crediario_entries, key=lambda x: x.date)
+                            ]
+                        )
+                        st.dataframe(df_crediario, use_container_width=True, hide_index=True)
+                        st.divider()
 
+                    # Se houver pagamentos de crediário recebidos
+                    if pagamentos_crediario:
+                        st.markdown("### ✅ Recebimento de Crediário")
+                        pagamentos_fmt = f"R$ {pagamentos_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                        st.markdown(f"**Total:** {pagamentos_fmt} ({len(pagamentos_crediario)} lançamentos)")
+
+                        df_pagamentos = pd.DataFrame(
+                            [
+                                {
+                                    "Data": e.date.strftime("%d/%m/%Y"),
+                                    "Valor": f"R$ {e.value:,.2f}".replace(",", "X")
+                                    .replace(".", ",")
+                                    .replace("X", "."),
+                                }
+                                for e in sorted(pagamentos_crediario, key=lambda x: x.date)
+                            ]
+                        )
+                        st.dataframe(df_pagamentos, use_container_width=True, hide_index=True)
+                        st.divider()
+
+                    # Mostrar outros lançamentos
+                    if outros_entries:
+                        st.markdown("### 📊 Outros Lançamentos")
+                        outros_fmt = f"R$ {outros_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                        st.markdown(f"**Total:** {outros_fmt} ({len(outros_entries)} lançamentos)")
+
+                        df_outros = pd.DataFrame(
+                            [
+                                {
+                                    "Data": e.date.strftime("%d/%m/%Y"),
+                                    "Valor": f"R$ {e.value:,.2f}".replace(",", "X")
+                                    .replace(".", ",")
+                                    .replace("X", "."),
+                                }
+                                for e in sorted(outros_entries, key=lambda x: x.date)
+                            ]
+                        )
+                        st.dataframe(df_outros, use_container_width=True, hide_index=True)
+
+                    # Ticket médio
                     st.markdown(
                         f"**Total de lançamentos:** {len(modality_entries)} | "
                         f"**Ticket médio:** R$ {(modality_total / len(modality_entries)):,.2f}".replace(
@@ -365,8 +420,8 @@ def render():
 
         st.divider()
 
-        # Seção de Resumo Diário do Crediário (última seção)
-        st.subheader("📊 Resumo Diário - Crediário", anchor=False)
+        # Seção de Agenda de Crediário (última seção)
+        st.subheader("📅 Agenda de Crediário", anchor=False)
 
         # Filtro independente para a seção de Crediário
         col_cred1, col_cred2, col_cred3 = st.columns(3)

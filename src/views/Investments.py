@@ -19,19 +19,17 @@ def render():
             if st.button("Lançamento", use_container_width=True, type="primary"):
                 st.session_state.show_investment_modal = True
 
-        # Filtros de data
+        # Filtros de data - Anualizado (início do ano até hoje)
         col1, col2, col3 = st.columns([2, 2, 1])
 
         today = datetime.now()
-        start_of_month = datetime(today.year, today.month, 1)
-        end_of_month = today.replace(
-            day=1, month=today.month % 12 + 1, year=today.year + (today.month // 12)
-        ) - timedelta(days=1)
+        start_of_year = datetime(today.year, 1, 1)
+        end_of_year = today
 
         with col1:
             st.date_input(
                 "Data Início",
-                value=start_of_month,
+                value=start_of_year,
                 format="DD/MM/YYYY",
                 key="investments_start",
             )
@@ -39,7 +37,7 @@ def render():
         with col2:
             st.date_input(
                 "Data Fim",
-                value=end_of_month,
+                value=end_of_year,
                 format="DD/MM/YYYY",
                 key="investments_end",
             )

@@ -75,6 +75,9 @@ def render():
         # Seção de exclusão
         _render_delete_section(boletos, account_use_cases)
 
+        # Padding inferior
+        st.markdown("<div style='padding-bottom: 100px;'></div>", unsafe_allow_html=True)
+
     except Exception as e:
         st.error(f"Erro ao carregar dados: {str(e)}")
         import traceback
@@ -216,58 +219,12 @@ def _render_boletos_table(boletos, account_use_cases):
         month_total_fmt = f"R$ {month_total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
         with st.expander(f"📅 {month_data['label']} - {month_total_fmt}", expanded=True):
-            # Configuração de paginação
-            items_per_page = 10
-            page_key = f"boleto_page_{month_key}"
-
-            # Inicializar página no session_state
-            if page_key not in st.session_state:
-                st.session_state[page_key] = 0
-
-            total_items = len(month_boletos)
-            total_pages = (total_items + items_per_page - 1) // items_per_page
-            current_page = st.session_state[page_key]
-
-            # Garantir que a página atual está dentro dos limites
-            if current_page >= total_pages:
-                current_page = max(0, total_pages - 1)
-                st.session_state[page_key] = current_page
-
-            # Calcular índices para a página atual
-            start_idx = current_page * items_per_page
-            end_idx = min(start_idx + items_per_page, total_items)
-
-            # Renderizar tabela com checkboxes individuais da página atual
-            for boleto in month_boletos[start_idx:end_idx]:
+            # Renderizar todos os boletos sem paginação
+            for boleto in month_boletos:
                 _render_boleto_row(boleto, account_use_cases)
 
-            # Controles de paginação
-            if total_pages > 1:
-                st.divider()
-                col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
-
-                with col1:
-                    if st.button("⏮️ Primeira", key=f"first_{month_key}", disabled=current_page == 0, use_container_width=True):
-                        st.session_state[page_key] = 0
-                        st.rerun()
-
-                with col2:
-                    if st.button("◀️ Anterior", key=f"prev_{month_key}", disabled=current_page == 0, use_container_width=True):
-                        st.session_state[page_key] = current_page - 1
-                        st.rerun()
-
-                with col3:
-                    st.markdown(f"<div style='text-align: center; padding-top: 8px;'>Página {current_page + 1} de {total_pages} ({total_items} itens)</div>", unsafe_allow_html=True)
-
-                with col4:
-                    if st.button("Próxima ▶️", key=f"next_{month_key}", disabled=current_page >= total_pages - 1, use_container_width=True):
-                        st.session_state[page_key] = current_page + 1
-                        st.rerun()
-
-                with col5:
-                    if st.button("Última ⏭️", key=f"last_{month_key}", disabled=current_page >= total_pages - 1, use_container_width=True):
-                        st.session_state[page_key] = total_pages - 1
-                        st.rerun()
+            # Padding inferior dentro do expander
+            st.markdown("<div style='padding-bottom: 20px;'></div>", unsafe_allow_html=True)
 
 
 def _render_boleto_row(boleto, account_use_cases):

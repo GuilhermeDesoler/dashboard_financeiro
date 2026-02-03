@@ -205,5 +205,6 @@ else:
         ):
             st.session_state.current_page = "Admin"
         else:
-            st.session_state.current_page = "Dashboard"
+            # Usuários comuns começam na página de Lançamentos
+            st.session_state.current_page = "Lançamentos"
         st.rerun()

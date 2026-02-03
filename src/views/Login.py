@@ -62,7 +62,7 @@ def Login():
                         if auth_token.user.is_super_admin:
                             st.session_state.current_page = "Admin"
                         else:
-                            st.session_state.current_page = "Dashboard"
+                            st.session_state.current_page = "Lançamentos"
 
                         st.success(f"Bem-vindo(a), {auth_token.user.name}!")
                         st.rerun()

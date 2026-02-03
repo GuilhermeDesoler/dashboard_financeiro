@@ -32,9 +32,9 @@ class AccountUseCases:
         """List all accounts, optionally filtered by date range"""
         return self.repository.list_all(start_date, end_date)
 
-    def update_account(self, account_id: str, paid: bool = None) -> Account:
-        """Update an account (principalmente o status paid)"""
-        return self.repository.update(account_id, paid=paid)
+    def update_account(self, account_id: str, paid: bool = None, value: float = None, date: datetime = None, description: str = None) -> Account:
+        """Update an account (principalmente o status paid, mas também outros campos)"""
+        return self.repository.update(account_id, paid=paid, value=value, date=date, description=description)
 
     def delete_account(self, account_id: str) -> bool:
         """Delete an account by ID"""

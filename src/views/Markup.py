@@ -96,14 +96,14 @@ def render():
                     if st.button("⚙️ Configurações", use_container_width=True):
                         st.session_state.show_markup_config_modal = True
 
-            # Inputs em grid 2x2
+            # Inputs em grid 2x3 (agora com Preço de Venda)
             col1, col2 = st.columns(2)
 
             with col1:
                 valor_compra = st.number_input(
                     "Valor de Compra (V)",
-                    min_value=0.01,
-                    value=1.0,
+                    min_value=0.0,
+                    value=0.0,
                     step=0.01,
                     format="%.2f",
                     help="Valor de compra do produto",
@@ -120,11 +120,21 @@ def render():
                     key="calc_custo"
                 )
 
+                preco_venda_input = st.number_input(
+                    "Preço de Venda (P)",
+                    min_value=0.0,
+                    value=100.0,
+                    step=0.01,
+                    format="%.2f",
+                    help="Preço de venda desejado (editável)",
+                    key="calc_preco_venda"
+                )
+
             with col2:
                 markup = st.number_input(
                     "Markup (M)",
                     min_value=0.0,
-                    value=float(default_markup) if default_markup > 0 else 2.0,
+                    value=float(default_markup) if default_markup > 0 else 0.0,
                     step=0.1,
                     format="%.2f",
                     help="Multiplicador de markup",
@@ -156,20 +166,40 @@ def render():
                 for warning in warnings:
                     st.warning(f"⚠️ {warning}")
 
-            # Calcular resultado
-            A = 1 -(percentual / 100)
-            preco_venda = (valor_compra * markup + custo) / A
+            # Calcular resultado dinâmico
+            # Se o usuário inseriu preço de venda, calcular o markup necessário
+            # Caso contrário, calcular o preço de venda a partir dos outros valores
+
+            # Fórmula: P = (V * M + C) / A, onde A = 1 - (percentual/100)
+            # Reorganizando para M: M = (P * A - C) / V
+
+            A = 1 - (percentual / 100)
+
+            # Se usuário definiu preço de venda diferente de 100 (default), calcular markup
+            if preco_venda_input != 100.0 and valor_compra > 0:
+                # Calcular markup necessário baseado no preço de venda
+                markup_calculado = (preco_venda_input * A - custo) / valor_compra if valor_compra > 0 else 0
+                preco_venda = preco_venda_input
+                resultado_tipo = "MARKUP CALCULADO"
+                valor_principal = f"{markup_calculado:.2f}"
+                cor_principal = "#F59E0B"
+            else:
+                # Calcular preço de venda baseado no markup
+                preco_venda = (valor_compra * markup + custo) / A if A > 0 else 0
+                markup_calculado = markup
+                resultado_tipo = "PREÇO DE VENDA"
+                valor_principal = f"R$ {preco_venda:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                cor_principal = "#9333EA"
 
             # Card com resultado
-            preco_formatado = f"R$ {preco_venda:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             lucro_bruto = preco_venda - valor_compra
             lucro_fmt = f"R$ {lucro_bruto:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             margem = ((preco_venda - valor_compra) / preco_venda * 100) if preco_venda > 0 else 0
 
             st.markdown(f"""
-            <div style="border: 3px solid #9333EA; border-radius: 16px; padding: 30px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center; margin: 20px 0;">
-                <p style="margin: 0; font-size: 16px; color: #6b21a8; font-weight: 600;">PREÇO DE VENDA</p>
-                <h1 style="margin: 15px 0; font-size: 48px; color: #9333EA;">{preco_formatado}</h1>
+            <div style="border: 3px solid {cor_principal}; border-radius: 16px; padding: 30px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center; margin: 20px 0;">
+                <p style="margin: 0; font-size: 16px; color: #6b21a8; font-weight: 600;">{resultado_tipo}</p>
+                <h1 style="margin: 15px 0; font-size: 48px; color: {cor_principal};">{valor_principal}</h1>
                 <div style="display: flex; justify-content: center; gap: 40px; margin-top: 15px;">
                     <div>
                         <p style="margin: 0; font-size: 12px; color: #6b21a8;">Lucro Bruto</p>
