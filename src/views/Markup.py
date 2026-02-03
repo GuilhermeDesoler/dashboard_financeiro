@@ -56,7 +56,7 @@ def _render_config_modal(platform_settings_use_cases, settings):
                 platform_settings_use_cases.update_markup_settings(
                     markup_default=new_markup,
                     markup_cost=new_cost,
-                    markup_percentage=new_percentage  # Envia em % inteira, back divide por 100
+                    markup_percentage=new_percentage
                 )
                 st.session_state.show_markup_config_modal = False
                 st.success("Configurações salvas com sucesso!")
@@ -86,120 +86,95 @@ def render():
         default_percentage = settings.markup_percentage
 
         # Tabs
-        tab1, = st.tabs(["Calculadora de Markup"])
+        tab1, tab2, tab3 = st.tabs(["💰 Calcular Preço de Venda", "🛒 Calcular Preço de Compra", "🎯 Calcular Markup"])
 
+        # ===========================
+        # TAB 1: Calcular Preço de Venda
+        # ===========================
         with tab1:
             # Botão de configuração para admin ou super admin
             if is_admin or is_super_admin:
                 col1, col2, col3 = st.columns([3, 1, 1])
                 with col3:
-                    if st.button("⚙️ Configurações", use_container_width=True):
+                    if st.button("⚙️ Configurações", use_container_width=True, key="config_btn_tab1"):
                         st.session_state.show_markup_config_modal = True
 
-            # Inputs em grid 2x3 (agora com Preço de Venda)
+            # Inputs em grid 2x2
             col1, col2 = st.columns(2)
 
             with col1:
-                valor_compra = st.number_input(
+                valor_compra_tab1 = st.number_input(
                     "Valor de Compra (V)",
                     min_value=0.0,
-                    value=0.0,
+                    value=100.0,
                     step=0.01,
                     format="%.2f",
                     help="Valor de compra do produto",
-                    key="calc_valor"
+                    key="tab1_valor"
                 )
 
-                custo = st.number_input(
+                markup_tab1 = st.number_input(
+                    "Markup (M)",
+                    min_value=0.0,
+                    value=float(default_markup) if default_markup > 0 else 2.0,
+                    step=0.1,
+                    format="%.2f",
+                    help="Multiplicador de markup",
+                    key="tab1_markup"
+                )
+
+            with col2:
+                custo_tab1 = st.number_input(
                     "Custo Adicional (C)",
                     min_value=0.0,
                     value=float(default_cost),
                     step=0.01,
                     format="%.2f",
                     help="Custo adicional fixo",
-                    key="calc_custo"
+                    key="tab1_custo"
                 )
 
-                preco_venda_input = st.number_input(
-                    "Preço de Venda (P)",
-                    min_value=0.0,
-                    value=100.0,
-                    step=0.01,
-                    format="%.2f",
-                    help="Preço de venda desejado (editável)",
-                    key="calc_preco_venda"
-                )
-
-            with col2:
-                markup = st.number_input(
-                    "Markup (M)",
-                    min_value=0.0,
-                    value=float(default_markup) if default_markup > 0 else 0.0,
-                    step=0.1,
-                    format="%.2f",
-                    help="Multiplicador de markup",
-                    key="calc_markup"
-                )
-
-                percentual = st.number_input(
+                percentual_tab1 = st.number_input(
                     "Percentual de Aumento (%)",
                     min_value=0.0,
-                    max_value=100.0,
+                    max_value=99.9,
                     value=float(default_percentage),
                     step=0.5,
                     format="%.2f",
                     help="Percentual de aumento",
-                    key="calc_percentual"
+                    key="tab1_percentual"
                 )
 
             # Validações e avisos
             warnings = []
-            if default_markup > 0 and markup < default_markup:
-                warnings.append(f"Markup ({markup:.2f}) está abaixo do padrão ({default_markup:.2f})")
-            if default_cost > 0 and custo < default_cost:
-                warnings.append(f"Custo ({custo:.2f}) está abaixo do padrão ({default_cost:.2f})")
-            if default_percentage > 0 and percentual < default_percentage:
-                warnings.append(f"Percentual ({percentual:.2f}%) está abaixo do padrão ({default_percentage:.2f}%)")
+            if default_markup > 0 and markup_tab1 < default_markup:
+                warnings.append(f"Markup ({markup_tab1:.2f}) está abaixo do padrão ({default_markup:.2f})")
+            if default_cost > 0 and custo_tab1 < default_cost:
+                warnings.append(f"Custo ({custo_tab1:.2f}) está abaixo do padrão ({default_cost:.2f})")
+            if default_percentage > 0 and percentual_tab1 < default_percentage:
+                warnings.append(f"Percentual ({percentual_tab1:.2f}%) está abaixo do padrão ({default_percentage:.2f}%)")
 
-            # Mostrar avisos
             if warnings:
                 for warning in warnings:
                     st.warning(f"⚠️ {warning}")
 
-            # Calcular resultado dinâmico
-            # Se o usuário inseriu preço de venda, calcular o markup necessário
-            # Caso contrário, calcular o preço de venda a partir dos outros valores
+            # Calcular preço de venda
+            A_tab1 = 1 - (percentual_tab1 / 100)
+            preco_venda_tab1 = (valor_compra_tab1 * markup_tab1 + custo_tab1) / A_tab1 if A_tab1 > 0 else 0
 
-            # Fórmula: P = (V * M + C) / A, onde A = 1 - (percentual/100)
-            # Reorganizando para M: M = (P * A - C) / V
+            # Calcular métricas
+            lucro_bruto_tab1 = preco_venda_tab1 - valor_compra_tab1
+            margem_tab1 = ((preco_venda_tab1 - valor_compra_tab1) / preco_venda_tab1 * 100) if preco_venda_tab1 > 0 else 0
 
-            A = 1 - (percentual / 100)
-
-            # Se usuário definiu preço de venda diferente de 100 (default), calcular markup
-            if preco_venda_input != 100.0 and valor_compra > 0:
-                # Calcular markup necessário baseado no preço de venda
-                markup_calculado = (preco_venda_input * A - custo) / valor_compra if valor_compra > 0 else 0
-                preco_venda = preco_venda_input
-                resultado_tipo = "MARKUP CALCULADO"
-                valor_principal = f"{markup_calculado:.2f}"
-                cor_principal = "#F59E0B"
-            else:
-                # Calcular preço de venda baseado no markup
-                preco_venda = (valor_compra * markup + custo) / A if A > 0 else 0
-                markup_calculado = markup
-                resultado_tipo = "PREÇO DE VENDA"
-                valor_principal = f"R$ {preco_venda:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-                cor_principal = "#9333EA"
+            # Formatações
+            preco_venda_fmt = f"R$ {preco_venda_tab1:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            lucro_fmt = f"R$ {lucro_bruto_tab1:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
             # Card com resultado
-            lucro_bruto = preco_venda - valor_compra
-            lucro_fmt = f"R$ {lucro_bruto:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            margem = ((preco_venda - valor_compra) / preco_venda * 100) if preco_venda > 0 else 0
-
             st.markdown(f"""
-            <div style="border: 3px solid {cor_principal}; border-radius: 16px; padding: 30px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center; margin: 20px 0;">
-                <p style="margin: 0; font-size: 16px; color: #6b21a8; font-weight: 600;">{resultado_tipo}</p>
-                <h1 style="margin: 15px 0; font-size: 48px; color: {cor_principal};">{valor_principal}</h1>
+            <div style="border: 3px solid #9333EA; border-radius: 16px; padding: 30px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); text-align: center; margin: 20px 0;">
+                <p style="margin: 0; font-size: 16px; color: #6b21a8; font-weight: 600;">PREÇO DE VENDA</p>
+                <h1 style="margin: 15px 0; font-size: 48px; color: #9333EA;">{preco_venda_fmt}</h1>
                 <div style="display: flex; justify-content: center; gap: 40px; margin-top: 15px;">
                     <div>
                         <p style="margin: 0; font-size: 12px; color: #6b21a8;">Lucro Bruto</p>
@@ -207,7 +182,218 @@ def render():
                     </div>
                     <div>
                         <p style="margin: 0; font-size: 12px; color: #6b21a8;">Margem</p>
-                        <p style="margin: 0; font-size: 18px; color: #10B981; font-weight: bold;">{margem:.1f}%</p>
+                        <p style="margin: 0; font-size: 18px; color: #10B981; font-weight: bold;">{margem_tab1:.1f}%</p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        # ===========================
+        # TAB 2: Calcular Preço de Compra
+        # ===========================
+        with tab2:
+            # Botão de configuração para admin ou super admin
+            if is_admin or is_super_admin:
+                col1, col2, col3 = st.columns([3, 1, 1])
+                with col3:
+                    if st.button("⚙️ Configurações", use_container_width=True, key="config_btn_tab2"):
+                        st.session_state.show_markup_config_modal = True
+
+            # Inputs em grid 2x2
+            col1, col2 = st.columns(2)
+
+            with col1:
+                preco_venda_tab2 = st.number_input(
+                    "Preço de Venda (P)",
+                    min_value=0.01,
+                    value=250.0,
+                    step=0.01,
+                    format="%.2f",
+                    help="Preço de venda praticado",
+                    key="tab2_preco_venda"
+                )
+
+                markup_tab2 = st.number_input(
+                    "Markup (M)",
+                    min_value=0.01,
+                    value=float(default_markup) if default_markup > 0 else 2.0,
+                    step=0.1,
+                    format="%.2f",
+                    help="Multiplicador de markup",
+                    key="tab2_markup"
+                )
+
+            with col2:
+                custo_tab2 = st.number_input(
+                    "Custo Adicional (C)",
+                    min_value=0.0,
+                    value=float(default_cost),
+                    step=0.01,
+                    format="%.2f",
+                    help="Custo adicional fixo",
+                    key="tab2_custo"
+                )
+
+                percentual_tab2 = st.number_input(
+                    "Percentual de Aumento (%)",
+                    min_value=0.0,
+                    max_value=99.9,
+                    value=float(default_percentage),
+                    step=0.5,
+                    format="%.2f",
+                    help="Percentual de aumento",
+                    key="tab2_percentual"
+                )
+
+            # Calcular preço de compra
+            # Fórmula: V = (P * A - C) / M, onde A = 1 - (percentual/100)
+            A_tab2 = 1 - (percentual_tab2 / 100)
+            preco_compra_calculado = (preco_venda_tab2 * A_tab2 - custo_tab2) / markup_tab2 if markup_tab2 > 0 and A_tab2 > 0 else 0
+
+            # Calcular métricas
+            lucro_bruto_tab2 = preco_venda_tab2 - preco_compra_calculado
+            margem_tab2 = ((preco_venda_tab2 - preco_compra_calculado) / preco_venda_tab2 * 100) if preco_venda_tab2 > 0 else 0
+
+            # Formatações
+            preco_compra_fmt = f"R$ {preco_compra_calculado:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            preco_venda_fmt2 = f"R$ {preco_venda_tab2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            lucro_fmt2 = f"R$ {lucro_bruto_tab2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+            # Validações e avisos
+            warnings2 = []
+            if default_markup > 0 and markup_tab2 < default_markup:
+                warnings2.append(f"Markup ({markup_tab2:.2f}) está abaixo do padrão ({default_markup:.2f})")
+            if default_cost > 0 and custo_tab2 < default_cost:
+                warnings2.append(f"Custo ({custo_tab2:.2f}) está abaixo do padrão ({default_cost:.2f})")
+            if default_percentage > 0 and percentual_tab2 < default_percentage:
+                warnings2.append(f"Percentual ({percentual_tab2:.2f}%) está abaixo do padrão ({default_percentage:.2f}%)")
+
+            if warnings2:
+                for warning in warnings2:
+                    st.warning(f"⚠️ {warning}")
+
+            # Card com resultado
+            st.markdown(f"""
+            <div style="border: 3px solid #10B981; border-radius: 16px; padding: 30px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); text-align: center; margin: 20px 0;">
+                <p style="margin: 0; font-size: 16px; color: #047857; font-weight: 600;">PREÇO DE COMPRA MÁXIMO</p>
+                <h1 style="margin: 15px 0; font-size: 48px; color: #10B981;">{preco_compra_fmt}</h1>
+                <div style="display: flex; justify-content: center; gap: 40px; margin-top: 15px;">
+                    <div>
+                        <p style="margin: 0; font-size: 12px; color: #047857;">Preço de Venda</p>
+                        <p style="margin: 0; font-size: 18px; color: #9333EA; font-weight: bold;">{preco_venda_fmt2}</p>
+                    </div>
+                    <div>
+                        <p style="margin: 0; font-size: 12px; color: #047857;">Lucro Bruto</p>
+                        <p style="margin: 0; font-size: 18px; color: #10B981; font-weight: bold;">{lucro_fmt2}</p>
+                    </div>
+                    <div>
+                        <p style="margin: 0; font-size: 12px; color: #047857;">Margem</p>
+                        <p style="margin: 0; font-size: 18px; color: #F59E0B; font-weight: bold;">{margem_tab2:.1f}%</p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        # ===========================
+        # TAB 3: Calcular Markup
+        # ===========================
+        with tab3:
+            # Botão de configuração para admin ou super admin
+            if is_admin or is_super_admin:
+                col1, col2, col3 = st.columns([3, 1, 1])
+                with col3:
+                    if st.button("⚙️ Configurações", use_container_width=True, key="config_btn_tab3"):
+                        st.session_state.show_markup_config_modal = True
+
+            # Inputs em grid 2x2
+            col1, col2 = st.columns(2)
+
+            with col1:
+                valor_compra_tab3 = st.number_input(
+                    "Valor de Compra (V)",
+                    min_value=0.01,
+                    value=100.0,
+                    step=0.01,
+                    format="%.2f",
+                    help="Valor de compra do produto",
+                    key="tab3_valor"
+                )
+
+                preco_venda_tab3 = st.number_input(
+                    "Preço de Venda Desejado (P)",
+                    min_value=0.01,
+                    value=250.0,
+                    step=0.01,
+                    format="%.2f",
+                    help="Preço de venda que você deseja alcançar",
+                    key="tab3_preco_venda"
+                )
+
+            with col2:
+                custo_tab3 = st.number_input(
+                    "Custo Adicional (C)",
+                    min_value=0.0,
+                    value=float(default_cost),
+                    step=0.01,
+                    format="%.2f",
+                    help="Custo adicional fixo",
+                    key="tab3_custo"
+                )
+
+                percentual_tab3 = st.number_input(
+                    "Percentual de Aumento (%)",
+                    min_value=0.0,
+                    max_value=99.9,
+                    value=float(default_percentage),
+                    step=0.5,
+                    format="%.2f",
+                    help="Percentual de aumento",
+                    key="tab3_percentual"
+                )
+
+            # Calcular markup necessário
+            # Fórmula: M = (P * A - C) / V, onde A = 1 - (percentual/100)
+            A_tab3 = 1 - (percentual_tab3 / 100)
+            markup_calculado = (preco_venda_tab3 * A_tab3 - custo_tab3) / valor_compra_tab3 if valor_compra_tab3 > 0 and A_tab3 > 0 else 0
+
+            # Calcular métricas
+            lucro_bruto_tab3 = preco_venda_tab3 - valor_compra_tab3
+            margem_tab3 = ((preco_venda_tab3 - valor_compra_tab3) / preco_venda_tab3 * 100) if preco_venda_tab3 > 0 else 0
+
+            # Formatações
+            preco_venda_fmt3 = f"R$ {preco_venda_tab3:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            lucro_fmt3 = f"R$ {lucro_bruto_tab3:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+            # Validações e avisos
+            warnings3 = []
+            if default_markup > 0 and markup_calculado < default_markup:
+                warnings3.append(f"Markup calculado ({markup_calculado:.2f}) está abaixo do padrão ({default_markup:.2f})")
+            if default_cost > 0 and custo_tab3 < default_cost:
+                warnings3.append(f"Custo ({custo_tab3:.2f}) está abaixo do padrão ({default_cost:.2f})")
+            if default_percentage > 0 and percentual_tab3 < default_percentage:
+                warnings3.append(f"Percentual ({percentual_tab3:.2f}%) está abaixo do padrão ({default_percentage:.2f}%)")
+
+            if warnings3:
+                for warning in warnings3:
+                    st.warning(f"⚠️ {warning}")
+
+            # Card com resultado
+            st.markdown(f"""
+            <div style="border: 3px solid #F59E0B; border-radius: 16px; padding: 30px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); text-align: center; margin: 20px 0;">
+                <p style="margin: 0; font-size: 16px; color: #92400E; font-weight: 600;">MARKUP NECESSÁRIO</p>
+                <h1 style="margin: 15px 0; font-size: 48px; color: #F59E0B;">{markup_calculado:.2f}x</h1>
+                <div style="display: flex; justify-content: center; gap: 40px; margin-top: 15px;">
+                    <div>
+                        <p style="margin: 0; font-size: 12px; color: #92400E;">Preço de Venda</p>
+                        <p style="margin: 0; font-size: 18px; color: #9333EA; font-weight: bold;">{preco_venda_fmt3}</p>
+                    </div>
+                    <div>
+                        <p style="margin: 0; font-size: 12px; color: #92400E;">Lucro Bruto</p>
+                        <p style="margin: 0; font-size: 18px; color: #10B981; font-weight: bold;">{lucro_fmt3}</p>
+                    </div>
+                    <div>
+                        <p style="margin: 0; font-size: 12px; color: #92400E;">Margem</p>
+                        <p style="margin: 0; font-size: 18px; color: #10B981; font-weight: bold;">{margem_tab3:.1f}%</p>
                     </div>
                 </div>
             </div>
